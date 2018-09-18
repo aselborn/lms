@@ -1,0 +1,200 @@
+﻿<Window x:Class="WPFReportViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        mc:Ignorable="d"
+        xmlns:model="clr-namespace:ReportViewer.Model"
+        xmlns:conv="clr-namespace:WPFReportViewer.Converters"
+        Title="MainWindow" Height="800" Width="1000">
+
+
+    <Window.Resources>
+
+        <conv:Level x:Key="LevelConverter" />
+        <conv:NegateConverter x:Key="NegateConverter" />
+    </Window.Resources>
+
+
+    <Grid>
+
+        <!--xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms" -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Grid.Column="0">
+            <Label Content="Search Filter: " FontSize="12"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5" Text="Result" />
+        </StackPanel>
+
+        <ContentPresenter Content="{Binding WinFormViewer, Mode=TwoWay}"
+                          Grid.Row="1" Grid.Column="2" />
+
+        <StackPanel Grid.Row="1" Grid.Column="0" 
+                    Margin="5,0,0,0"
+                    Orientation="Vertical" HorizontalAlignment="Left">
+            <TextBlock Text="Select TestBed." />
+
+            <ComboBox x:Name="cboTestBed" Grid.Row="1" Width="190" Height="30"
+                      SelectedItem="{Binding SelectedTestBedItem}"
+                      IsSynchronizedWithCurrentItem="True"
+                      ItemsSource="{Binding Path=TestBedList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TestBedName}">
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Text="Select category" />
+            <ComboBox x:Name="cboEventTypes" Grid.Row="1" Width="190" Height="30"
+                      SelectedItem="{Binding SelectedEventItem}"
+                      IsSynchronizedWithCurrentItem="True"
+                      ItemsSource="{Binding Path=EventTypeList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding EventTypeDescription}">
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Text="Select cause" />
+
+            <ComboBox x:Name="cboEventSubTypes" Grid.Row="1" Width="190" Height="30"
+                      SelectedItem="{Binding SelectedEventSubItem}"
+                      IsSynchronizedWithCurrentItem="True"
+                      ItemsSource="{Binding Path=EventTypeSublist}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding EventTypeDescription}">
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Orientation="Vertical" Margin="10,40,0,0" HorizontalAlignment="Center">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                    <TextBlock Text="Select start:" TextAlignment="left"  Margin="0,3,10,0"/>
+                    <DatePicker x:Name="fromDate" Margin="0,0,10,0"
+                            SelectedDate="{Binding FromDateTime, Mode=TwoWay}"
+                            />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                    <TextBlock Text="Select stop:" TextAlignment="left"  Margin="0,3,10,0"/>
+                    <DatePicker x:Name="tomDate" Margin="0,0,10,0"
+                            SelectedDate="{Binding FromDateTime, Mode=TwoWay}"
+                            />
+                </StackPanel>
+
+
+            </StackPanel>
+
+            <TextBlock Text="Select grouping" Margin="10,20,0,0" />
+
+            <StackPanel Orientation="Horizontal" Margin="10,30,0,0">
+                <RadioButton  Content="Year" IsChecked="{Binding IsYearChecked}"/>
+                <RadioButton Content="Month" IsChecked="{Binding IsMonthChecked }" />
+                <RadioButton Content="Week" IsChecked="{ Binding IsWeekChecked }"/>
+                <RadioButton Content="Day" IsChecked="{Binding IsDayChecked }" />
+            </StackPanel>
+
+            <Button x:Name="btnFilter" Margin="0,10,10,0" 
+                    Content="Get Data"
+                    Command="{Binding GetFilteredData}"
+                    Height="30"
+                    Width="150">
+
+            </Button>
+
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <CheckBox x:Name="chkTestBed" Margin="5,22,0,0"
+                      IsChecked="{Binding ElementName=cboTestBed, Converter={StaticResource NegateConverter}, Path=IsEnabled}"
+                Content="All Testbeds">
+                
+            </CheckBox>
+            
+        </StackPanel>
+        
+
+        <Grid Grid.Row="3" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+
+
+            <Button x:Name="loadAdventure" 
+                Grid.Row="1" Height="30"
+                
+                Command="{Binding AdventureCommand }"
+                Content="Adventure"  >
+
+            </Button>
+
+            <Button Grid.Column="1"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Command="{Binding CustomCommand}"
+                    Content="Custom Data."
+                    x:Name="loadCustom">
+
+            </Button>
+
+            <Button Grid.Column="2"
+                    
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Command="{Binding WCFCommand }"
+                    Content="Load WCF"
+                    x:Name="loadWCF">
+
+            </Button>
+
+            <Button Grid.Column="3"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Command="{Binding WCFEntityFramework }"
+                    Content="WCF entity"
+                    x:Name="loadWCFCtl">
+
+            </Button>
+            <Button Grid.Column="4"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Command="{Binding WCFRemoteMachine}"
+                    Content="WCF Remote"
+                    x:Name="WcfRemote">
+
+            </Button>
+        </Grid>
+
+
+
+    </Grid>
+</Window>
