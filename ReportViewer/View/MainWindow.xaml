@@ -100,7 +100,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
                     <TextBlock Text="Select stop:" TextAlignment="left"  Margin="0,3,10,0"/>
                     <DatePicker x:Name="tomDate" Margin="0,0,10,0"
-                            SelectedDate="{Binding FromDateTime, Mode=TwoWay}"
+                            SelectedDate="{Binding TomDateTime, Mode=TwoWay}"
                             />
                 </StackPanel>
 

@@ -52,30 +52,12 @@ namespace LMS
                 {
                     Console.WriteLine(ea.Address);
                 }
-
-
-                //EventType eventType = new EventType { EventTypeId = 9 };
-                //ServiceReference1.ReportServiceClient client = new ServiceReference1.ReportServiceClient("NetTcpEndpoint");
-
-                ////Dictionary<int, EventLog> data = client.EventLogForRig(eventType);
-
-                //client.EventLogForRig(eventType);
-
-                //object b = client.GetDs();
-
-                //SetupConnection();
-
                 // var blabb = _iReportService.GetEventTypes();
                 Console.ReadLine();
                 host.Close();
 
             }
 
-
-
-            //Console.ReadLine();
-
-            //reportController.Stop();
         }
 
         private static void SetupConnection()

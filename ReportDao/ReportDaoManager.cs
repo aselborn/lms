@@ -32,6 +32,7 @@ namespace ReportDao
 
             switch (filterParamteters.WithGrouping)
             {
+                
                 case Bridge.FilterParameters.GroupByOperator.Date:
                     var data = m_LmsContext.DbEventLog
                         .Where(p => p.EventTypeId.Equals(eventType.EventTypeId))
@@ -73,6 +74,21 @@ namespace ReportDao
                         result.Add(v.Select(p => p.EventLogTime).First(), v.Select(p => p.EventLogTime).Count());
                     }
                     break;
+
+                case Bridge.FilterParameters.GroupByOperator.Year:
+                    var data4 = m_LmsContext.DbEventLog
+                        .Where(p => p.EventTypeId.Equals(eventType.EventTypeId))
+                        .Where(u => u.EventLogTime >= filterParamteters.StartDate && u.EventLogTime <= filterParamteters.StopDate)
+                        .ToList()
+                        .GroupBy(o => o.EventLogTime.Year)
+                        .ToList();
+
+                    foreach (var v in data4)
+                    {
+                        result.Add(v.Select(p => p.EventLogTime).First(), v.Select(p => p.EventLogTime).Count());
+                    }
+                    break;
+
 
                 case Bridge.FilterParameters.GroupByOperator.Week:
                     break;
