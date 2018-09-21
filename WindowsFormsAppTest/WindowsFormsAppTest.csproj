@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -108,6 +109,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ReportDao\ReportDao.csproj">
+      <Project>{D1E0C1BE-54E4-4A7D-90C2-28B3EA35E1CE}</Project>
+      <Name>ReportDao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCFReportLib\WCFReportLib.csproj">
+      <Project>{68bb4844-5d3b-461b-8711-ab9c064a681e}</Project>
+      <Name>WCFReportLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

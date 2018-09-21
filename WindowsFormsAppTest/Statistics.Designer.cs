@@ -28,23 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonAddTrend = new System.Windows.Forms.Button();
+            this.comboBoxDateTimeIntervalType = new System.Windows.Forms.ComboBox();
+            this.labelDateTimeIntervalType = new System.Windows.Forms.Label();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.buttonShow = new System.Windows.Forms.Button();
+            this.comboBoxChartType = new System.Windows.Forms.ComboBox();
+            this.labelChartType = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.labelChartType = new System.Windows.Forms.Label();
-            this.comboBoxChartType = new System.Windows.Forms.ComboBox();
-            this.buttonShow = new System.Windows.Forms.Button();
-            this.buttonAdd = new System.Windows.Forms.Button();
-            this.labelDateTimeIntervalType = new System.Windows.Forms.Label();
-            this.comboBoxDateTimeIntervalType = new System.Windows.Forms.ComboBox();
             this.labelPixelX = new System.Windows.Forms.Label();
             this.labelPixelY = new System.Windows.Forms.Label();
             this.labelXValue = new System.Windows.Forms.Label();
             this.labelYValue = new System.Windows.Forms.Label();
-            this.buttonAddTrend = new System.Windows.Forms.Button();
+            this.btnWcf = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -53,6 +54,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel1.Controls.Add(this.btnWcf);
             this.panel1.Controls.Add(this.buttonAddTrend);
             this.panel1.Controls.Add(this.comboBoxDateTimeIntervalType);
             this.panel1.Controls.Add(this.labelDateTimeIntervalType);
@@ -64,6 +66,70 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(688, 122);
             this.panel1.TabIndex = 0;
+            // 
+            // buttonAddTrend
+            // 
+            this.buttonAddTrend.Location = new System.Drawing.Point(571, 98);
+            this.buttonAddTrend.Name = "buttonAddTrend";
+            this.buttonAddTrend.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddTrend.TabIndex = 6;
+            this.buttonAddTrend.Text = "Add trend";
+            this.buttonAddTrend.UseVisualStyleBackColor = true;
+            this.buttonAddTrend.Click += new System.EventHandler(this.buttonAddTrend_Click);
+            // 
+            // comboBoxDateTimeIntervalType
+            // 
+            this.comboBoxDateTimeIntervalType.FormattingEnabled = true;
+            this.comboBoxDateTimeIntervalType.Location = new System.Drawing.Point(97, 53);
+            this.comboBoxDateTimeIntervalType.Name = "comboBoxDateTimeIntervalType";
+            this.comboBoxDateTimeIntervalType.Size = new System.Drawing.Size(146, 21);
+            this.comboBoxDateTimeIntervalType.TabIndex = 5;
+            // 
+            // labelDateTimeIntervalType
+            // 
+            this.labelDateTimeIntervalType.AutoSize = true;
+            this.labelDateTimeIntervalType.Location = new System.Drawing.Point(22, 53);
+            this.labelDateTimeIntervalType.Name = "labelDateTimeIntervalType";
+            this.labelDateTimeIntervalType.Size = new System.Drawing.Size(68, 13);
+            this.labelDateTimeIntervalType.TabIndex = 4;
+            this.labelDateTimeIntervalType.Text = "Interval type:";
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Location = new System.Drawing.Point(571, 69);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd.TabIndex = 3;
+            this.buttonAdd.Text = "Add";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // buttonShow
+            // 
+            this.buttonShow.Location = new System.Drawing.Point(571, 14);
+            this.buttonShow.Name = "buttonShow";
+            this.buttonShow.Size = new System.Drawing.Size(75, 23);
+            this.buttonShow.TabIndex = 2;
+            this.buttonShow.Text = "Show";
+            this.buttonShow.UseVisualStyleBackColor = true;
+            this.buttonShow.Click += new System.EventHandler(this.buttonShow_Click);
+            // 
+            // comboBoxChartType
+            // 
+            this.comboBoxChartType.FormattingEnabled = true;
+            this.comboBoxChartType.Location = new System.Drawing.Point(97, 17);
+            this.comboBoxChartType.Name = "comboBoxChartType";
+            this.comboBoxChartType.Size = new System.Drawing.Size(146, 21);
+            this.comboBoxChartType.TabIndex = 1;
+            // 
+            // labelChartType
+            // 
+            this.labelChartType.AutoSize = true;
+            this.labelChartType.Location = new System.Drawing.Point(22, 19);
+            this.labelChartType.Name = "labelChartType";
+            this.labelChartType.Size = new System.Drawing.Size(58, 13);
+            this.labelChartType.TabIndex = 0;
+            this.labelChartType.Text = "Chart type:";
             // 
             // panel2
             // 
@@ -77,74 +143,20 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(0, 0);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(1208, 513);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            // 
-            // labelChartType
-            // 
-            this.labelChartType.AutoSize = true;
-            this.labelChartType.Location = new System.Drawing.Point(22, 19);
-            this.labelChartType.Name = "labelChartType";
-            this.labelChartType.Size = new System.Drawing.Size(58, 13);
-            this.labelChartType.TabIndex = 0;
-            this.labelChartType.Text = "Chart type:";
-            // 
-            // comboBoxChartType
-            // 
-            this.comboBoxChartType.FormattingEnabled = true;
-            this.comboBoxChartType.Location = new System.Drawing.Point(97, 17);
-            this.comboBoxChartType.Name = "comboBoxChartType";
-            this.comboBoxChartType.Size = new System.Drawing.Size(146, 21);
-            this.comboBoxChartType.TabIndex = 1;
-            // 
-            // buttonShow
-            // 
-            this.buttonShow.Location = new System.Drawing.Point(571, 14);
-            this.buttonShow.Name = "buttonShow";
-            this.buttonShow.Size = new System.Drawing.Size(75, 23);
-            this.buttonShow.TabIndex = 2;
-            this.buttonShow.Text = "Show";
-            this.buttonShow.UseVisualStyleBackColor = true;
-            this.buttonShow.Click += new System.EventHandler(this.buttonShow_Click);
-            // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Location = new System.Drawing.Point(571, 53);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
-            this.buttonAdd.TabIndex = 3;
-            this.buttonAdd.Text = "Add";
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
-            // 
-            // labelDateTimeIntervalType
-            // 
-            this.labelDateTimeIntervalType.AutoSize = true;
-            this.labelDateTimeIntervalType.Location = new System.Drawing.Point(22, 53);
-            this.labelDateTimeIntervalType.Name = "labelDateTimeIntervalType";
-            this.labelDateTimeIntervalType.Size = new System.Drawing.Size(68, 13);
-            this.labelDateTimeIntervalType.TabIndex = 4;
-            this.labelDateTimeIntervalType.Text = "Interval type:";
-            // 
-            // comboBoxDateTimeIntervalType
-            // 
-            this.comboBoxDateTimeIntervalType.FormattingEnabled = true;
-            this.comboBoxDateTimeIntervalType.Location = new System.Drawing.Point(97, 53);
-            this.comboBoxDateTimeIntervalType.Name = "comboBoxDateTimeIntervalType";
-            this.comboBoxDateTimeIntervalType.Size = new System.Drawing.Size(146, 21);
-            this.comboBoxDateTimeIntervalType.TabIndex = 5;
             // 
             // labelPixelX
             // 
@@ -182,15 +194,15 @@
             this.labelYValue.TabIndex = 5;
             this.labelYValue.Text = "label2";
             // 
-            // buttonAddTrend
+            // btnWcf
             // 
-            this.buttonAddTrend.Location = new System.Drawing.Point(571, 83);
-            this.buttonAddTrend.Name = "buttonAddTrend";
-            this.buttonAddTrend.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddTrend.TabIndex = 6;
-            this.buttonAddTrend.Text = "Add trend";
-            this.buttonAddTrend.UseVisualStyleBackColor = true;
-            this.buttonAddTrend.Click += new System.EventHandler(this.buttonAddTrend_Click);
+            this.btnWcf.Location = new System.Drawing.Point(571, 40);
+            this.btnWcf.Name = "btnWcf";
+            this.btnWcf.Size = new System.Drawing.Size(75, 23);
+            this.btnWcf.TabIndex = 7;
+            this.btnWcf.Text = "WCF Show";
+            this.btnWcf.UseVisualStyleBackColor = true;
+            this.btnWcf.Click += new System.EventHandler(this.btnWcf_Click);
             // 
             // Statistics
             // 
@@ -230,5 +242,6 @@
         private System.Windows.Forms.Label labelXValue;
         private System.Windows.Forms.Label labelYValue;
         private System.Windows.Forms.Button buttonAddTrend;
+        private System.Windows.Forms.Button btnWcf;
     }
 }

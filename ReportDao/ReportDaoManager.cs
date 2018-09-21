@@ -38,9 +38,11 @@ namespace ReportDao
                         .Where(p => p.EventTypeId.Equals(eventType.EventTypeId))
                         .Where(u => u.EventLogTime >= filterParamteters.StartDate && u.EventLogTime <= filterParamteters.StopDate)
                         .ToList()
+                        .OrderBy(c=>c.EventLogTime)
                         .GroupBy(o => o.EventLogTime.Date)
                         .ToList();
-
+                        
+                    
                     foreach (var v in data)
                     {
                         result.Add(v.Select(p => p.EventLogTime).First(), v.Select(p => p.EventLogTime).Count());

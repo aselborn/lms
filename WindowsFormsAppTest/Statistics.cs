@@ -1,18 +1,22 @@
-﻿using System;
+﻿using ReportDao.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using WCFReportLib;
 
 namespace WindowsFormsAppTest
 {
     public partial class Statistics : Form
     {
+       
         public Statistics()
         {
             InitializeComponent();
@@ -152,6 +156,15 @@ namespace WindowsFormsAppTest
                 chart1.DataManipulator.FinancialFormula(FinancialFormula.Forecasting, parameters, serie, trend);
             }
         }
+
+        private void btnWcf_Click(object sender, EventArgs e)
+        {
+            WcfStatistics stat = new WcfStatistics();
+            stat.GetData();
+
+            SeriesChartType chartType = (SeriesChartType)comboBoxChartType.SelectedValue;
+            AddSerie(this.chart1, $"{DateTime.Now.Ticks}-{chartType}", stat.GetData(), chartType);
+        }
     }
 
     #region Helpers
@@ -182,5 +195,52 @@ namespace WindowsFormsAppTest
         }
     }
 
+ 
+
+    public class WcfStatistics
+    {
+        private WCFReportLib.ReportService iReportService;
+        private ChannelFactory<IReportService> channelFactory = null;
+        private EndpointAddress endpointAddress = null;
+        private string epAddr = "net.tcp://localhost:7778/";
+        //private string epAddr = "net.tcp://10.8.227.128:7779/";
+        private IReportService _iReportService;
+
+        public WcfStatistics()
+        {
+            SetupConnection();
+        }
+
+        private void SetupConnection()
+        {
+            NetTcpBinding tcpBinding = new NetTcpBinding();
+            channelFactory = new ChannelFactory<IReportService>(tcpBinding);
+            endpointAddress = new EndpointAddress(epAddr);
+            _iReportService = channelFactory.CreateChannel(endpointAddress);
+        }
+
+        public List<StatResultItem> GetData()
+        {
+            List<StatResultItem> result = new List<StatResultItem>();
+
+            Bridge.FilterParameters prms = new Bridge.FilterParameters();
+            prms.StartDate = DateTime.Parse("2017-08-01");
+            prms.StopDate = DateTime.Now;
+            prms.WithGrouping = Bridge.FilterParameters.GroupByOperator.Date;
+
+            Dictionary<DateTime, int> times = _iReportService.EventLogForRig(new Bridge.EventType { EventTypeId = 9 }, prms);
+
+
+            foreach (var v in times)
+            {
+                result.Add(new StatResultItem { X = v.Key, Y = v.Value });
+            }
+
+            return result;
+        }
+    }
+
     #endregion
+
+
 }
