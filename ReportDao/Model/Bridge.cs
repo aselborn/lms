@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace ReportDao.Model
             public GroupByOperator WithGrouping { get; set; }
             //public List<EventType> EventTypeList { get; set; }
         }
+     
+
 
         [DataContract]
         public class EventType

@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFReportViewer.View;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WPFReportViewer
 {
@@ -22,8 +24,11 @@ namespace WPFReportViewer
     public partial class MainWindow : Window
     {
         private bool _isReportViewerLoaded;
+        public event RoutedEventHandler Loaded;
+        private Chart _myChart;
         public MainWindow()
         {
+            Loaded += MainWindow_Loaded;
             InitializeComponent();
             //_reportViewer.Load += _reportViewer_Load;
             this.DataContext = new ReportViewerVM();
@@ -58,6 +63,18 @@ namespace WPFReportViewer
 
             //    _isReportViewerLoaded = true;
             //}
+        }
+
+        private void btnChart_Click(object sender, RoutedEventArgs e)
+        {
+            ChartingWindow charting = new ChartingWindow();
+            charting.Show();
+
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

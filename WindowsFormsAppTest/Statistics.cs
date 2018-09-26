@@ -180,7 +180,7 @@ namespace WindowsFormsAppTest
         public static List<StatResultItem> GetSample2()
         {
             var result = new List<StatResultItem>();
-
+            
             DateTime d = DateTime.Now;
 
             Random r = new Random();
@@ -195,11 +195,9 @@ namespace WindowsFormsAppTest
         }
     }
 
- 
-
     public class WcfStatistics
     {
-        private WCFReportLib.ReportService iReportService;
+
         private ChannelFactory<IReportService> channelFactory = null;
         private EndpointAddress endpointAddress = null;
         private string epAddr = "net.tcp://localhost:7778/";
@@ -239,6 +237,7 @@ namespace WindowsFormsAppTest
             return result;
         }
     }
+
 
     #endregion
 

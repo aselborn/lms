@@ -27,6 +27,7 @@ namespace WPFReportViewer.ViewModel
         public ICommand GetFilteredData => new RelayCommand(p => OnGetFilteredData(), p => true);
 
         private Microsoft.Reporting.WinForms.ReportViewer _reportViewer;
+      
 
         private ChannelFactory<IReportService> channelFactory = null;
         private EndpointAddress endpointAddress = null;
@@ -238,7 +239,6 @@ namespace WPFReportViewer.ViewModel
             
             FilterParameters filterParameters = new FilterParameters
             {
-                
                 StartDate = _fromDateTime,
                 StopDate = _tomDateTime,
                 WithGrouping = GetGroupByParam
@@ -263,6 +263,7 @@ namespace WPFReportViewer.ViewModel
             _reportViewer.RefreshReport();
             _winFormViewer.Child = _reportViewer;
         }
+
 
         private void OnAdventureCommand()
         {
