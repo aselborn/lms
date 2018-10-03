@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IReportService.cs" />
+    <Compile Include="IServiceDummy.cs" />
     <Compile Include="Mock\Category.cs" />
     <Compile Include="Mock\RandomGenerator.cs" />
     <Compile Include="Mock\RigObject.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="ReportController.cs" />
     <Compile Include="Mock\ReportMock.cs" />
     <Compile Include="ReportService.cs" />
+    <Compile Include="ServiceDummy.cs" />
+    <Compile Include="Model\SimpleResultObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

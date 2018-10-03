@@ -29,11 +29,19 @@ namespace WPFReportViewer.ViewModel
         private Microsoft.Reporting.WinForms.ReportViewer _reportViewer;
       
 
-        private ChannelFactory<IReportService> channelFactory = null;
+        private ChannelFactory<IReportService> reportChannelFactory = null;
+        private ChannelFactory<IServiceDummy> serviceChannelDummyFactory = null;
+        
         private EndpointAddress endpointAddress = null;
+        private EndpointAddress endpointAddressDummy = null;
+
         private string epAddr = "net.tcp://localhost:7778/";
+        private string eprAddrDummy = "net.tcp://localhost:7779/";
+
         //private string epAddr = "net.tcp://10.8.227.128:7779/";
         private IReportService _iReportService;
+        private IServiceDummy _iDummyService;
+
         private WindowsFormsHost _winFormViewer;
 
         public ObservableCollection<Bridge.EventType> EventTypeList { get; } = new ObservableCollection<Bridge.EventType>();
@@ -211,10 +219,16 @@ namespace WPFReportViewer.ViewModel
         private void SetupConnection()
         {
             NetTcpBinding tcpBinding = new NetTcpBinding();
-            channelFactory = new ChannelFactory<IReportService>(tcpBinding);
-            endpointAddress = new EndpointAddress(epAddr);
+            reportChannelFactory = new ChannelFactory<IReportService>(tcpBinding);
+            serviceChannelDummyFactory = new ChannelFactory<IServiceDummy>(tcpBinding);
 
-            _iReportService = channelFactory.CreateChannel(endpointAddress);
+            endpointAddress = new EndpointAddress(epAddr);
+            endpointAddressDummy = new EndpointAddress(eprAddrDummy);
+
+            _iReportService = reportChannelFactory.CreateChannel(endpointAddress);
+            _iDummyService = serviceChannelDummyFactory.CreateChannel(endpointAddressDummy);
+
+            
         }
 
        
@@ -236,7 +250,7 @@ namespace WPFReportViewer.ViewModel
         }
         private void OnGetFilteredData()
         {
-            
+
             FilterParameters filterParameters = new FilterParameters
             {
                 StartDate = _fromDateTime,

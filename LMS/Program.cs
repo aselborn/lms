@@ -10,10 +10,11 @@ namespace LMS
 {
     class Program
     {
-        private static ChannelFactory<IReportService> channelFactory = null;
-        private static EndpointAddress endpointAddress = null;
-        private static string epAddr = "net.tcp://localhost:7778/";
+        private static ChannelFactory<IReportService> reportChannelFactory = null;
+        private static EndpointAddress reportEndpointAddress = null;
+        private static string strReportAddress = "net.tcp://localhost:7778/";
         private static IReportService _iReportService;
+
 
         static void Main(string[] args)
         {
@@ -53,6 +54,8 @@ namespace LMS
                     Console.WriteLine(ea.Address);
                 }
                 // var blabb = _iReportService.GetEventTypes();
+
+              
                 Console.ReadLine();
                 host.Close();
 
@@ -63,10 +66,13 @@ namespace LMS
         private static void SetupConnection()
         {
             NetTcpBinding tcpBinding = new NetTcpBinding();
-            channelFactory = new ChannelFactory<IReportService>(tcpBinding);
-            endpointAddress = new EndpointAddress(epAddr);
+            reportChannelFactory = new ChannelFactory<IReportService>(tcpBinding);
+            reportEndpointAddress = new EndpointAddress(strReportAddress);
 
-            _iReportService = channelFactory.CreateChannel(endpointAddress);
+            _iReportService = reportChannelFactory.CreateChannel(reportEndpointAddress);
+
+
+       
         }
     }
 }

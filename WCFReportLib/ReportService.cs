@@ -61,6 +61,58 @@ namespace WCFReportLib
             return result;
         }
 
+
+        public List<SimpleResultObject>EventLogDummy(Bridge.EventType eventType, FilterParameters filterParameters)
+        {
+            var lstModel = new List<SimpleResultObject>();
+            Random rnd = new Random();
+
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Technology",
+                myValue = rnd.Next(10)
+
+            });
+
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Sales",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Marketing",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Human Resource",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Research and Development",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Acconting",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Support",
+                myValue = rnd.Next(10)
+            });
+            lstModel.Add(new SimpleResultObject
+            {
+                text = "Logistics",
+                myValue = rnd.Next(10)
+            });
+
+            return lstModel;
+        }
+
         public DataSet GetDs()
         {
             ReportDaoManager daoManager = new ReportDaoManager();

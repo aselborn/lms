@@ -7,50 +7,54 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServiceWCF
+namespace WCFService
 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceWCF.IReportService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WCFService.IReportService")]
     public interface IReportService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetData", ReplyAction="http://tempuri.org/IReportService/GetDataResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDataResponse> GetDataAsync(ServiceWCF.GetDataRequest request);
+        System.Threading.Tasks.Task<WCFService.GetDataResponse> GetDataAsync(WCFService.GetDataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/Version", ReplyAction="http://tempuri.org/IReportService/VersionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.VersionResponse> VersionAsync(ServiceWCF.VersionRequest request);
+        System.Threading.Tasks.Task<WCFService.VersionResponse> VersionAsync(WCFService.VersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetRigobject", ReplyAction="http://tempuri.org/IReportService/GetRigobjectResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetRigobjectResponse> GetRigobjectAsync(ServiceWCF.GetRigobjectRequest request);
+        System.Threading.Tasks.Task<WCFService.GetRigobjectResponse> GetRigobjectAsync(WCFService.GetRigobjectRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetDs", ReplyAction="http://tempuri.org/IReportService/GetDsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDsResponse> GetDsAsync(ServiceWCF.GetDsRequest request);
+        System.Threading.Tasks.Task<WCFService.GetDsResponse> GetDsAsync(WCFService.GetDsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/EventLogForRig", ReplyAction="http://tempuri.org/IReportService/EventLogForRigResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.EventLogForRigResponse> EventLogForRigAsync(ServiceWCF.EventLogForRigRequest request);
+        System.Threading.Tasks.Task<WCFService.EventLogForRigResponse> EventLogForRigAsync(WCFService.EventLogForRigRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/EventLogDummy", ReplyAction="http://tempuri.org/IReportService/EventLogDummyResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<WCFService.EventLogDummyResponse> EventLogDummyAsync(WCFService.EventLogDummyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetTestBeds", ReplyAction="http://tempuri.org/IReportService/GetTestBedsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetTestBedsResponse> GetTestBedsAsync(ServiceWCF.GetTestBedsRequest request);
+        System.Threading.Tasks.Task<WCFService.GetTestBedsResponse> GetTestBedsAsync(WCFService.GetTestBedsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetEventTypes", ReplyAction="http://tempuri.org/IReportService/GetEventTypesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetEventTypesResponse> GetEventTypesAsync(ServiceWCF.GetEventTypesRequest request);
+        System.Threading.Tasks.Task<WCFService.GetEventTypesResponse> GetEventTypesAsync(WCFService.GetEventTypesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetDummy", ReplyAction="http://tempuri.org/IReportService/GetDummyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDummyResponse> GetDummyAsync(ServiceWCF.GetDummyRequest request);
+        System.Threading.Tasks.Task<WCFService.GetDummyResponse> GetDummyAsync(WCFService.GetDummyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReportService/GetPerson", ReplyAction="http://tempuri.org/IReportService/GetPersonResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceWCF.GetPersonResponse> GetPersonAsync(ServiceWCF.GetPersonRequest request);
+        System.Threading.Tasks.Task<WCFService.GetPersonResponse> GetPersonAsync(WCFService.GetPersonRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -258,6 +262,62 @@ namespace ServiceWCF
             set
             {
                 this.testBedNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.datacontract.org/2004/07/WCFReportLib")]
+    public partial class SimpleResultObject
+    {
+        
+        private int myValeField;
+        
+        private bool myValeFieldSpecified;
+        
+        private string textField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int myVale
+        {
+            get
+            {
+                return this.myValeField;
+            }
+            set
+            {
+                this.myValeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool myValeSpecified
+        {
+            get
+            {
+                return this.myValeFieldSpecified;
+            }
+            set
+            {
+                this.myValeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        public string text
+        {
+            get
+            {
+                return this.textField;
+            }
+            set
+            {
+                this.textField = value;
             }
         }
     }
@@ -609,13 +669,13 @@ namespace ServiceWCF
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ServiceWCF.ReplyMessage VersionResult;
+        public WCFService.ReplyMessage VersionResult;
         
         public VersionResponse()
         {
         }
         
-        public VersionResponse(ServiceWCF.ReplyMessage VersionResult)
+        public VersionResponse(WCFService.ReplyMessage VersionResult)
         {
             this.VersionResult = VersionResult;
         }
@@ -642,13 +702,13 @@ namespace ServiceWCF
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ServiceWCF.RigObject GetRigobjectResult;
+        public WCFService.RigObject GetRigobjectResult;
         
         public GetRigobjectResponse()
         {
         }
         
-        public GetRigobjectResponse(ServiceWCF.RigObject GetRigobjectResult)
+        public GetRigobjectResponse(WCFService.RigObject GetRigobjectResult)
         {
             this.GetRigobjectResult = GetRigobjectResult;
         }
@@ -675,13 +735,13 @@ namespace ServiceWCF
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ServiceWCF.ArrayOfXElement GetDsResult;
+        public WCFService.ArrayOfXElement GetDsResult;
         
         public GetDsResponse()
         {
         }
         
-        public GetDsResponse(ServiceWCF.ArrayOfXElement GetDsResult)
+        public GetDsResponse(WCFService.ArrayOfXElement GetDsResult)
         {
             this.GetDsResult = GetDsResult;
         }
@@ -736,17 +796,17 @@ namespace ServiceWCF
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ServiceWCF.BridgeEventType eventType;
+        public WCFService.BridgeEventType eventType;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public ServiceWCF.BridgeFilterParameters filterParameters;
+        public WCFService.BridgeFilterParameters filterParameters;
         
         public EventLogForRigRequest()
         {
         }
         
-        public EventLogForRigRequest(ServiceWCF.BridgeEventType eventType, ServiceWCF.BridgeFilterParameters filterParameters)
+        public EventLogForRigRequest(WCFService.BridgeEventType eventType, WCFService.BridgeFilterParameters filterParameters)
         {
             this.eventType = eventType;
             this.filterParameters = filterParameters;
@@ -763,15 +823,63 @@ namespace ServiceWCF
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfdateTimeint", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public ServiceWCF.ArrayOfKeyValueOfdateTimeintKeyValueOfdateTimeint[] EventLogForRigResult;
+        public WCFService.ArrayOfKeyValueOfdateTimeintKeyValueOfdateTimeint[] EventLogForRigResult;
         
         public EventLogForRigResponse()
         {
         }
         
-        public EventLogForRigResponse(ServiceWCF.ArrayOfKeyValueOfdateTimeintKeyValueOfdateTimeint[] EventLogForRigResult)
+        public EventLogForRigResponse(WCFService.ArrayOfKeyValueOfdateTimeintKeyValueOfdateTimeint[] EventLogForRigResult)
         {
             this.EventLogForRigResult = EventLogForRigResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EventLogDummy", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class EventLogDummyRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public WCFService.BridgeEventType eventType;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public WCFService.BridgeFilterParameters filterParameters;
+        
+        public EventLogDummyRequest()
+        {
+        }
+        
+        public EventLogDummyRequest(WCFService.BridgeEventType eventType, WCFService.BridgeFilterParameters filterParameters)
+        {
+            this.eventType = eventType;
+            this.filterParameters = filterParameters;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EventLogDummyResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class EventLogDummyResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/WCFReportLib")]
+        public WCFService.SimpleResultObject[] EventLogDummyResult;
+        
+        public EventLogDummyResponse()
+        {
+        }
+        
+        public EventLogDummyResponse(WCFService.SimpleResultObject[] EventLogDummyResult)
+        {
+            this.EventLogDummyResult = EventLogDummyResult;
         }
     }
     
@@ -797,13 +905,13 @@ namespace ServiceWCF
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/ReportDao.Model")]
-        public ServiceWCF.BridgeTestBed[] GetTestBedsResult;
+        public WCFService.BridgeTestBed[] GetTestBedsResult;
         
         public GetTestBedsResponse()
         {
         }
         
-        public GetTestBedsResponse(ServiceWCF.BridgeTestBed[] GetTestBedsResult)
+        public GetTestBedsResponse(WCFService.BridgeTestBed[] GetTestBedsResult)
         {
             this.GetTestBedsResult = GetTestBedsResult;
         }
@@ -831,13 +939,13 @@ namespace ServiceWCF
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/ReportDao.Model")]
-        public ServiceWCF.BridgeEventType[] GetEventTypesResult;
+        public WCFService.BridgeEventType[] GetEventTypesResult;
         
         public GetEventTypesResponse()
         {
         }
         
-        public GetEventTypesResponse(ServiceWCF.BridgeEventType[] GetEventTypesResult)
+        public GetEventTypesResponse(WCFService.BridgeEventType[] GetEventTypesResult)
         {
             this.GetEventTypesResult = GetEventTypesResult;
         }
@@ -898,26 +1006,26 @@ namespace ServiceWCF
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/WCFReportLib")]
-        public ServiceWCF.Person[] GetPersonResult;
+        public WCFService.Person[] GetPersonResult;
         
         public GetPersonResponse()
         {
         }
         
-        public GetPersonResponse(ServiceWCF.Person[] GetPersonResult)
+        public GetPersonResponse(WCFService.Person[] GetPersonResult)
         {
             this.GetPersonResult = GetPersonResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    public interface IReportServiceChannel : ServiceWCF.IReportService, System.ServiceModel.IClientChannel
+    public interface IReportServiceChannel : WCFService.IReportService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    public partial class ReportServiceClient : System.ServiceModel.ClientBase<ServiceWCF.IReportService>, ServiceWCF.IReportService
+    public partial class ReportServiceClient : System.ServiceModel.ClientBase<WCFService.IReportService>, WCFService.IReportService
     {
         
     /// <summary>
@@ -961,114 +1069,128 @@ namespace ServiceWCF
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDataResponse> ServiceWCF.IReportService.GetDataAsync(ServiceWCF.GetDataRequest request)
+        System.Threading.Tasks.Task<WCFService.GetDataResponse> WCFService.IReportService.GetDataAsync(WCFService.GetDataRequest request)
         {
             return base.Channel.GetDataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetDataResponse> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<WCFService.GetDataResponse> GetDataAsync(int value)
         {
-            ServiceWCF.GetDataRequest inValue = new ServiceWCF.GetDataRequest();
+            WCFService.GetDataRequest inValue = new WCFService.GetDataRequest();
             inValue.value = value;
-            return ((ServiceWCF.IReportService)(this)).GetDataAsync(inValue);
+            return ((WCFService.IReportService)(this)).GetDataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.VersionResponse> ServiceWCF.IReportService.VersionAsync(ServiceWCF.VersionRequest request)
+        System.Threading.Tasks.Task<WCFService.VersionResponse> WCFService.IReportService.VersionAsync(WCFService.VersionRequest request)
         {
             return base.Channel.VersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.VersionResponse> VersionAsync()
+        public System.Threading.Tasks.Task<WCFService.VersionResponse> VersionAsync()
         {
-            ServiceWCF.VersionRequest inValue = new ServiceWCF.VersionRequest();
-            return ((ServiceWCF.IReportService)(this)).VersionAsync(inValue);
+            WCFService.VersionRequest inValue = new WCFService.VersionRequest();
+            return ((WCFService.IReportService)(this)).VersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetRigobjectResponse> ServiceWCF.IReportService.GetRigobjectAsync(ServiceWCF.GetRigobjectRequest request)
+        System.Threading.Tasks.Task<WCFService.GetRigobjectResponse> WCFService.IReportService.GetRigobjectAsync(WCFService.GetRigobjectRequest request)
         {
             return base.Channel.GetRigobjectAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetRigobjectResponse> GetRigobjectAsync()
+        public System.Threading.Tasks.Task<WCFService.GetRigobjectResponse> GetRigobjectAsync()
         {
-            ServiceWCF.GetRigobjectRequest inValue = new ServiceWCF.GetRigobjectRequest();
-            return ((ServiceWCF.IReportService)(this)).GetRigobjectAsync(inValue);
+            WCFService.GetRigobjectRequest inValue = new WCFService.GetRigobjectRequest();
+            return ((WCFService.IReportService)(this)).GetRigobjectAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDsResponse> ServiceWCF.IReportService.GetDsAsync(ServiceWCF.GetDsRequest request)
+        System.Threading.Tasks.Task<WCFService.GetDsResponse> WCFService.IReportService.GetDsAsync(WCFService.GetDsRequest request)
         {
             return base.Channel.GetDsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetDsResponse> GetDsAsync()
+        public System.Threading.Tasks.Task<WCFService.GetDsResponse> GetDsAsync()
         {
-            ServiceWCF.GetDsRequest inValue = new ServiceWCF.GetDsRequest();
-            return ((ServiceWCF.IReportService)(this)).GetDsAsync(inValue);
+            WCFService.GetDsRequest inValue = new WCFService.GetDsRequest();
+            return ((WCFService.IReportService)(this)).GetDsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.EventLogForRigResponse> ServiceWCF.IReportService.EventLogForRigAsync(ServiceWCF.EventLogForRigRequest request)
+        System.Threading.Tasks.Task<WCFService.EventLogForRigResponse> WCFService.IReportService.EventLogForRigAsync(WCFService.EventLogForRigRequest request)
         {
             return base.Channel.EventLogForRigAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.EventLogForRigResponse> EventLogForRigAsync(ServiceWCF.BridgeEventType eventType, ServiceWCF.BridgeFilterParameters filterParameters)
+        public System.Threading.Tasks.Task<WCFService.EventLogForRigResponse> EventLogForRigAsync(WCFService.BridgeEventType eventType, WCFService.BridgeFilterParameters filterParameters)
         {
-            ServiceWCF.EventLogForRigRequest inValue = new ServiceWCF.EventLogForRigRequest();
+            WCFService.EventLogForRigRequest inValue = new WCFService.EventLogForRigRequest();
             inValue.eventType = eventType;
             inValue.filterParameters = filterParameters;
-            return ((ServiceWCF.IReportService)(this)).EventLogForRigAsync(inValue);
+            return ((WCFService.IReportService)(this)).EventLogForRigAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetTestBedsResponse> ServiceWCF.IReportService.GetTestBedsAsync(ServiceWCF.GetTestBedsRequest request)
+        System.Threading.Tasks.Task<WCFService.EventLogDummyResponse> WCFService.IReportService.EventLogDummyAsync(WCFService.EventLogDummyRequest request)
+        {
+            return base.Channel.EventLogDummyAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<WCFService.EventLogDummyResponse> EventLogDummyAsync(WCFService.BridgeEventType eventType, WCFService.BridgeFilterParameters filterParameters)
+        {
+            WCFService.EventLogDummyRequest inValue = new WCFService.EventLogDummyRequest();
+            inValue.eventType = eventType;
+            inValue.filterParameters = filterParameters;
+            return ((WCFService.IReportService)(this)).EventLogDummyAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<WCFService.GetTestBedsResponse> WCFService.IReportService.GetTestBedsAsync(WCFService.GetTestBedsRequest request)
         {
             return base.Channel.GetTestBedsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetTestBedsResponse> GetTestBedsAsync()
+        public System.Threading.Tasks.Task<WCFService.GetTestBedsResponse> GetTestBedsAsync()
         {
-            ServiceWCF.GetTestBedsRequest inValue = new ServiceWCF.GetTestBedsRequest();
-            return ((ServiceWCF.IReportService)(this)).GetTestBedsAsync(inValue);
+            WCFService.GetTestBedsRequest inValue = new WCFService.GetTestBedsRequest();
+            return ((WCFService.IReportService)(this)).GetTestBedsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetEventTypesResponse> ServiceWCF.IReportService.GetEventTypesAsync(ServiceWCF.GetEventTypesRequest request)
+        System.Threading.Tasks.Task<WCFService.GetEventTypesResponse> WCFService.IReportService.GetEventTypesAsync(WCFService.GetEventTypesRequest request)
         {
             return base.Channel.GetEventTypesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetEventTypesResponse> GetEventTypesAsync()
+        public System.Threading.Tasks.Task<WCFService.GetEventTypesResponse> GetEventTypesAsync()
         {
-            ServiceWCF.GetEventTypesRequest inValue = new ServiceWCF.GetEventTypesRequest();
-            return ((ServiceWCF.IReportService)(this)).GetEventTypesAsync(inValue);
+            WCFService.GetEventTypesRequest inValue = new WCFService.GetEventTypesRequest();
+            return ((WCFService.IReportService)(this)).GetEventTypesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetDummyResponse> ServiceWCF.IReportService.GetDummyAsync(ServiceWCF.GetDummyRequest request)
+        System.Threading.Tasks.Task<WCFService.GetDummyResponse> WCFService.IReportService.GetDummyAsync(WCFService.GetDummyRequest request)
         {
             return base.Channel.GetDummyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetDummyResponse> GetDummyAsync()
+        public System.Threading.Tasks.Task<WCFService.GetDummyResponse> GetDummyAsync()
         {
-            ServiceWCF.GetDummyRequest inValue = new ServiceWCF.GetDummyRequest();
-            return ((ServiceWCF.IReportService)(this)).GetDummyAsync(inValue);
+            WCFService.GetDummyRequest inValue = new WCFService.GetDummyRequest();
+            return ((WCFService.IReportService)(this)).GetDummyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceWCF.GetPersonResponse> ServiceWCF.IReportService.GetPersonAsync(ServiceWCF.GetPersonRequest request)
+        System.Threading.Tasks.Task<WCFService.GetPersonResponse> WCFService.IReportService.GetPersonAsync(WCFService.GetPersonRequest request)
         {
             return base.Channel.GetPersonAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceWCF.GetPersonResponse> GetPersonAsync()
+        public System.Threading.Tasks.Task<WCFService.GetPersonResponse> GetPersonAsync()
         {
-            ServiceWCF.GetPersonRequest inValue = new ServiceWCF.GetPersonRequest();
-            return ((ServiceWCF.IReportService)(this)).GetPersonAsync(inValue);
+            WCFService.GetPersonRequest inValue = new WCFService.GetPersonRequest();
+            return ((WCFService.IReportService)(this)).GetPersonAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

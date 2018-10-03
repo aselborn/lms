@@ -37,6 +37,10 @@ namespace WCFReportLib
         [OperationContract]
         Dictionary<DateTime, int> EventLogForRig(Bridge.EventType eventType, FilterParameters filterParameters);
 
+        [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [OperationContract]
+        List<SimpleResultObject> EventLogDummy(Bridge.EventType eventType, FilterParameters filterParameters);
+
         [OperationContract]
         List<Bridge.TestBed> GetTestBeds();
 
