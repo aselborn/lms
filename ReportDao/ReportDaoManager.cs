@@ -25,24 +25,60 @@ namespace ReportDao
         public List<EventLog> GetEventLog() => m_LmsContext.DbEventLog.ToList();
         public List<EventType> GetEventType() => m_LmsContext.DbEventType.ToList();
 
+        private class MonthReply
+        {
+            public DateTime Month { get; set; }
+            public int Quantity { get; set; }
+        }
 
+        public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.EventType eventType, Bridge.FilterParameters filterParameters)
+        {
+            List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
+            
+            //DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
+            switch (filterParameters.WithGrouping)
+            {
+                case Bridge.FilterParameters.GroupByOperator.Month:
+                    var data = m_LmsContext.DbEventLog.GroupBy(p => p.EventLogTime.Month).ToList();
+
+                    string qry = "P_EventCountByMonth @start";
+                    SqlParameter[] sqls = new SqlParameter[]
+                    {
+                        new SqlParameter { ParameterName="@start", Value=DateTime.Now.AddDays(-200), Direction= System.Data.ParameterDirection.Input}
+                    };
+
+                    List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
+                    foreach(MonthReply reply in replys)
+                    {
+                        result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Month.ToString("MMMM") });
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            
+            return result;
+        }
         public Dictionary<DateTime, int> GetEventLogByEvent(Bridge.EventType eventType, Bridge.FilterParameters filterParamteters)
         {
             Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
 
             switch (filterParamteters.WithGrouping)
             {
-                
+
                 case Bridge.FilterParameters.GroupByOperator.Date:
                     var data = m_LmsContext.DbEventLog
                         .Where(p => p.EventTypeId.Equals(eventType.EventTypeId))
                         .Where(u => u.EventLogTime >= filterParamteters.StartDate && u.EventLogTime <= filterParamteters.StopDate)
                         .ToList()
-                        .OrderBy(c=>c.EventLogTime)
+                        .OrderBy(c => c.EventLogTime)
                         .GroupBy(o => o.EventLogTime.Date)
                         .ToList();
-                        
-                    
+
+
                     foreach (var v in data)
                     {
                         result.Add(v.Select(p => p.EventLogTime).First(), v.Select(p => p.EventLogTime).Count());
@@ -94,7 +130,7 @@ namespace ReportDao
 
                 case Bridge.FilterParameters.GroupByOperator.Week:
                     break;
-                
+
 
             }
 
@@ -102,7 +138,7 @@ namespace ReportDao
 
 
 
-            
+
             return result;
         }
 
@@ -165,7 +201,7 @@ namespace ReportDao
             List<Bridge.TestBed> result = new List<Bridge.TestBed>();
 
             var data = m_LmsContext.DbTestBed.ToList();
-            foreach(TestBed t in data)
+            foreach (TestBed t in data)
             {
                 result.Add(new Bridge.TestBed { TestBedId = t.TestBedId, TestBedName = t.TestBedName.Trim() });
             }

@@ -1,5 +1,5 @@
 ﻿
-@model List<WCFReportLib.SimpleResultObject>
+@model List<WCFReportLib.Model.SimpleResultObject>
 
 @{
     var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.text).ToList());

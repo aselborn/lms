@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using WCFReportLib.Mock;
+using WCFReportLib.Model;
 using static ReportDao.Model.Bridge;
 
 namespace WCFReportLib
@@ -33,9 +34,14 @@ namespace WCFReportLib
         [OperationContract]
         DataSet GetDs();
 
+        [Obsolete]
         [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
         Dictionary<DateTime, int> EventLogForRig(Bridge.EventType eventType, FilterParameters filterParameters);
+
+        [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [OperationContract]
+        List< Bridge.ResultObject > EventlogObjectForRig(Bridge.EventType eventType, FilterParameters filterParameters);
 
         [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]

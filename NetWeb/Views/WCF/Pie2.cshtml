@@ -1,8 +1,9 @@
-﻿@model List<WCFReportLib.Model.SimpleResultObject>
+﻿@using System.Linq;
+@model List<ReportDao.Model.Bridge.ResultObject>
 @{
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.text).ToList());
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Text).ToList());
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.myValue).ToList());
-    ViewData["Title"] = "Line Chart";
+    ViewData["Title"] = "Pie Chart";
 }
 
 <!DOCTYPE html>
@@ -10,7 +11,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Line</title>
+    <title>Pie</title>
 </head>
 <body>
     <div class="box-body">
@@ -21,6 +22,7 @@
     </div>
 </body>
 </html>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
@@ -32,7 +34,7 @@
         var data = {
                 labels: @Html.Raw(XLabels),
                 datasets: [{
-                    label: "Countries Chart",
+                    label: "Drinks Chart",
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -94,7 +96,7 @@ var options = {
        var myChart = new  Chart(ctx, {
                 options: options,
                 data: data,
-                type:'line'
+                type:'pie'
 
             });
         });

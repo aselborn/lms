@@ -27,7 +27,17 @@ namespace ReportDao.Model
             //public List<EventType> EventTypeList { get; set; }
         }
      
+        public class ResultObject
+        {
+            public string Text { get; set; }
+            public int myValue { get; set; }
+        }
 
+        public class MonthReply
+        {
+            public string Month { get; set; }
+            public int Quantity { get; set; }
+        }
 
         [DataContract]
         public class EventType

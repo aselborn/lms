@@ -1,4 +1,4 @@
-﻿namespace WCFReportLib
+﻿namespace WCFReportLib.Model
 {
     public class SimpleResultObject
     {

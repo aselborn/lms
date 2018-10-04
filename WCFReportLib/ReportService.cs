@@ -12,6 +12,7 @@ using System.Data;
 using ReportDao.Entity;
 using ReportDao.Model;
 using static ReportDao.Model.Bridge;
+using WCFReportLib.Model;
 
 namespace WCFReportLib
 {
@@ -171,6 +172,12 @@ namespace WCFReportLib
             //return new List<Person>({ new Person() { Name = "Anders", Age = 45 } });
         }
 
-        
+        public List< Bridge.ResultObject > EventlogObjectForRig(Bridge.EventType eventType, FilterParameters filterParameters)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            List< Bridge.ResultObject > result = daoManager.EventlogObjectForRig(eventType, filterParameters);
+
+            return result;
+        }
     }
 }

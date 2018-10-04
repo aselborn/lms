@@ -211,6 +211,7 @@
     <Content Include="Views\WCF\Pie.cshtml" />
     <Content Include="Views\WCF\Line.cshtml" />
     <Content Include="Views\WCF\Stacked.cshtml" />
+    <Content Include="Views\WCF\Pie2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

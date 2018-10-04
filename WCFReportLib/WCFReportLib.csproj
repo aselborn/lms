@@ -84,6 +84,7 @@
     <Compile Include="Mock\RandomGenerator.cs" />
     <Compile Include="Mock\RigObject.cs" />
     <Compile Include="Mock\RigRecord.cs" />
+    <Compile Include="Model\SimpleStackModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplyMessage.cs" />
     <Compile Include="ReportController.cs" />

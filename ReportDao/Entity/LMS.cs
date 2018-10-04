@@ -8,7 +8,7 @@ namespace ReportDao.Entity
     public partial class LMS : DbContext
     {
         public LMS()
-            : base("LMS")
+            : base("name=LMS")
         {
         }
 
