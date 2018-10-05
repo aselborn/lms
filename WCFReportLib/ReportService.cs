@@ -179,5 +179,27 @@ namespace WCFReportLib
 
             return result;
         }
+
+        public bool SaveTestbed(Bridge.TestBed newTestBed)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.SaveTestbed(newTestBed);
+        }
+
+        public bool SaveDevice(Bridge.Device device)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.SaveDevice(device);
+        }
+
+        public List<Bridge.Device> GetDevices()
+        {
+            return new ReportDaoManager().GetDevices();
+        }
+
+        public bool SaveEventType(Bridge.EventType eventType)
+        {
+            return new ReportDaoManager().SaveEventType(eventType);
+        }
     }
 }

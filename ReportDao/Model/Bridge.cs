@@ -60,5 +60,14 @@ namespace ReportDao.Model
             [DataMember]
             public string TestBedName { get; set; }
         }
+
+        [DataContract]
+        public class Device
+        {
+            [DataMember]
+            public int DeviceId { get; set; }
+            [DataMember]
+            public string DeviceName { get; set; }
+        }
     }
 }

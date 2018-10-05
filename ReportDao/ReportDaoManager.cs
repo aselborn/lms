@@ -195,6 +195,35 @@ namespace ReportDao
                 ctx.SaveChanges();
             }
         }
+
+        public bool SaveEventType(Bridge.EventType eventType)
+        {
+            m_LmsContext.DbEventType.Add(
+                new EventType
+                {
+                    EventTypeDescription = eventType.EventTypeDescription,
+                    EventTypeSubId = eventType.EventTypeSubId,
+                });
+
+            int p = m_LmsContext.SaveChanges();
+            return p > 0;
+        }
+
+        public List<Bridge.Device> GetDevices()
+        {
+            List<Bridge.Device> result = new List<Bridge.Device>();
+            var data = m_LmsContext.DbDevice.ToList();
+            foreach (var item in data)
+                result.Add(new Bridge.Device { DeviceName = item.DeviceName, DeviceId = item.DeviceId });
+            return result;
+        }
+
+        public bool SaveDevice(Bridge.Device device)
+        {
+            m_LmsContext.DbDevice.Add(new Device { DeviceName = device.DeviceName });
+            int p = m_LmsContext.SaveChanges();
+            return p > 0;
+        }
         #endregion
         public List<Bridge.TestBed> GetTestBeds()
         {
@@ -230,6 +259,14 @@ namespace ReportDao
             }
 
             return result;
+        }
+
+        public bool SaveTestbed(Bridge.TestBed testBed)
+        {
+            m_LmsContext.DbTestBed.Add(new TestBed { TestBedName = testBed.TestBedName });
+            int p = m_LmsContext.SaveChanges();
+
+            return p > +0;
         }
     }
 }

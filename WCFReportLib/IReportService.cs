@@ -54,12 +54,22 @@ namespace WCFReportLib
         List<Bridge.EventType> GetEventTypes();
 
         [OperationContract]
+        List<Bridge.Device> GetDevices();
+
+        [OperationContract]
         string GetDummy();
 
         [OperationContract]
         List<Person> GetPerson();
 
+        [OperationContract]
+        bool SaveTestbed(Bridge.TestBed newTestBed);
 
+        [OperationContract]
+        bool SaveDevice(Bridge.Device device);
+
+        [OperationContract]
+        bool SaveEventType(Bridge.EventType eventType);
     }
 
     [DataContract]
