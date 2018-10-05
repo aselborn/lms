@@ -155,14 +155,14 @@
             // 
             // txtEventType
             // 
-            this.txtEventType.Location = new System.Drawing.Point(234, 464);
+            this.txtEventType.Location = new System.Drawing.Point(234, 14);
             this.txtEventType.Name = "txtEventType";
             this.txtEventType.Size = new System.Drawing.Size(266, 20);
             this.txtEventType.TabIndex = 1;
             // 
             // btnAddEventType
             // 
-            this.btnAddEventType.Location = new System.Drawing.Point(506, 462);
+            this.btnAddEventType.Location = new System.Drawing.Point(506, 14);
             this.btnAddEventType.Name = "btnAddEventType";
             this.btnAddEventType.Size = new System.Drawing.Size(108, 23);
             this.btnAddEventType.TabIndex = 2;

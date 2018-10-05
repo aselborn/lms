@@ -50,6 +50,10 @@ namespace ReportDao.Model
             [DataMember]
             public string EventTypeDescription { get; set; }
 
+            public override string ToString()
+            {
+                return EventTypeDescription;
+            }
         }
 
         [DataContract]

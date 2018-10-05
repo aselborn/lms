@@ -42,15 +42,19 @@ namespace WinReportTool
             var categories = eventTypes.Where(p => p.EventTypeSubId is null);
             foreach(var cat in categories)
             {
+                
                 TreeNode node = trEventTypes.Nodes.Add(cat.EventTypeId.ToString(), cat.EventTypeDescription);
+                node.Tag = cat.EventTypeSubId.ToString();
+
                 var subCategories = eventTypes.Where(p => p.EventTypeSubId.Equals(cat.EventTypeId));
                 foreach(var sub in subCategories)
                 {
                     node.Nodes.Add(sub.EventTypeId.ToString(), sub.EventTypeDescription);
+                    node.Tag = sub.EventTypeSubId.ToString();
                 }
             }
 
-
+            trEventTypes.ExpandAll();
         }
         private void LoadTestBed()
         {
@@ -98,18 +102,26 @@ namespace WinReportTool
         private void trEventTypes_AfterSelect(object sender, TreeViewEventArgs e)
         {
             _selectedTreeNode = e.Node;
-
         }
 
         private void btnAddEventType_Click(object sender, EventArgs e)
         {
-            if (txtEventType.Text.Length > 0 && _selectedTreeNode != null)
+            int? eventTypeID = null;
+            if (_selectedTreeNode != null)
+            {
+                if (_selectedTreeNode.FullPath.Contains("\\"))
+                    eventTypeID = Convert.ToInt32(_selectedTreeNode.Tag);
+                else
+                    eventTypeID = null;
+            }
+
+            if (txtEventType.Text.Length > 0)
             {
                 if (WcfConnector.GetReportService.SaveEventType(
                     new Bridge.EventType
                     {
                         EventTypeDescription = txtEventType.Text,
-                        EventTypeSubId = null
+                        EventTypeSubId= eventTypeID
                     }))
                 {
                     LoadEventType();
