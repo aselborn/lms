@@ -38,13 +38,21 @@
             this.txtDevice = new System.Windows.Forms.TextBox();
             this.lstDevice = new System.Windows.Forms.ListBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.trEventTypes = new System.Windows.Forms.TreeView();
-            this.txtEventType = new System.Windows.Forms.TextBox();
             this.btnAddEventType = new System.Windows.Forms.Button();
+            this.txtEventType = new System.Windows.Forms.TextBox();
+            this.trEventTypes = new System.Windows.Forms.TreeView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnRename = new System.Windows.Forms.Button();
             this.tbTestBed.SuspendLayout();
             this.testBedTB.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstTestBed
@@ -54,6 +62,8 @@
             this.lstTestBed.Name = "lstTestBed";
             this.lstTestBed.Size = new System.Drawing.Size(360, 303);
             this.lstTestBed.TabIndex = 1;
+            this.lstTestBed.Click += new System.EventHandler(this.lstTestBed_Click);
+            this.lstTestBed.SelectedIndexChanged += new System.EventHandler(this.lstTestBed_SelectedIndexChanged);
             // 
             // btnAddTestbed
             // 
@@ -77,6 +87,7 @@
             this.tbTestBed.Controls.Add(this.testBedTB);
             this.tbTestBed.Controls.Add(this.tabPage2);
             this.tbTestBed.Controls.Add(this.tabPage1);
+            this.tbTestBed.Controls.Add(this.tabPage3);
             this.tbTestBed.Location = new System.Drawing.Point(12, 12);
             this.tbTestBed.Name = "tbTestBed";
             this.tbTestBed.SelectedIndex = 0;
@@ -85,6 +96,7 @@
             // 
             // testBedTB
             // 
+            this.testBedTB.Controls.Add(this.btnRename);
             this.testBedTB.Controls.Add(this.lstTestBed);
             this.testBedTB.Controls.Add(this.txtTestBed);
             this.testBedTB.Controls.Add(this.btnAddTestbed);
@@ -145,21 +157,6 @@
             this.tabPage1.Text = "EventType";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // trEventTypes
-            // 
-            this.trEventTypes.Location = new System.Drawing.Point(16, 14);
-            this.trEventTypes.Name = "trEventTypes";
-            this.trEventTypes.Size = new System.Drawing.Size(212, 470);
-            this.trEventTypes.TabIndex = 0;
-            this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
-            // 
-            // txtEventType
-            // 
-            this.txtEventType.Location = new System.Drawing.Point(234, 14);
-            this.txtEventType.Name = "txtEventType";
-            this.txtEventType.Size = new System.Drawing.Size(266, 20);
-            this.txtEventType.TabIndex = 1;
-            // 
             // btnAddEventType
             // 
             this.btnAddEventType.Location = new System.Drawing.Point(506, 14);
@@ -169,6 +166,95 @@
             this.btnAddEventType.Text = "Add EventType";
             this.btnAddEventType.UseVisualStyleBackColor = true;
             this.btnAddEventType.Click += new System.EventHandler(this.btnAddEventType_Click);
+            // 
+            // txtEventType
+            // 
+            this.txtEventType.Location = new System.Drawing.Point(234, 14);
+            this.txtEventType.Name = "txtEventType";
+            this.txtEventType.Size = new System.Drawing.Size(266, 20);
+            this.txtEventType.TabIndex = 1;
+            // 
+            // trEventTypes
+            // 
+            this.trEventTypes.Location = new System.Drawing.Point(16, 14);
+            this.trEventTypes.Name = "trEventTypes";
+            this.trEventTypes.Size = new System.Drawing.Size(212, 470);
+            this.trEventTypes.TabIndex = 0;
+            this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.button4);
+            this.tabPage3.Controls.Add(this.button3);
+            this.tabPage3.Controls.Add(this.button2);
+            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(679, 501);
+            this.tabPage3.TabIndex = 3;
+            this.tabPage3.Text = "Register events";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.ForestGreen;
+            this.button1.Location = new System.Drawing.Point(13, 10);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(155, 40);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "FP ACTIVITY";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.ForestGreen;
+            this.button2.Location = new System.Drawing.Point(13, 56);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(155, 40);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "LP ACTIVITY";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Red;
+            this.button3.Location = new System.Drawing.Point(13, 102);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(155, 40);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "RIG STOP";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button4.Location = new System.Drawing.Point(13, 148);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(155, 40);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "PLANNED MAINT";
+            this.button4.UseVisualStyleBackColor = false;
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.Yellow;
+            this.button5.Location = new System.Drawing.Point(13, 194);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(155, 40);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "NO ACTIVITY";
+            this.button5.UseVisualStyleBackColor = false;
+            // 
+            // btnRename
+            // 
+            this.btnRename.Location = new System.Drawing.Point(510, 32);
+            this.btnRename.Name = "btnRename";
+            this.btnRename.Size = new System.Drawing.Size(85, 20);
+            this.btnRename.TabIndex = 5;
+            this.btnRename.Text = "Rename";
+            this.btnRename.UseVisualStyleBackColor = true;
+            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
             // 
             // frmMain
             // 
@@ -186,6 +272,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -204,6 +291,13 @@
         private System.Windows.Forms.TreeView trEventTypes;
         private System.Windows.Forms.Button btnAddEventType;
         private System.Windows.Forms.TextBox txtEventType;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRename;
     }
 }
 

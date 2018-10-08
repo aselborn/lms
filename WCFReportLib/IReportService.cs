@@ -63,7 +63,10 @@ namespace WCFReportLib
         List<Person> GetPerson();
 
         [OperationContract]
-        bool SaveTestbed(Bridge.TestBed newTestBed);
+        bool AddNewTestbed(Bridge.TestBed newTestBed);
+
+        [OperationContract]
+        bool SaveTestBed(Bridge.TestBed currentTestbed);
 
         [OperationContract]
         bool SaveDevice(Bridge.Device device);

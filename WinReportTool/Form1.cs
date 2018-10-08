@@ -15,6 +15,7 @@ namespace WinReportTool
     public partial class frmMain : Form
     {
         private TreeNode _selectedTreeNode = null;
+        private ListBox _selectedTestbed = null;
         public frmMain()
         {
             InitializeComponent();
@@ -62,7 +63,7 @@ namespace WinReportTool
             List<Bridge.TestBed> testBeds = WcfConnector.GetReportService.GetTestBeds();
             foreach (Bridge.TestBed item in testBeds)
             {
-                lstTestBed.Items.Add(item.TestBedName);
+                lstTestBed.Items.Add(item);
             }
         }
 
@@ -79,7 +80,12 @@ namespace WinReportTool
         {
             if (txtTestBed.Text.Length > 0)
             {
-                if (WcfConnector.GetReportService.SaveTestbed(new Bridge.TestBed { TestBedName = txtTestBed.Text }))
+                if (lstTestBed.Items.Contains(txtTestBed.Text))
+                {
+                    MessageBox.Show($"Testbed item {txtTestBed.Text} already exists");
+                    return;
+                }
+                if (WcfConnector.GetReportService.AddNewTestbed(new Bridge.TestBed { TestBedName = txtTestBed.Text }))
                 {
                     txtTestBed.Text = "";
                     LoadTestBed();
@@ -127,6 +133,32 @@ namespace WinReportTool
                     LoadEventType();
                 }
             }
+        }
+
+        private void btnRename_Click(object sender, EventArgs e)
+        {
+            if (txtTestBed.Text.Length == 0)
+                return;
+
+            Bridge.TestBed testBed = (Bridge.TestBed)_selectedTestbed.SelectedItem;
+            testBed.TestBedName = txtTestBed.Text;
+
+            if (WcfConnector.GetReportService.SaveTestBed(testBed))
+            {
+                LoadTestBed();
+            }
+           
+        }
+
+        private void lstTestBed_Click(object sender, EventArgs e)
+        {
+            _selectedTestbed = (ListBox)sender;
+            txtTestBed.Text = _selectedTestbed.Text;
+        }
+
+        private void lstTestBed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

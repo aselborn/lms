@@ -196,6 +196,15 @@ namespace ReportDao
             }
         }
 
+        public bool SaveTestBed(Bridge.TestBed currentTestbed)
+        {
+            m_LmsContext.DbTestBed.SingleOrDefault(h => h.TestBedId.Equals(currentTestbed.TestBedId)).TestBedName = currentTestbed.TestBedName;
+            int p = m_LmsContext.SaveChanges();
+
+
+            return p > 0;
+        }
+
         public bool SaveEventType(Bridge.EventType eventType)
         {
             m_LmsContext.DbEventType.Add(
@@ -261,7 +270,7 @@ namespace ReportDao
             return result;
         }
 
-        public bool SaveTestbed(Bridge.TestBed testBed)
+        public bool AddNewTestbed(Bridge.TestBed testBed)
         {
             m_LmsContext.DbTestBed.Add(new TestBed { TestBedName = testBed.TestBedName });
             int p = m_LmsContext.SaveChanges();

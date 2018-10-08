@@ -63,6 +63,11 @@ namespace ReportDao.Model
             public int TestBedId { get; set; }
             [DataMember]
             public string TestBedName { get; set; }
+
+            public override string ToString()
+            {
+                return TestBedName;
+            }
         }
 
         [DataContract]

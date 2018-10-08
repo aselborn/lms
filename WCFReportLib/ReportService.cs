@@ -180,10 +180,10 @@ namespace WCFReportLib
             return result;
         }
 
-        public bool SaveTestbed(Bridge.TestBed newTestBed)
+        public bool AddNewTestbed(Bridge.TestBed newTestBed)
         {
             ReportDaoManager daoManager = new ReportDaoManager();
-            return daoManager.SaveTestbed(newTestBed);
+            return daoManager.AddNewTestbed(newTestBed);
         }
 
         public bool SaveDevice(Bridge.Device device)
@@ -200,6 +200,12 @@ namespace WCFReportLib
         public bool SaveEventType(Bridge.EventType eventType)
         {
             return new ReportDaoManager().SaveEventType(eventType);
+        }
+
+        public bool SaveTestBed(Bridge.TestBed currentTestbed)
+        {
+            return new ReportDaoManager().SaveTestBed(currentTestbed);
+            
         }
     }
 }
