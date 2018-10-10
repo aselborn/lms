@@ -258,6 +258,8 @@ namespace WPFReportViewer.ViewModel
                 WithGrouping = GetGroupByParam
             };
 
+            
+
             Bridge.EventType eventType = new Bridge.EventType() { EventTypeId = _selectedEventItem.EventTypeId };
             Dictionary<DateTime, int> times = _iReportService.EventLogForRig(eventType, filterParameters);
 

@@ -44,7 +44,7 @@ namespace ReportDao
                     string qry = "P_EventCountByMonth @start";
                     SqlParameter[] sqls = new SqlParameter[]
                     {
-                        new SqlParameter { ParameterName="@start", Value=DateTime.Now.AddDays(-200), Direction= System.Data.ParameterDirection.Input}
+                        new SqlParameter { ParameterName="@start", Value=DateTime.Now.AddDays(-2000), Direction= System.Data.ParameterDirection.Input}
                     };
 
                     List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
