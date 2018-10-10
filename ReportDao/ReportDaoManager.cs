@@ -21,7 +21,6 @@ namespace ReportDao
 
         public List<RigRecord> GetRigRecords => m_contextManager.RigRecord.ToList();
 
-        //Get all unfiltered Eventlogs
         public List<EventLog> GetEventLog() => m_LmsContext.DbEventLog.ToList();
         public List<EventType> GetEventType() => m_LmsContext.DbEventType.ToList();
 
