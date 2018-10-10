@@ -16,8 +16,11 @@ namespace ReportDao.Entity
         public virtual DbSet<Device> Device { get; set; }
         public virtual DbSet<EventLog> EventLog { get; set; }
         public virtual DbSet<EventType> EventType { get; set; }
+        public virtual DbSet<Item> Item { get; set; }
+        public virtual DbSet<ItemGroup> ItemGroup { get; set; }
         public virtual DbSet<Test> Test { get; set; }
         public virtual DbSet<TestBed> TestBed { get; set; }
+        public virtual DbSet<TestModule> TestModule { get; set; }
         public virtual DbSet<TestObject> TestObject { get; set; }
         public virtual DbSet<UserObject> UserObject { get; set; }
 
@@ -44,6 +47,10 @@ namespace ReportDao.Entity
                 .WithRequired(e => e.EventType)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Item>()
+                .Property(e => e.ItemName)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Test>()
                 .Property(e => e.TestName)
                 .IsFixedLength();
@@ -51,6 +58,10 @@ namespace ReportDao.Entity
             modelBuilder.Entity<TestBed>()
                 .Property(e => e.TestBedName)
                 .IsFixedLength();
+
+            modelBuilder.Entity<TestModule>()
+                .Property(e => e.TestModuleName)
+                .IsUnicode(false);
 
             modelBuilder.Entity<TestObject>()
                 .Property(e => e.TestObjectIdName)

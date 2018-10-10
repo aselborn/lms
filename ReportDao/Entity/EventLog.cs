@@ -32,11 +32,21 @@ namespace ReportDao.Entity
 
         public int? UserObjectId { get; set; }
 
+        public int? ItemId { get; set; }
+
+        public int? Value { get; set; }
+
+        public int? TestModuleId { get; set; }
+
         public virtual Customer Customer { get; set; }
 
         public virtual Device Device { get; set; }
 
+        public virtual TestModule TestModule { get; set; }
+
         public virtual EventType EventType { get; set; }
+
+        public virtual Item Item { get; set; }
 
         public virtual Test Test { get; set; }
 

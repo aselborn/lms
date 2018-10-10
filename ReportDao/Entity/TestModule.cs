@@ -6,30 +6,26 @@ namespace ReportDao.Entity
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Test")]
-    public partial class Test
+    [Table("TestModule")]
+    public partial class TestModule
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Test()
+        public TestModule()
         {
             EventLog = new HashSet<EventLog>();
+            Test = new HashSet<Test>();
         }
 
-        public int TestId { get; set; }
+        public int TestModuleId { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string TestName { get; set; }
-
-        public int? TestObjectId { get; set; }
-
-        public int TestBedId { get; set; }
-
-        public int? TestModuleId { get; set; }
+        public string TestModuleName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EventLog> EventLog { get; set; }
 
-        public virtual TestModule TestModule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Test> Test { get; set; }
     }
 }
