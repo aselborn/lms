@@ -1,0 +1,55 @@
+﻿@using NetWeb.Models
+@model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewBag.Title = "Index";
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+}
+
+<h2>Statistics</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+
+    </p>
+}
+    </p>
+
+
+
+    @{
+
+
+
+
+        @Html.LabelFor(tuple => tuple.Item1.TestBedId);
+        @:&nbsp;
+        @*@Html.DropDownListFor(tuple => tuple.Item1.TestBedId, Model.TestbedViewModel.ListofTestbeds);*@
+        @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, (Model.Item1.ListofTestbeds));
+    }
+
+
+
+
+    <br />
+    <br />
+
+    @{
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId);
+        @:&nbsp;
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, Model.Item2.ListofEventTypes);
+    }
+
+
