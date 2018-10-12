@@ -245,6 +245,18 @@ namespace ReportDao
 
             return result;
         }
+        public List<Bridge.EventLog> GetEventLogs()
+        {
+            List<Bridge.EventLog> result = new List<Bridge.EventLog>();
+
+            var data = m_LmsContext.DbEventLog.ToList();
+            foreach (EventLog t in data)
+            {
+                result.Add(new Bridge.EventLog { EventLogId = t.EventLogId, EventTypeDescription = t.EventType.EventTypeDescription, EventLogTime = t.EventLogTime, EventLogUserId = t.EventLogUserId, EventTypeId = t.EventTypeId, EventLogManualTime = t.EventLogManualTime,  TestId = t.TestId, TestBedId = t.TestBedId, TestObjectId = t.TestObjectId, Value = t.Value });
+            }
+
+            return result;
+        }
 
         public List<object> GetEventTypeObjects()
         {

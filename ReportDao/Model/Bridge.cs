@@ -14,6 +14,7 @@ namespace ReportDao.Model
         {
             public enum GroupByOperator
             {
+                none = 0,
                 Year = 1,
                 Month = 2,
                 Week = 3,
@@ -22,6 +23,8 @@ namespace ReportDao.Model
             }
             public DateTime StartDate { get; set; }
             public DateTime StopDate { get; set; }
+            public DateTime SearchDate { get; set; }
+            public int TestBedId { get; set; }
 
             public GroupByOperator WithGrouping { get; set; }
             //public List<EventType> EventTypeList { get; set; }
@@ -49,6 +52,45 @@ namespace ReportDao.Model
             public int? EventTypeSubId { get; set; }
             [DataMember]
             public string EventTypeDescription { get; set; }
+
+            public override string ToString()
+            {
+                return EventTypeDescription;
+            }
+        }
+
+        [DataContract]
+        public class EventLog
+        {
+
+            [DataMember]
+            public int EventLogId { get; set; }
+            [DataMember]
+            public DateTime EventLogTime { get; set; }
+            [DataMember]
+            public string EventLogUserId { get; set; }
+            [DataMember]
+            public int EventTypeId { get; set; }
+            [DataMember]
+            public string EventTypeDescription { get; set; }
+            [DataMember]
+            public DateTime? EventLogManualTime { get; set; }
+            [DataMember]
+            public int? CustomerId { get; set; }
+            [DataMember]
+            public int? TestBedId { get; set; }
+            [DataMember]
+            public int? TestId { get; set; }
+            [DataMember]
+            public int? TestObjectId { get; set; }
+            [DataMember]
+            public int? DeviceId { get; set; }
+            [DataMember]
+            public int? UserObjectId { get; set; }
+            [DataMember]
+            public int? ItemId { get; set; }
+            [DataMember]
+            public int? Value { get; set; }
 
             public override string ToString()
             {

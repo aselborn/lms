@@ -24,6 +24,8 @@ namespace WinReportTool
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadData();
+
+            PrepareControls();
         }
 
         private void LoadData()
@@ -32,6 +34,22 @@ namespace WinReportTool
             LoadTestBed();
             LoadDevice();
             LoadEventType();
+            //LoadEventLog();
+        }
+
+        private void PrepareControls()
+        {
+            // Tab - Register events
+            dateTimePickerEventDate.Value.ToShortDateString();
+            comboBoxTestBed.Items.Clear();
+
+            List<Bridge.TestBed> testBeds = WcfConnector.GetReportService.GetTestBeds().ToList();
+            foreach (Bridge.TestBed item in testBeds)
+            {
+                comboBoxTestBed.Items.Add(item);
+            }
+            comboBoxTestBed.SelectedIndex = 0;
+
         }
 
         private void LoadEventType()
@@ -57,6 +75,31 @@ namespace WinReportTool
 
             trEventTypes.ExpandAll();
         }
+        private void LoadEventLog()
+        {
+            Bridge.FilterParameters searchParams = new Bridge.FilterParameters();
+            searchParams.SearchDate = dateTimePickerEventDate.Value.Date;
+            Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
+            searchParams.TestBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
+
+            ClearListBoxEvents();
+
+            List<Bridge.EventLog> eventLogs = WcfConnector.GetReportService.GetEventLogs(searchParams).ToList();
+
+            foreach (Bridge.EventLog item in eventLogs)
+            {
+                lstEventLog.Items.Add(item);
+            }
+
+            dataGridViewEventLogs.DataSource = eventLogs;
+        }
+
+        private void ClearListBoxEvents()
+        {
+            lstEventLog.Items.Clear();
+        }
+
+
         private void LoadTestBed()
         {
             lstTestBed.Items.Clear();
@@ -157,6 +200,42 @@ namespace WinReportTool
         }
 
         private void lstTestBed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnFindEvent_Click(object sender, EventArgs e)
+        {
+            LoadEventLog();
+        }
+
+        private void dateTimePickerEventDate_ValueChanged(object sender, EventArgs e)
+        {
+            ClearListBoxEvents();
+        }
+
+        private void comboBoxTestBed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearListBoxEvents();
+        }
+
+        private void dataGridViewEventLogs_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            Bridge.EventLog selectedRowItem = this.dataGridViewEventLogs.Rows[e.RowIndex].DataBoundItem as Bridge.EventLog;
+            if (selectedRowItem != null)
+            {
+                if (selectedRowItem.EventTypeId == 1 || selectedRowItem.EventTypeId == 2)
+                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Green;
+                else if (selectedRowItem.EventTypeId == 3)
+                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+                else if (selectedRowItem.EventTypeId == 8)
+                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Blue;
+                else if (selectedRowItem.EventTypeId == 9)
+                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+            }
+        }
+
+        private void dataGridViewEventLogs_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

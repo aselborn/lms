@@ -136,6 +136,16 @@ namespace WCFReportLib
             return list;
         }
 
+        public List<Bridge.EventLog> GetEventLogs(FilterParameters filterParameters)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            var result = daoManager.GetEventLogs();
+
+            List<Bridge.EventLog> filteredRes = result.Where(t => t.TestBedId == filterParameters.TestBedId && t.EventLogManualTime == filterParameters.SearchDate).ToList();
+
+            return filteredRes;
+        }
+
         public string GetDummy()
         {
             ReportDaoManager daoManager = new ReportDaoManager();

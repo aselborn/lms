@@ -54,6 +54,9 @@ namespace WCFReportLib
         List<Bridge.EventType> GetEventTypes();
 
         [OperationContract]
+        List<Bridge.EventLog> GetEventLogs(FilterParameters filterParameters);
+
+        [OperationContract]
         List<Bridge.Device> GetDevices();
 
         [OperationContract]
