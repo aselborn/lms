@@ -60,6 +60,21 @@ namespace NetWeb.Controllers
 
             return new SelectList(myData, "Value", "Text");
         }
+
+        private IEnumerable<SelectListItem> GetSubEventTypes(int masterId)
+        {
+            //This is not good, two calls to DB.
+            SetupConnection();
+            var filtered = _iReportService.GetEventTypes().Where(h => h.EventTypeSubId == masterId).ToList();
+
+            var myData = filtered.Select(x => new SelectListItem()
+            {
+                Text = x.EventTypeDescription,
+                Value=x.EventTypeId.ToString()
+            });
+
+            return new SelectList(myData, "Value", "Text");
+        }
         // GET: Statistics
         public ActionResult Index()
         {
@@ -92,14 +107,18 @@ namespace NetWeb.Controllers
         }
 
         // GET: Statistics/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int MasterEventId)
         {
-            return View();
+            var SubCategories = GetSubEventTypes(MasterEventId);
+
+            return Json(SubCategories, JsonRequestBehavior.AllowGet);
+            
         }
 
         // GET: Statistics/Create
         public ActionResult Create()
         {
+            
             return View();
         }
 
