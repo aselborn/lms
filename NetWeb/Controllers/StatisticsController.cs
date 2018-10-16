@@ -130,13 +130,20 @@ namespace NetWeb.Controllers
             try
             {
                 // TODO: Add insert logic here
-
+                var p = collection["Item4.FromDate"];
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult Insert(FormCollection collection)
+        {
+
+            return null;
         }
 
         // GET: Statistics/Edit/5

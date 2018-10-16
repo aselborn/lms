@@ -13,72 +13,64 @@
 @section scripts{
     <script type="text/javascript">
 
-        $(function () {
-    $('#FromDate').datetimepicker({
-      defaultDate: '@Model.Item4.FromDate',
-      format: 'L',
-      showClose: true,
-      showClear: true,
-      toolbarPlacement: 'top'
-    });
-    $('#TomDate').datetimepicker({
-      defaultDate: '@Model.Item4.TomDate',
-      format: 'LT',
-      showClose: true,
-      showClear: true,
-      toolbarPlacement: 'top',
-      stepping: 15
-    });
-  });
-
-        $('.datepickerfrom').datepicker({
+        $('.FromDate').datepicker({
             //format: 'yyyy-MM-dd', //choose the date format you prefer
-            format: 'dd-MM-yyyy',
+            format: 'yyyy-MM-dd',
+            orientation: 'right bottom'
+        });
+        $('.TomDate').datepicker({
+            //format: 'yyyy-MM-dd', //choose the date format you prefer
+            //format: 'yyyy-MM-dd',
+            format: 'yyyy-MM-dd',
             locale: 'sv',
-            orientation: 'left bottom'
+            orientation: 'right bottom'
         });
     </script>
+}
+
+<h2>Statistics</h2>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+
+
+    function filterEvents() {
+        var eventTypeId = $('#Item2_EventTypeId').val();
+
+        $.ajax({
+            url: 'Details',
+            type: "GET",
+            dataType: "JSON",
+            data: { MasterEventId: eventTypeId },
+            success: function (SubEventTypes) {
+                $('#idSubEvent').html("");
+
+                var jsondata = SubEventTypes;
+
+                $.each(jsondata, function (i, item) {
+                    $('#idSubEvent').append($('<option>', {
+                        value: item.value,
+                        text: item.Text
+                    }));
+                });
+
+            }
+        })
     }
-    <h2>Statistics</h2>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script language="javascript" type="text/javascript">
-
-
-        function filterEvents() {
-            var eventTypeId = $('#Item2_EventTypeId').val();
-
-            $.ajax({
-                url: 'Details',
-                type: "GET",
-                dataType: "JSON",
-                data: { MasterEventId: eventTypeId },
-                success: function (SubEventTypes) {
-                    $('#idSubEvent').html("");
-
-                    var jsondata = SubEventTypes;
-
-                    $.each(jsondata, function (i, item) {
-                        $('#idSubEvent').append($('<option>', {
-                            value: item.value,
-                            text: item.Text
-                        }));
-                    });
-
-                }
-            })
-        }
 
 
 
-    </script>
-
+</script>
+@using (Html.BeginForm("Create", "Statistics", FormMethod.Post))
+{
     <div class="form-group">
         @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
 
         @*@Html.DropDownListFor(tuple => tuple.Item1.TestBedId, (Model.Item1.ListofTestbeds), "--SELECT--");*@
         @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
-        "--SELECT--", new { @class="form-control" })
+         "--SELECT--", new { @class = "form-control" })
 
     </div>
 
@@ -88,33 +80,78 @@
 
         @Html.LabelFor(tuple => tuple.Item2.EventTypeId);
         @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
-        "--SELECT--",
-        new { @class="form-control", @onchange="filterEvents();" })
+         "--SELECT--",
+         new { @class = "form-control", @onchange = "filterEvents();" })
+
 
     </div>
 
-    <div class="form-group">
-        @*@Html.DropDownListFor(m=>m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "EventTypeId", "EventTypeDescription"),
-            "--SUB-EVENTTYPE--", new { @class="form-control", Name ="ddlSubEvent"})*@
+
+    <div class="form-inline">
+
+        @*<select name="ddlSubEvent" class="form-control" id="idSubEvent">
+                <option>--select--</option>
+            </select>*@
 
 
-        <select name="ddlSubEvent" class="form-control" id="idSubEvent">
-            <option>--select--</option>
-        </select>
+        @Html.DropDownListFor(m => m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "Text", "Value"),
+             "--SUB-EVENTTYPE--", new { @class = "form-control", @id = "idSubEvent" })
+
+        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label" })
+        @Html.Label("All subevents")
 
     </div>
+
+
+    <br />
+
+    @*<form class="col-12">
+            <div class="form-row">
+                <label class="col-sm-2 col-form-label" for="name">Name</label>
+                <input type="text" class="form-control col-sm-10" name="name" id="name" [(ngModel)]="person.name" disabled />
+            </div>
+        </form>*@
 
 
     <div class="form-group input-group-sm">
-        @Html.LabelFor(model => model.Item4.FromDate, htmlAttributes: new { @class = "lead col-md-2" })
 
-        @Html.TextBoxFor(model => model.Item4.FromDate, new { @class = "form-control FromDate " })
-        @Html.ValidationMessageFor(model => model.Item4.FromDate, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.Item4.FromDate)
+        @Html.TextBoxFor(model => model.Item4.FromDate, "{0:yyyy-MM-dd}", new { @class = "form-control FromDate " })
+
+
+
+        @Html.LabelFor(model => model.Item4.TomDate)
+        @Html.TextBoxFor(model => model.Item4.TomDate, "{0:yyyy-MM-dd}", new { @class = "form-control TomDate " })
 
     </div>
 
     <br />
-    <br />
+
+
+    <div class="form-group input-group-sm">
+
+        <form>
+            <fieldset>
+                <legend>Select grouping option</legend>
+                @Html.RadioButton("group", "Year", false, new { @class = "control-label", @value = "1" }) Year<br />
+                @Html.RadioButton("group", "Month", true, new { @class = "control-label", @value = "2" }) Month<br />
+                @Html.RadioButton("group", "Month", false, new { @class = "control-label", @value = "3" }) Week<br />
+                @Html.RadioButton("group", "Month", false, new { @class = "control-label", @value = "4" }) Day<br />
+            </fieldset>
+            <input type="submit" name="btnSubmit" id="idSubmit" class="form-control" />
+        </form>
+
+
+
+
+
+        <br />
+        <br />
+
+
+
+    </div>
+}
 
 
 
