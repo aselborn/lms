@@ -1,80 +1,121 @@
 ﻿@using NetWeb.Models
-@model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel>
+@model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{
     ViewBag.Title = "Index";
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-
+    @Styles.Render("~/Content/datepicker")
+    @Scripts.Render("~/bundles/datePicker")
 }
 
-<h2>Statistics</h2>
+@section scripts{
+    <script type="text/javascript">
 
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-<script language="javascript" type="text/javascript">
+        $(function () {
+    $('#FromDate').datetimepicker({
+      defaultDate: '@Model.Item4.FromDate',
+      format: 'L',
+      showClose: true,
+      showClear: true,
+      toolbarPlacement: 'top'
+    });
+    $('#TomDate').datetimepicker({
+      defaultDate: '@Model.Item4.TomDate',
+      format: 'LT',
+      showClose: true,
+      showClear: true,
+      toolbarPlacement: 'top',
+      stepping: 15
+    });
+  });
 
-    
-
-    function filterEvents() {
-        var eventTypeId = $('#Item2_EventTypeId').val();
-        //alert("Hello World" + testBedId);
-
-
-        $.ajax({
-            url: 'Details',
-            type: "GET",
-            dataType: "JSON",
-            data: { MasterEventId: eventTypeId },
-            success: function (SubEventTypes) {
-                $('#ddlSubEvent').html("");
-
-                $.each(SubEventTypes, function (i, eventType) {
-                    $('#ddlSubEvent').append($('<option></option>').val(eventType.EventTypeId).html(eventType.EventTypeDescription));
-
-                });
-
-            }
-        })
+        $('.datepickerfrom').datepicker({
+            //format: 'yyyy-MM-dd', //choose the date format you prefer
+            format: 'dd-MM-yyyy',
+            locale: 'sv',
+            orientation: 'left bottom'
+        });
+    </script>
     }
+    <h2>Statistics</h2>
 
-    
-
-</script>
-
-<div class="form-group">
-    @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
-    
-    @*@Html.DropDownListFor(tuple => tuple.Item1.TestBedId, (Model.Item1.ListofTestbeds), "--SELECT--");*@
-    @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
-    "--SELECT--", new { @class="form-control" })
-
-</div>
-
-<br />
-<br />
-<div class="form-group">
-
-    @Html.LabelFor(tuple => tuple.Item2.EventTypeId);
-    @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
-    "--SELECT--",
-    new { @class="form-control", @onchange="filterEvents();" })
-
-</div>
-
-<div class="form-group">
-    @Html.DropDownListFor(m=>m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "EventTypeId", "EventTypeDescription"),
-    "--SUB-EVENTTYPE--", new { @class="form-control", Name ="ddlSubEvent"})
-</div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script language="javascript" type="text/javascript">
 
 
+        function filterEvents() {
+            var eventTypeId = $('#Item2_EventTypeId').val();
+
+            $.ajax({
+                url: 'Details',
+                type: "GET",
+                dataType: "JSON",
+                data: { MasterEventId: eventTypeId },
+                success: function (SubEventTypes) {
+                    $('#idSubEvent').html("");
+
+                    var jsondata = SubEventTypes;
+
+                    $.each(jsondata, function (i, item) {
+                        $('#idSubEvent').append($('<option>', {
+                            value: item.value,
+                            text: item.Text
+                        }));
+                    });
+
+                }
+            })
+        }
 
 
-<br />
-<br />
+
+    </script>
+
+    <div class="form-group">
+        @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
+
+        @*@Html.DropDownListFor(tuple => tuple.Item1.TestBedId, (Model.Item1.ListofTestbeds), "--SELECT--");*@
+        @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
+        "--SELECT--", new { @class="form-control" })
+
+    </div>
+
+    <br />
+    <br />
+    <div class="form-group">
+
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId);
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+        "--SELECT--",
+        new { @class="form-control", @onchange="filterEvents();" })
+
+    </div>
+
+    <div class="form-group">
+        @*@Html.DropDownListFor(m=>m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "EventTypeId", "EventTypeDescription"),
+            "--SUB-EVENTTYPE--", new { @class="form-control", Name ="ddlSubEvent"})*@
+
+
+        <select name="ddlSubEvent" class="form-control" id="idSubEvent">
+            <option>--select--</option>
+        </select>
+
+    </div>
+
+
+    <div class="form-group input-group-sm">
+        @Html.LabelFor(model => model.Item4.FromDate, htmlAttributes: new { @class = "lead col-md-2" })
+
+        @Html.TextBoxFor(model => model.Item4.FromDate, new { @class = "form-control FromDate " })
+        @Html.ValidationMessageFor(model => model.Item4.FromDate, "", new { @class = "text-danger" })
+
+    </div>
+
+    <br />
+    <br />
+
 
 
 

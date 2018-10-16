@@ -78,7 +78,7 @@ namespace NetWeb.Controllers
         // GET: Statistics
         public ActionResult Index()
         {
-            
+            DateSelectModel dateSelectModel = new DateSelectModel { FromDate = DateTime.Now, TomDate = DateTime.Now };
             TestbedViewModel testbedModel = new TestbedViewModel
             {
                 ListofTestbeds = GetTestBeds()
@@ -94,7 +94,8 @@ namespace NetWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
-            var tupleModel = new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel>(testbedModel, topEvents, eventTypeViewModel);
+            var tupleModel = 
+                new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
             return View(tupleModel);
         }
