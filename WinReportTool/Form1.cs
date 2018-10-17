@@ -14,8 +14,15 @@ namespace WinReportTool
 {
     public partial class frmMain : Form
     {
+
         private TreeNode _selectedTreeNode = null;
         private ListBox _selectedTestbed = null;
+
+        //public List<Bridge.EventLog> _eventLogs;
+        BindingSource bsEventLog = new BindingSource();
+        BindingSource bsEventTypeReason = new BindingSource();
+        List<Bridge.EventType> eventTypeReasons;
+
         public frmMain()
         {
             InitializeComponent();
@@ -34,7 +41,7 @@ namespace WinReportTool
             LoadTestBed();
             LoadDevice();
             LoadEventType();
-            //LoadEventLog();
+
         }
 
         private void PrepareControls()
@@ -50,6 +57,26 @@ namespace WinReportTool
             }
             comboBoxTestBed.SelectedIndex = 0;
 
+            Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
+            int testBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
+
+            DataGridViewComboBoxColumn comboTestId = (DataGridViewComboBoxColumn)dataGridViewEventLogs.Columns["comboTestId"];
+
+            comboTestId.DataSource = WcfConnector.GetReportService.GetTests().Where(t => t.TestBedId == testBedId).ToList();
+            comboTestId.DisplayMember = "TestName";
+            comboTestId.ValueMember = "TestId";
+
+            dataGridViewEventLogs.DataSource = bsEventLog;
+        }
+
+        private void PrepareGridCombo()
+        {
+            Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
+            int testBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
+            DataGridViewComboBoxColumn comboTestId = (DataGridViewComboBoxColumn)dataGridViewEventLogs.Columns["comboTestId"];
+            comboTestId.DataSource = WcfConnector.GetReportService.GetTests().Where(t => t.TestBedId == testBedId).ToList();
+            comboTestId.DisplayMember = "TestName";
+            comboTestId.ValueMember = "TestId";
         }
 
         private void LoadEventType()
@@ -74,29 +101,33 @@ namespace WinReportTool
             }
 
             trEventTypes.ExpandAll();
+
+            // Register event reason:s
+            eventTypeReasons = eventTypes.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.FpActivity 
+                                                                                    || p.EventTypeSubId == (int)Bridge.eEventType.LpActivity
+                                                                                     || p.EventTypeSubId == (int)Bridge.eEventType.RigStop
+                                                                                      || p.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance
+                                                                                       || p.EventTypeSubId == (int)Bridge.eEventType.NoActivity).ToList();
         }
         private void LoadEventLog()
         {
-            Bridge.FilterParameters searchParams = new Bridge.FilterParameters();
-            searchParams.SearchDate = dateTimePickerEventDate.Value.Date;
+            Bridge.FilterParameters searchParams = new Bridge.FilterParameters
+            {
+                SearchDate = dateTimePickerEventDate.Value.Date
+            };
             Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
             searchParams.TestBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
 
-            ClearListBoxEvents();
+            ClearGridEventLog();
 
-            List<Bridge.EventLog> eventLogs = WcfConnector.GetReportService.GetEventLogs(searchParams).ToList();
+            bsEventLog.DataSource = WcfConnector.GetReportService.GetEventLogs(searchParams).ToList();
 
-            foreach (Bridge.EventLog item in eventLogs)
-            {
-                lstEventLog.Items.Add(item);
-            }
-
-            dataGridViewEventLogs.DataSource = eventLogs;
+            GridRePaint();
         }
 
-        private void ClearListBoxEvents()
+        private void ClearGridEventLog()
         {
-            lstEventLog.Items.Clear();
+            bsEventLog.DataSource = null;
         }
 
 
@@ -211,33 +242,162 @@ namespace WinReportTool
 
         private void dateTimePickerEventDate_ValueChanged(object sender, EventArgs e)
         {
-            ClearListBoxEvents();
+            ClearGridEventLog();
         }
 
         private void comboBoxTestBed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClearListBoxEvents();
+            ClearGridEventLog();
+            PrepareGridCombo();
         }
 
-        private void dataGridViewEventLogs_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        private void GridRePaint()
         {
-            Bridge.EventLog selectedRowItem = this.dataGridViewEventLogs.Rows[e.RowIndex].DataBoundItem as Bridge.EventLog;
-            if (selectedRowItem != null)
-            {
-                if (selectedRowItem.EventTypeId == 1 || selectedRowItem.EventTypeId == 2)
-                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Green;
-                else if (selectedRowItem.EventTypeId == 3)
-                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
-                else if (selectedRowItem.EventTypeId == 8)
-                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Blue;
-                else if (selectedRowItem.EventTypeId == 9)
-                    dataGridViewEventLogs.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+            for(int index = 0; index < dataGridViewEventLogs.Rows.Count; index++)
+            {  
+                Bridge.EventLog selectedRowItem = this.dataGridViewEventLogs.Rows[index].DataBoundItem as Bridge.EventLog;
+                if (selectedRowItem != null)
+                {
+                    if (selectedRowItem.Deleted)
+                    {
+                        dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.LightGray;
+                    }
+                    else
+                    {
+                        if (selectedRowItem.EventTypeSubId == (int)Bridge.eEventType.FpActivity)
+                            dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.Green;
+                        else if (selectedRowItem.EventTypeSubId == (int)Bridge.eEventType.LpActivity)
+                            dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.Green;
+                        else if (selectedRowItem.EventTypeSubId == (int)Bridge.eEventType.RigStop)
+                            dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+                        else if (selectedRowItem.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance)
+                            dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.Blue;
+                        else if (selectedRowItem.EventTypeSubId == (int)Bridge.eEventType.NoActivity)
+                            dataGridViewEventLogs.Rows[index].DefaultCellStyle.BackColor = Color.Yellow;
+                    }
+
+                    DataGridViewComboBoxColumn comboEventTypeReason = (DataGridViewComboBoxColumn)dataGridViewEventLogs.Columns["comboEventTypeReason"];
+                    comboEventTypeReason.DataSource = eventTypeReasons.Where(t => t.EventTypeSubId == selectedRowItem.EventTypeSubId).ToList();
+                    comboEventTypeReason.DisplayMember = "EventTypeDescription";
+                    comboEventTypeReason.ValueMember = "EventTypeId";
+
+                    //DataGridViewComboBoxCell comboEventTypeReason = (DataGridViewComboBoxCell)(dataGridViewEventLogs.Rows[index].Cells["comboEventTypeReason"]);
+                    //comboEventTypeReason.DataSource = eventTypeReasons.Where(t => t.EventTypeSubId == selectedRowItem.EventTypeSubId).ToList();
+                    //comboEventTypeReason.DisplayMember = "EventTypeDescription";
+                    //comboEventTypeReason.ValueMember = "EventTypeId";
+                }
             }
         }
 
         private void dataGridViewEventLogs_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            var senderGrid = (DataGridView)sender;
 
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                if (dataGridViewEventLogs.Rows[e.RowIndex].DataBoundItem is Bridge.EventLog selectedRowItem)
+                {
+                    selectedRowItem.Deleted = !selectedRowItem.Deleted;
+                }
+            }
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn &&
+                e.RowIndex >= 0)
+            {
+                DataGridViewComboBoxCell comboEventTypeReason = (DataGridViewComboBoxCell)(dataGridViewEventLogs.Rows[e.RowIndex].Cells["comboEventTypeReason"]);
+                if (comboEventTypeReason != null)
+                {
+                    if (dataGridViewEventLogs.Rows[e.RowIndex].DataBoundItem is Bridge.EventLog selectedRowItem)
+                    {
+                        selectedRowItem.EventTypeId = comboEventTypeReason.RowIndex;
+                    }
+                }
+            }
+
+
+            //DataGridViewComboBoxCell comboEventTypeReason = (DataGridViewComboBoxCell)(dataGridViewEventLogs.Rows[e.RowIndex].Cells["comboEventTypeReason"]);
+            //comboEventTypeReason.DataSource = eventTypeReasons.Where(t => t.EventTypeSubId == eventTypeId).ToList();
+            //comboEventTypeReason.DisplayMember = "EventTypeDescription";
+            //selectedRowItem comboEventTypeReason.ValueMember = "EventTypeId";
         }
+
+        private void buttonAddFPEvent_Click(object sender, EventArgs e)
+        {
+            AddEvent(Bridge.eEventType.FpActivity);
+        }
+
+        private void buttonAddLPEvent_Click(object sender, EventArgs e)
+        {
+            AddEvent(Bridge.eEventType.LpActivity);
+        }
+
+        private void buttonAddRigStopEvent_Click(object sender, EventArgs e)
+        {
+            AddEvent(Bridge.eEventType.RigStop);
+        }
+
+        private void buttonAddPlannedMaintEvent_Click(object sender, EventArgs e)
+        {
+            AddEvent(Bridge.eEventType.PlannedMaintenance);
+        }
+
+        private void buttonAddNoActivityEvent_Click(object sender, EventArgs e)
+        {
+            AddEvent(Bridge.eEventType.NoActivity);
+        }
+
+        private void AddEvent(Bridge.eEventType eventType)
+        {
+            Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
+            Bridge.EventLog newItem = new Bridge.EventLog
+            {
+                TestBedId = selectedTestBed.TestBedId,
+                EventLogManualTime = dateTimePickerEventDate.Value.Date,
+
+                EventTypeSubId = (int)eventType,
+                EventTypeDescription = eventType.ToString(),
+                EventValue = 0
+            };
+            bsEventLog.Add(newItem);
+
+            GridRePaint();
+        }
+
+
+        private void btnSaveEvent_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < dataGridViewEventLogs.Rows.Count; index++)
+            {
+                Bridge.EventLog selectedRowItem = this.dataGridViewEventLogs.Rows[index].DataBoundItem as Bridge.EventLog;
+                if (selectedRowItem != null && selectedRowItem.EventLogId == 0)
+                {
+                    WcfConnector.GetReportService.SaveEventLog(selectedRowItem);
+                }
+            }
+            LoadEventLog();
+        }
+
+        //private void dataGridViewEventLogs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.ColumnIndex == 0 && e.RowIndex > 0)
+        //    {
+        //        int eventTypeId = (int)dataGridViewEventLogs.Rows[e.RowIndex].Cells[0].Value;
+        //        SetReasonCombo(e.RowIndex, eventTypeId);
+        //    }
+        //}
+
+        //void SetReasonCombo(int row, int eventTypeId)
+        //{
+        //    //DataGridViewComboBoxCell cityCell = (DataGridViewComboBoxCell)(dataGridViewEventLogs.Rows[row].Cells[1]);
+
+        //    //cityCell.Items.Clear();
+        //    //cityCell.Items.AddRange(dict[state].ToArray());
+        //    //cityCell.Value = cityCell.Items[0];
+
+        //    DataGridViewComboBoxCell comboEventTypeReason = (DataGridViewComboBoxCell)(dataGridViewEventLogs.Rows[row].Cells["comboEventTypeReason"]);
+        //    comboEventTypeReason.DataSource = eventTypeReasons.Where(t => t.EventTypeSubId == eventTypeId).ToList();
+        //    comboEventTypeReason.DisplayMember = "EventTypeDescription";
+        //    comboEventTypeReason.ValueMember = "EventTypeId";
+        //}
     }
 }

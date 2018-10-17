@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using ReportDao.Entity;
+using System.Configuration;
 
 namespace ReportDao
 {
@@ -217,6 +218,69 @@ namespace ReportDao
             return p > 0;
         }
 
+        public bool SaveEventLog(Bridge.EventLog eventLog)
+        {
+            if (eventLog.EventLogId == 0)
+            {
+                m_LmsContext.DbEventLog.Add(
+                    new EventLog
+                    {
+                        EventLogTime = DateTime.Now,
+                        EventLogUserId = Environment.UserName,
+                        EventTypeId = eventLog.EventTypeId,
+                        EventLogManualTime = eventLog.EventLogManualTime,
+                        TestBedId = eventLog.TestBedId,
+                        TestId = eventLog.TestId,
+                        EventValue = eventLog.EventValue,
+                        Deleted = eventLog.Deleted
+                    });
+
+                int p = m_LmsContext.SaveChanges();
+                return p > 0;
+            }
+            else
+            {
+                m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).EventLogUserId = Environment.UserName;
+                m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).EventValue = eventLog.EventValue;
+                m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).Deleted = eventLog.Deleted;
+
+                int p = m_LmsContext.SaveChanges();
+                return p > 0;
+            }
+        }
+
+        public bool SaveEventLog2(Bridge.EventLog eventLog)
+        {
+            int result = 0;
+            string connectionString = ConfigurationManager.ConnectionStrings["LMS"].ToString();
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            connection.Open();
+
+            if (connection.State == System.Data.ConnectionState.Open)
+            {
+                string sqlCommand = "";
+
+                if (eventLog.EventLogId == 0)
+                {
+                    sqlCommand = $"INSERT INTO EVENTLOG VALUES()";
+                }
+                else
+                {
+                    short deleted = eventLog.Deleted? (short)1 : (short)0;
+                    sqlCommand = $"UPDATE EVENTLOG SET EventLogUserId='{Environment.UserName}', EventValue ={eventLog.EventValue}, Deleted={deleted} WHERE EventLogId={eventLog.EventLogId}";
+                }
+
+                SqlCommand sql = new SqlCommand(sqlCommand, connection);
+                result = sql.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            return result > 0;
+        }
+
+
         public List<Bridge.Device> GetDevices()
         {
             List<Bridge.Device> result = new List<Bridge.Device>();
@@ -233,6 +297,18 @@ namespace ReportDao
             return p > 0;
         }
         #endregion
+        public List<Bridge.Test> GetTests()
+        {
+            List<Bridge.Test> result = new List<Bridge.Test>();
+
+            var data = m_LmsContext.DbTest.ToList();
+            foreach (Test t in data)
+            {
+                result.Add(new Bridge.Test { TestId = t.TestId, TestName = t.TestName.Trim(), TestObjectId = t.TestObjectId?? 0, TestBedId = t.TestBedId, TestModuleId = t.TestModuleId?? 0});
+            }
+
+            return result;
+        }
         public List<Bridge.TestBed> GetTestBeds()
         {
             List<Bridge.TestBed> result = new List<Bridge.TestBed>();
@@ -250,9 +326,29 @@ namespace ReportDao
             List<Bridge.EventLog> result = new List<Bridge.EventLog>();
 
             var data = m_LmsContext.DbEventLog.ToList();
-            foreach (EventLog t in data)
+            foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
+                                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
+                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
+                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
+                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
+                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
             {
-                result.Add(new Bridge.EventLog { EventLogId = t.EventLogId, EventTypeDescription = t.EventType.EventTypeDescription, EventLogTime = t.EventLogTime, EventLogUserId = t.EventLogUserId, EventTypeId = t.EventTypeId, EventLogManualTime = t.EventLogManualTime,  TestId = t.TestId, TestBedId = t.TestBedId, TestObjectId = t.TestObjectId, Value = t.Value });
+                result.Add(new Bridge.EventLog { EventLogId = t.EventLogId,
+                                                EventTypeDescription = t.EventType.EventTypeDescription.Trim(),
+                                                EventLogTime = t.EventLogTime,
+                                                EventLogUserId = t.EventLogUserId,
+                                                EventTypeId = t.EventTypeId,
+                                                EventTypeSubId = t.EventType.EventTypeSubId ?? 0,
+                                                EventLogManualTime = t.EventLogManualTime,
+                                                CustomerId = t.CustomerId,
+                                                TestBedId = t.TestBedId,
+                                                TestId = t.TestId,
+                                                TestObjectId = t.TestObjectId,
+                                                DeviceId = t.DeviceId,
+                                                UserObjectId = t.UserObjectId,
+                                                ItemId = t.ItemId,
+                                                EventValue = t.EventValue,
+                                                Deleted = t.Deleted?? false });
             }
 
             return result;

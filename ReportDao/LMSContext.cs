@@ -26,6 +26,7 @@ namespace ReportDao
 
         public DbSet<EventType> DbEventType { get; set; }
         public DbSet<EventLog> DbEventLog { get; set; }
+        public DbSet<Test> DbTest { get; set; }
         public DbSet<TestBed> DbTestBed { get; set; }
 
         public DbSet<Device> DbDevice { get; set; }

@@ -161,7 +161,11 @@ namespace WCFReportLib
             return result;
         }
 
-       
+        public List<Bridge.Test> GetTests()
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.GetTests();
+        }
 
         public List<Bridge.TestBed> GetTestBeds()
         {
@@ -210,6 +214,11 @@ namespace WCFReportLib
         public bool SaveEventType(Bridge.EventType eventType)
         {
             return new ReportDaoManager().SaveEventType(eventType);
+        }
+
+        public bool SaveEventLog(Bridge.EventLog eventLog)
+        {
+            return new ReportDaoManager().SaveEventLog2(eventLog);
         }
 
         public bool SaveTestBed(Bridge.TestBed currentTestbed)

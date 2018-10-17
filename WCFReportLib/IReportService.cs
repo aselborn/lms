@@ -48,6 +48,9 @@ namespace WCFReportLib
         List<SimpleResultObject> EventLogDummy(Bridge.EventType eventType, FilterParameters filterParameters);
 
         [OperationContract]
+        List<Bridge.Test> GetTests();
+
+        [OperationContract]
         List<Bridge.TestBed> GetTestBeds();
 
         [OperationContract]
@@ -76,6 +79,9 @@ namespace WCFReportLib
 
         [OperationContract]
         bool SaveEventType(Bridge.EventType eventType);
+
+        [OperationContract]
+        bool SaveEventLog(Bridge.EventLog eventLog);
     }
 
     [DataContract]
