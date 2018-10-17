@@ -319,6 +319,8 @@
     <Content Include="Views\WCF\Stacked.cshtml" />
     <Content Include="Views\WCF\Pie2.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Shared\_myLayout.cshtml" />
+    <Content Include="Views\Home\MyView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

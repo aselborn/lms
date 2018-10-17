@@ -130,8 +130,8 @@ namespace NetWeb.Controllers
 
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
 
-                return RedirectToAction("Pie2", "WCF", data);
-
+                //return RedirectToAction("Pie2", "WCF", data);
+                return View(data);
                 //return RedirectToAction("Index");
             }
             catch

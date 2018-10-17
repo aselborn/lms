@@ -26,5 +26,11 @@ namespace NetWeb.Controllers
 
             return View();
         }
+
+        public ActionResult MyView()
+        {
+            ViewBag.Message = "MyView";
+            return View();
+        }
     }
 }
