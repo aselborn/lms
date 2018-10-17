@@ -63,7 +63,6 @@ namespace NetWeb.Controllers
 
             FilterParameters parameters = new FilterParameters { WithGrouping = FilterParameters.GroupByOperator.Month };
             List<ResultObject> data = _iReportService.EventlogObjectForRig(parameters);
-
             return View(data);
         }
 
