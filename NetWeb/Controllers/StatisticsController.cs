@@ -130,9 +130,9 @@ namespace NetWeb.Controllers
 
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
 
+                return RedirectToAction("Pie2", "WCF", data);
 
-
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
             catch
             {
@@ -146,13 +146,15 @@ namespace NetWeb.Controllers
             string groupText = collection.Get("group");
             FilterParameters.GroupByOperator groupByOperator = (FilterParameters.GroupByOperator)Enum.Parse(typeof(FilterParameters.GroupByOperator), groupText);
 
+            bool UseSubitems = collection.Get("IsAllEvents") == "true" ? true:false;
+
             FilterParameters filterParameters = new FilterParameters
             {
                 TestBedId = Convert.ToInt32(collection.Get("Item1.TestbedId")),
-                EventTypeId = Convert.ToInt32(collection.Get("Item2.EventTypeId")),
+                EventTypeId = UseSubitems ? Convert.ToInt32(collection.Get("Item2.EventTypeId")): Convert.ToInt32(collection.Get("ddlSubEvent")),
                 StartDate = Convert.ToDateTime(collection.Get("Item4.FromDate")),
                 StopDate = Convert.ToDateTime(collection.Get("Item4.TomDate")),
-                TopCategory = collection.Get("IsAllEvents") == "true" ? true : false,
+                TopCategory = UseSubitems,
                 WithGrouping = groupByOperator
             };
 

@@ -31,27 +31,68 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
+        private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
+        {
+            SqlParameter[] sqls = new SqlParameter[]
+                    {
+                        new SqlParameter
+                        {
+                            ParameterName ="@start",
+                            Value =(DateTime)filterParameters.StartDate,
+                            SqlDbType = System.Data.SqlDbType.DateTime,
+                            Direction = System.Data.ParameterDirection.Input
+
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName = "@stop",
+                            Value =(DateTime)filterParameters.StopDate,
+                            SqlDbType = System.Data.SqlDbType.DateTime,
+                            Direction =System.Data.ParameterDirection.Input
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName="@eventTypeId",
+                            Value =filterParameters.EventTypeId,
+                            DbType = System.Data.DbType.Int32,
+                            Direction =System.Data.ParameterDirection.Input
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName="@grpBy",
+                            Value =filterParameters.WithGrouping,
+                            SqlDbType = System.Data.SqlDbType.VarChar,
+                            Direction =System.Data.ParameterDirection.Input
+                        }
+
+                    };
+
+            return sqls;
+        }
+
         public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.FilterParameters filterParameters)
         {
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
-            
+            SqlParameter[] sqls = null;
             //DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
+
+            sqls = createParameters(filterParameters);
+
             switch (filterParameters.WithGrouping)
             {
                 case Bridge.FilterParameters.GroupByOperator.Month:
-                    var data = m_LmsContext.DbEventLog.GroupBy(p => p.EventLogTime.Month).ToList();
 
-                    string qry = "P_EventCountByMonth @start";
-                    SqlParameter[] sqls = new SqlParameter[]
-                    {
-                        new SqlParameter { ParameterName="@start", Value=DateTime.Now.AddDays(-2000), Direction= System.Data.ParameterDirection.Input}
-                    };
+                    string qry = "p_EventCountByPeriod @start, @stop, @eventTypeId, @grpBy";
 
                     List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
                     foreach(MonthReply reply in replys)
                     {
                         result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Month.ToString("MMMM") });
                     }
+
+                    break;
+
+                case Bridge.FilterParameters.GroupByOperator.Day:
 
                     break;
 
