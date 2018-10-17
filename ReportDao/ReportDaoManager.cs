@@ -15,6 +15,9 @@ namespace ReportDao
         private ContextManager m_contextManager;
         private LMSContext m_LmsContext;
 
+        private string _connectionString;
+        private SqlConnection _connection;
+
         private List<Model.Rig> m_GetRig { get; }
 
         public List<Model.Rig> GetRig => m_contextManager.Rig.ToList();
@@ -188,6 +191,9 @@ namespace ReportDao
         public ReportDaoManager()
         {
             m_LmsContext = new LMSContext();
+
+            _connectionString = "data source=D18SE-C0485NPQ\\SQLEXPRESS;initial catalog=LMS;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";// ConfigurationManager.ConnectionStrings["LMS"].ToString();
+            _connection = new SqlConnection(_connectionString);
         }
 
         #region MOCK
@@ -283,6 +289,7 @@ namespace ReportDao
             {
                 m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).EventLogUserId = Environment.UserName;
                 m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).EventValue = eventLog.EventValue;
+                m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).TestId = eventLog.TestId;
                 m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).Deleted = eventLog.Deleted;
 
                 int p = m_LmsContext.SaveChanges();
@@ -290,21 +297,20 @@ namespace ReportDao
             }
         }
 
-        public bool SaveEventLog2(Bridge.EventLog eventLog)
+        public bool SaveEventLog2_(Bridge.EventLog eventLog)
         {
             int result = 0;
-            string connectionString = ConfigurationManager.ConnectionStrings["LMS"].ToString();
-            SqlConnection connection = new SqlConnection(connectionString);
 
-            connection.Open();
+            if (_connection.State != System.Data.ConnectionState.Open)
+                _connection.Open();
 
-            if (connection.State == System.Data.ConnectionState.Open)
+            if (_connection.State == System.Data.ConnectionState.Open)
             {
                 string sqlCommand = "";
 
                 if (eventLog.EventLogId == 0)
                 {
-                    sqlCommand = $"INSERT INTO EVENTLOG VALUES()";
+                    sqlCommand = $"INSERT INTO EVENTLOG VALUES(...)";
                 }
                 else
                 {
@@ -312,11 +318,11 @@ namespace ReportDao
                     sqlCommand = $"UPDATE EVENTLOG SET EventLogUserId='{Environment.UserName}', EventValue ={eventLog.EventValue}, Deleted={deleted} WHERE EventLogId={eventLog.EventLogId}";
                 }
 
-                SqlCommand sql = new SqlCommand(sqlCommand, connection);
+                SqlCommand sql = new SqlCommand(sqlCommand, _connection);
                 result = sql.ExecuteNonQuery();
             }
 
-            connection.Close();
+            //_connection.Close();
 
             return result > 0;
         }
@@ -367,6 +373,7 @@ namespace ReportDao
             List<Bridge.EventLog> result = new List<Bridge.EventLog>();
 
             var data = m_LmsContext.DbEventLog.ToList();
+
             foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
                                                     (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
                                                     t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||

@@ -86,6 +86,8 @@ namespace ReportDao.Model
             [DataMember]
             public int EventTypeSubId { get; set; }
             [DataMember]
+            public string EventTypeSubDescription { get; set; }
+            [DataMember]
             public DateTime? EventLogManualTime { get; set; }
             [DataMember]
             public int? CustomerId { get; set; }

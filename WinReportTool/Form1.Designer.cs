@@ -59,20 +59,21 @@
             this.buttonAddLPEvent = new System.Windows.Forms.Button();
             this.buttonAddFPEvent = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.eventTypeDescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comboEventTypeReason = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.comboBoxFpActivity = new System.Windows.Forms.ComboBox();
+            this.comboBoxLpActivity = new System.Windows.Forms.ComboBox();
+            this.comboBoxRigStop = new System.Windows.Forms.ComboBox();
+            this.comboBoxPlannedMaintenance = new System.Windows.Forms.ComboBox();
+            this.comboBoxNoActivity = new System.Windows.Forms.ComboBox();
+            this.EventTypeSubDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventTypeDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventLogIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventLogTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventLogUserIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventTypeIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventLogManualTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.customerIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.testBedIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comboTestId = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.testObjectIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deviceIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.userObjectIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Deleted = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tbTestBed.SuspendLayout();
@@ -82,6 +83,7 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLogBindingSource)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstTestBed
@@ -249,20 +251,16 @@
             this.dataGridViewEventLogs.AutoGenerateColumns = false;
             this.dataGridViewEventLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEventLogs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.eventTypeDescriptionDataGridViewTextBoxColumn,
-            this.comboEventTypeReason,
+            this.EventTypeSubDescription,
+            this.EventTypeDescription,
             this.eventLogIdDataGridViewTextBoxColumn,
             this.eventLogTimeDataGridViewTextBoxColumn,
             this.eventLogUserIdDataGridViewTextBoxColumn,
             this.eventTypeIdDataGridViewTextBoxColumn,
             this.eventLogManualTimeDataGridViewTextBoxColumn,
-            this.customerIdDataGridViewTextBoxColumn,
             this.testBedIdDataGridViewTextBoxColumn,
             this.comboTestId,
-            this.testObjectIdDataGridViewTextBoxColumn,
             this.deviceIdDataGridViewTextBoxColumn,
-            this.userObjectIdDataGridViewTextBoxColumn,
-            this.itemIdDataGridViewTextBoxColumn,
             this.EventValue,
             this.Deleted});
             this.dataGridViewEventLogs.DataSource = this.eventLogBindingSource;
@@ -316,7 +314,7 @@
             // 
             // btnFindEvent
             // 
-            this.btnFindEvent.Location = new System.Drawing.Point(297, 35);
+            this.btnFindEvent.Location = new System.Drawing.Point(294, 35);
             this.btnFindEvent.Name = "btnFindEvent";
             this.btnFindEvent.Size = new System.Drawing.Size(75, 23);
             this.btnFindEvent.TabIndex = 11;
@@ -337,9 +335,9 @@
             // buttonAddNoActivityEvent
             // 
             this.buttonAddNoActivityEvent.BackColor = System.Drawing.Color.Yellow;
-            this.buttonAddNoActivityEvent.Location = new System.Drawing.Point(70, 301);
+            this.buttonAddNoActivityEvent.Location = new System.Drawing.Point(37, 301);
             this.buttonAddNoActivityEvent.Name = "buttonAddNoActivityEvent";
-            this.buttonAddNoActivityEvent.Size = new System.Drawing.Size(132, 40);
+            this.buttonAddNoActivityEvent.Size = new System.Drawing.Size(93, 40);
             this.buttonAddNoActivityEvent.TabIndex = 4;
             this.buttonAddNoActivityEvent.Text = "NO ACTIVITY";
             this.buttonAddNoActivityEvent.UseVisualStyleBackColor = false;
@@ -348,20 +346,20 @@
             // buttonAddPlannedMaintEvent
             // 
             this.buttonAddPlannedMaintEvent.BackColor = System.Drawing.Color.DodgerBlue;
-            this.buttonAddPlannedMaintEvent.Location = new System.Drawing.Point(70, 255);
+            this.buttonAddPlannedMaintEvent.Location = new System.Drawing.Point(37, 255);
             this.buttonAddPlannedMaintEvent.Name = "buttonAddPlannedMaintEvent";
-            this.buttonAddPlannedMaintEvent.Size = new System.Drawing.Size(132, 40);
+            this.buttonAddPlannedMaintEvent.Size = new System.Drawing.Size(93, 40);
             this.buttonAddPlannedMaintEvent.TabIndex = 3;
-            this.buttonAddPlannedMaintEvent.Text = "PLANNED MAINT";
+            this.buttonAddPlannedMaintEvent.Text = "PLANNED MAINTENANCE";
             this.buttonAddPlannedMaintEvent.UseVisualStyleBackColor = false;
             this.buttonAddPlannedMaintEvent.Click += new System.EventHandler(this.buttonAddPlannedMaintEvent_Click);
             // 
             // buttonAddRigStopEvent
             // 
             this.buttonAddRigStopEvent.BackColor = System.Drawing.Color.Red;
-            this.buttonAddRigStopEvent.Location = new System.Drawing.Point(70, 209);
+            this.buttonAddRigStopEvent.Location = new System.Drawing.Point(37, 209);
             this.buttonAddRigStopEvent.Name = "buttonAddRigStopEvent";
-            this.buttonAddRigStopEvent.Size = new System.Drawing.Size(132, 40);
+            this.buttonAddRigStopEvent.Size = new System.Drawing.Size(93, 40);
             this.buttonAddRigStopEvent.TabIndex = 2;
             this.buttonAddRigStopEvent.Text = "RIG STOP";
             this.buttonAddRigStopEvent.UseVisualStyleBackColor = false;
@@ -370,9 +368,9 @@
             // buttonAddLPEvent
             // 
             this.buttonAddLPEvent.BackColor = System.Drawing.Color.ForestGreen;
-            this.buttonAddLPEvent.Location = new System.Drawing.Point(71, 163);
+            this.buttonAddLPEvent.Location = new System.Drawing.Point(38, 163);
             this.buttonAddLPEvent.Name = "buttonAddLPEvent";
-            this.buttonAddLPEvent.Size = new System.Drawing.Size(132, 40);
+            this.buttonAddLPEvent.Size = new System.Drawing.Size(93, 40);
             this.buttonAddLPEvent.TabIndex = 1;
             this.buttonAddLPEvent.Text = "LP ACTIVITY";
             this.buttonAddLPEvent.UseVisualStyleBackColor = false;
@@ -381,9 +379,9 @@
             // buttonAddFPEvent
             // 
             this.buttonAddFPEvent.BackColor = System.Drawing.Color.ForestGreen;
-            this.buttonAddFPEvent.Location = new System.Drawing.Point(71, 117);
+            this.buttonAddFPEvent.Location = new System.Drawing.Point(38, 117);
             this.buttonAddFPEvent.Name = "buttonAddFPEvent";
-            this.buttonAddFPEvent.Size = new System.Drawing.Size(132, 40);
+            this.buttonAddFPEvent.Size = new System.Drawing.Size(93, 40);
             this.buttonAddFPEvent.TabIndex = 0;
             this.buttonAddFPEvent.Text = "FP ACTIVITY";
             this.buttonAddFPEvent.UseVisualStyleBackColor = false;
@@ -391,27 +389,76 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(32, 78);
+            this.groupBox1.Controls.Add(this.comboBoxNoActivity);
+            this.groupBox1.Controls.Add(this.comboBoxPlannedMaintenance);
+            this.groupBox1.Controls.Add(this.comboBoxRigStop);
+            this.groupBox1.Controls.Add(this.comboBoxLpActivity);
+            this.groupBox1.Controls.Add(this.comboBoxFpActivity);
+            this.groupBox1.Location = new System.Drawing.Point(23, 78);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(204, 296);
+            this.groupBox1.Size = new System.Drawing.Size(222, 296);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add event";
             // 
-            // eventTypeDescriptionDataGridViewTextBoxColumn
+            // comboBoxFpActivity
             // 
-            this.eventTypeDescriptionDataGridViewTextBoxColumn.DataPropertyName = "EventTypeDescription";
-            this.eventTypeDescriptionDataGridViewTextBoxColumn.HeaderText = "Event Type";
-            this.eventTypeDescriptionDataGridViewTextBoxColumn.Name = "eventTypeDescriptionDataGridViewTextBoxColumn";
-            this.eventTypeDescriptionDataGridViewTextBoxColumn.ReadOnly = true;
-            this.eventTypeDescriptionDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.comboBoxFpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFpActivity.FormattingEnabled = true;
+            this.comboBoxFpActivity.Location = new System.Drawing.Point(113, 50);
+            this.comboBoxFpActivity.Name = "comboBoxFpActivity";
+            this.comboBoxFpActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxFpActivity.TabIndex = 17;
             // 
-            // comboEventTypeReason
+            // comboBoxLpActivity
             // 
-            this.comboEventTypeReason.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.comboEventTypeReason.HeaderText = "Reason";
-            this.comboEventTypeReason.Name = "comboEventTypeReason";
-            this.comboEventTypeReason.Width = 150;
+            this.comboBoxLpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLpActivity.FormattingEnabled = true;
+            this.comboBoxLpActivity.Location = new System.Drawing.Point(114, 96);
+            this.comboBoxLpActivity.Name = "comboBoxLpActivity";
+            this.comboBoxLpActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxLpActivity.TabIndex = 18;
+            // 
+            // comboBoxRigStop
+            // 
+            this.comboBoxRigStop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRigStop.FormattingEnabled = true;
+            this.comboBoxRigStop.Location = new System.Drawing.Point(113, 142);
+            this.comboBoxRigStop.Name = "comboBoxRigStop";
+            this.comboBoxRigStop.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxRigStop.TabIndex = 18;
+            // 
+            // comboBoxPlannedMaintenance
+            // 
+            this.comboBoxPlannedMaintenance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPlannedMaintenance.FormattingEnabled = true;
+            this.comboBoxPlannedMaintenance.Location = new System.Drawing.Point(113, 188);
+            this.comboBoxPlannedMaintenance.Name = "comboBoxPlannedMaintenance";
+            this.comboBoxPlannedMaintenance.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxPlannedMaintenance.TabIndex = 18;
+            // 
+            // comboBoxNoActivity
+            // 
+            this.comboBoxNoActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxNoActivity.FormattingEnabled = true;
+            this.comboBoxNoActivity.Location = new System.Drawing.Point(113, 234);
+            this.comboBoxNoActivity.Name = "comboBoxNoActivity";
+            this.comboBoxNoActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxNoActivity.TabIndex = 18;
+            // 
+            // EventTypeSubDescription
+            // 
+            this.EventTypeSubDescription.DataPropertyName = "EventTypeSubDescription";
+            this.EventTypeSubDescription.HeaderText = "Event";
+            this.EventTypeSubDescription.Name = "EventTypeSubDescription";
+            this.EventTypeSubDescription.Width = 120;
+            // 
+            // EventTypeDescription
+            // 
+            this.EventTypeDescription.DataPropertyName = "EventTypeDescription";
+            this.EventTypeDescription.HeaderText = "Reason";
+            this.EventTypeDescription.Name = "EventTypeDescription";
+            this.EventTypeDescription.Width = 120;
             // 
             // eventLogIdDataGridViewTextBoxColumn
             // 
@@ -448,13 +495,6 @@
             this.eventLogManualTimeDataGridViewTextBoxColumn.Name = "eventLogManualTimeDataGridViewTextBoxColumn";
             this.eventLogManualTimeDataGridViewTextBoxColumn.Visible = false;
             // 
-            // customerIdDataGridViewTextBoxColumn
-            // 
-            this.customerIdDataGridViewTextBoxColumn.DataPropertyName = "CustomerId";
-            this.customerIdDataGridViewTextBoxColumn.HeaderText = "CustomerId";
-            this.customerIdDataGridViewTextBoxColumn.Name = "customerIdDataGridViewTextBoxColumn";
-            this.customerIdDataGridViewTextBoxColumn.Visible = false;
-            // 
             // testBedIdDataGridViewTextBoxColumn
             // 
             this.testBedIdDataGridViewTextBoxColumn.DataPropertyName = "TestBedId";
@@ -471,33 +511,12 @@
             this.comboTestId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.comboTestId.Width = 120;
             // 
-            // testObjectIdDataGridViewTextBoxColumn
-            // 
-            this.testObjectIdDataGridViewTextBoxColumn.DataPropertyName = "TestObjectId";
-            this.testObjectIdDataGridViewTextBoxColumn.HeaderText = "TestObjectId";
-            this.testObjectIdDataGridViewTextBoxColumn.Name = "testObjectIdDataGridViewTextBoxColumn";
-            this.testObjectIdDataGridViewTextBoxColumn.Visible = false;
-            // 
             // deviceIdDataGridViewTextBoxColumn
             // 
             this.deviceIdDataGridViewTextBoxColumn.DataPropertyName = "DeviceId";
             this.deviceIdDataGridViewTextBoxColumn.HeaderText = "DeviceId";
             this.deviceIdDataGridViewTextBoxColumn.Name = "deviceIdDataGridViewTextBoxColumn";
             this.deviceIdDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // userObjectIdDataGridViewTextBoxColumn
-            // 
-            this.userObjectIdDataGridViewTextBoxColumn.DataPropertyName = "UserObjectId";
-            this.userObjectIdDataGridViewTextBoxColumn.HeaderText = "UserObjectId";
-            this.userObjectIdDataGridViewTextBoxColumn.Name = "userObjectIdDataGridViewTextBoxColumn";
-            this.userObjectIdDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // itemIdDataGridViewTextBoxColumn
-            // 
-            this.itemIdDataGridViewTextBoxColumn.DataPropertyName = "ItemId";
-            this.itemIdDataGridViewTextBoxColumn.HeaderText = "ItemId";
-            this.itemIdDataGridViewTextBoxColumn.Name = "itemIdDataGridViewTextBoxColumn";
-            this.itemIdDataGridViewTextBoxColumn.Visible = false;
             // 
             // EventValue
             // 
@@ -542,6 +561,7 @@
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLogBindingSource)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -577,20 +597,21 @@
         private System.Windows.Forms.BindingSource eventLogBindingSource;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eventTypeDescriptionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn comboEventTypeReason;
+        private System.Windows.Forms.ComboBox comboBoxNoActivity;
+        private System.Windows.Forms.ComboBox comboBoxPlannedMaintenance;
+        private System.Windows.Forms.ComboBox comboBoxRigStop;
+        private System.Windows.Forms.ComboBox comboBoxLpActivity;
+        private System.Windows.Forms.ComboBox comboBoxFpActivity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EventTypeSubDescription;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EventTypeDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventLogIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventLogTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventLogUserIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventTypeIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventLogManualTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn customerIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn testBedIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn comboTestId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn testObjectIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn deviceIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn userObjectIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventValue;
         private System.Windows.Forms.DataGridViewButtonColumn Deleted;
     }
