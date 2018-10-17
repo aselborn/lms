@@ -85,11 +85,15 @@
     <ProjectReference Include="..\ReportDao\ReportDao.csproj">
       <Project>{D1E0C1BE-54E4-4A7D-90C2-28B3EA35E1CE}</Project>
       <Name>ReportDao</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\WCFReportLib\WCFReportLib.csproj">
       <Project>{68bb4844-5d3b-461b-8711-ab9c064a681e}</Project>
       <Name>WCFReportLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -218,7 +218,7 @@ namespace WCFReportLib
 
         public bool SaveEventLog(Bridge.EventLog eventLog)
         {
-            return new ReportDaoManager().SaveEventLog2(eventLog);
+            return new ReportDaoManager().SaveEventLog(eventLog);
         }
 
         public bool SaveTestBed(Bridge.TestBed currentTestbed)
