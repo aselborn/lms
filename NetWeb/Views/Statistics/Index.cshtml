@@ -35,7 +35,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script language="javascript" type="text/javascript">
 
-
     function filterEvents() {
         var eventTypeId = $('#Item2_EventTypeId').val();
 
@@ -43,7 +42,7 @@
             url: 'Details',
             type: "GET",
             dataType: "JSON",
-            data: { MasterEventId: eventTypeId },
+            data: { MasterEventId: eventTypeId},
             success: function (SubEventTypes) {
                 $('#idSubEvent').html("");
 
@@ -51,7 +50,7 @@
 
                 $.each(jsondata, function (i, item) {
                     $('#idSubEvent').append($('<option>', {
-                        value: item.value,
+                        value: item.Value,
                         text: item.Text
                     }));
                 });
@@ -60,11 +59,17 @@
         })
     }
 
-
+    function AllEventsSelected(element) {
+        //element.checked ? alert('checked.') : alert('not checked');
+        //allEvents.checked = element.checked ? true : false;
+        var checked = element.checked ? true : false;
+        $('#IsAllEvents').val(checked);
+    }
 
 </script>
-@using (Html.BeginForm("Create", "Statistics", FormMethod.Post))
+@using (Html.BeginForm("RecieveForm", "Statistics", FormMethod.Post))
 {
+    @Html.Hidden("IsAllEvents", false);
     <div class="form-group">
         @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
 
@@ -89,15 +94,15 @@
 
     <div class="form-inline">
 
-        @*<select name="ddlSubEvent" class="form-control" id="idSubEvent">
-                <option>--select--</option>
-            </select>*@
+        <select name="ddlSubEvent" class="form-control" id="idSubEvent">
+            <option>--SUB-EVENTTYPE--</option>
+            </select>
 
 
-        @Html.DropDownListFor(m => m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "Text", "Value"),
-             "--SUB-EVENTTYPE--", new { @class = "form-control", @id = "idSubEvent" })
+        @*@Html.DropDownListFor(m => m.Item2.EventTypeId, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+             "--SUB-EVENTTYPE--", new { @class = "form-control", @id = "idSubEvent" })*@
 
-        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label" })
+        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange="AllEventsSelected(this);" })
         @Html.Label("All subevents")
 
     </div>
@@ -135,8 +140,8 @@
                 <legend>Select grouping option</legend>
                 @Html.RadioButton("group", "Year", false, new { @class = "control-label", @value = "1" }) Year<br />
                 @Html.RadioButton("group", "Month", true, new { @class = "control-label", @value = "2" }) Month<br />
-                @Html.RadioButton("group", "Month", false, new { @class = "control-label", @value = "3" }) Week<br />
-                @Html.RadioButton("group", "Month", false, new { @class = "control-label", @value = "4" }) Day<br />
+                @Html.RadioButton("group", "Week", false, new { @class = "control-label", @value = "3" }) Week<br />
+                @Html.RadioButton("group", "Day", false, new { @class = "control-label", @value = "4" }) Day<br />
             </fieldset>
             <input type="submit" name="btnSubmit" id="idSubmit" class="form-control" />
         </form>

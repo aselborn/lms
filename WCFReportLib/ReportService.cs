@@ -182,10 +182,10 @@ namespace WCFReportLib
             //return new List<Person>({ new Person() { Name = "Anders", Age = 45 } });
         }
 
-        public List< Bridge.ResultObject > EventlogObjectForRig(Bridge.EventType eventType, FilterParameters filterParameters)
+        public List< Bridge.ResultObject > EventlogObjectForRig(FilterParameters filterParameters)
         {
             ReportDaoManager daoManager = new ReportDaoManager();
-            List< Bridge.ResultObject > result = daoManager.EventlogObjectForRig(eventType, filterParameters);
+            List< Bridge.ResultObject > result = daoManager.EventlogObjectForRig(filterParameters);
 
             return result;
         }

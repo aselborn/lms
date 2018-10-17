@@ -41,7 +41,7 @@ namespace WCFReportLib
 
         [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
-        List< Bridge.ResultObject > EventlogObjectForRig(Bridge.EventType eventType, FilterParameters filterParameters);
+        List< Bridge.ResultObject > EventlogObjectForRig(FilterParameters filterParameters);
 
         [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]

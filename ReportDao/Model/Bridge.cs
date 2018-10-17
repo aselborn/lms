@@ -25,7 +25,8 @@ namespace ReportDao.Model
             public DateTime StopDate { get; set; }
             public DateTime SearchDate { get; set; }
             public int TestBedId { get; set; }
-
+            public int EventTypeId { get; set; }
+            public bool TopCategory { get; set; }
             public GroupByOperator WithGrouping { get; set; }
             //public List<EventType> EventTypeList { get; set; }
         }

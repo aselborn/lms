@@ -30,7 +30,7 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
-        public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.EventType eventType, Bridge.FilterParameters filterParameters)
+        public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.FilterParameters filterParameters)
         {
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
             

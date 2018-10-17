@@ -1,5 +1,6 @@
 ﻿
 using NetWeb.Models;
+using ReportDao.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,27 +117,46 @@ namespace NetWeb.Controllers
             
         }
 
-        // GET: Statistics/Create
-        public ActionResult Create()
-        {
-            
-            return View();
-        }
-
+        
         // POST: Statistics/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult RecieveForm(FormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
-                var p = collection["Item4.FromDate"];
+
+                SetupConnection();
+                FilterParameters selection = CreateSelectionParameters(collection);
+
+                List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
+
+
+
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        private FilterParameters CreateSelectionParameters(FormCollection collection)
+        {
+
+            string groupText = collection.Get("group");
+            FilterParameters.GroupByOperator groupByOperator = (FilterParameters.GroupByOperator)Enum.Parse(typeof(FilterParameters.GroupByOperator), groupText);
+
+            FilterParameters filterParameters = new FilterParameters
+            {
+                TestBedId = Convert.ToInt32(collection.Get("Item1.TestbedId")),
+                EventTypeId = Convert.ToInt32(collection.Get("Item2.EventTypeId")),
+                StartDate = Convert.ToDateTime(collection.Get("Item4.FromDate")),
+                StopDate = Convert.ToDateTime(collection.Get("Item4.TomDate")),
+                TopCategory = collection.Get("IsAllEvents") == "true" ? true : false,
+                WithGrouping = groupByOperator
+            };
+
+            return filterParameters;
         }
 
         [HttpPost]
