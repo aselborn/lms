@@ -10,6 +10,15 @@ namespace ReportDao.Model
 {
     public class Bridge
     {
+        public enum eEventType
+        {
+            FpActivity = 1,
+            LpActivity = 2,
+            RigStop = 3,
+            PlannedMaintenance = 8,
+            NoActivity = 9
+        }
+
         public class FilterParameters
         {
             public enum GroupByOperator
@@ -75,6 +84,8 @@ namespace ReportDao.Model
             [DataMember]
             public string EventTypeDescription { get; set; }
             [DataMember]
+            public int EventTypeSubId { get; set; }
+            [DataMember]
             public DateTime? EventLogManualTime { get; set; }
             [DataMember]
             public int? CustomerId { get; set; }
@@ -91,11 +102,33 @@ namespace ReportDao.Model
             [DataMember]
             public int? ItemId { get; set; }
             [DataMember]
-            public int? Value { get; set; }
+            public int? EventValue { get; set; }
+            [DataMember]
+            public bool Deleted { get; set; }
 
             public override string ToString()
             {
                 return EventTypeDescription;
+            }
+        }
+
+        [DataContract]
+        public class Test
+        {
+            [DataMember]
+            public int TestId { get; set; }
+            [DataMember]
+            public string TestName { get; set; }
+            [DataMember]
+            public int TestObjectId { get; set; }
+            [DataMember]
+            public int TestBedId { get; set; }
+            [DataMember]
+            public int TestModuleId { get; set; }
+
+            public override string ToString()
+            {
+                return TestName;
             }
         }
 

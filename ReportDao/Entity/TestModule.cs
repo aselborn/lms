@@ -12,7 +12,6 @@ namespace ReportDao.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TestModule()
         {
-            EventLog = new HashSet<EventLog>();
             Test = new HashSet<Test>();
         }
 
@@ -21,9 +20,6 @@ namespace ReportDao.Entity
         [Required]
         [StringLength(50)]
         public string TestModuleName { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventLog> EventLog { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Test> Test { get; set; }

@@ -15,6 +15,7 @@ namespace ReportDao.Entity
             EventLog = new HashSet<EventLog>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ItemId { get; set; }
 
         [Required]
