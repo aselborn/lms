@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lstTestBed = new System.Windows.Forms.ListBox();
             this.btnAddTestbed = new System.Windows.Forms.Button();
             this.txtTestBed = new System.Windows.Forms.TextBox();
@@ -45,13 +46,15 @@
             this.txtEventType = new System.Windows.Forms.TextBox();
             this.trEventTypes = new System.Windows.Forms.TreeView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxTotalTime = new System.Windows.Forms.TextBox();
             this.dataGridViewEventLogs = new System.Windows.Forms.DataGridView();
             this.eventLogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxTestBed = new System.Windows.Forms.ComboBox();
-            this.btnSaveEvent = new System.Windows.Forms.Button();
-            this.btnFindEvent = new System.Windows.Forms.Button();
+            this.buttonRegisterEvent = new System.Windows.Forms.Button();
+            this.buttonFindEvent = new System.Windows.Forms.Button();
             this.dateTimePickerEventDate = new System.Windows.Forms.DateTimePicker();
             this.buttonAddNoActivityEvent = new System.Windows.Forms.Button();
             this.buttonAddPlannedMaintEvent = new System.Windows.Forms.Button();
@@ -59,11 +62,11 @@
             this.buttonAddLPEvent = new System.Windows.Forms.Button();
             this.buttonAddFPEvent = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBoxFpActivity = new System.Windows.Forms.ComboBox();
-            this.comboBoxLpActivity = new System.Windows.Forms.ComboBox();
-            this.comboBoxRigStop = new System.Windows.Forms.ComboBox();
-            this.comboBoxPlannedMaintenance = new System.Windows.Forms.ComboBox();
             this.comboBoxNoActivity = new System.Windows.Forms.ComboBox();
+            this.comboBoxPlannedMaintenance = new System.Windows.Forms.ComboBox();
+            this.comboBoxRigStop = new System.Windows.Forms.ComboBox();
+            this.comboBoxLpActivity = new System.Windows.Forms.ComboBox();
+            this.comboBoxFpActivity = new System.Windows.Forms.ComboBox();
             this.EventTypeSubDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventTypeDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eventLogIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -225,12 +228,14 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.textBoxTotalTime);
             this.tabPage3.Controls.Add(this.dataGridViewEventLogs);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.comboBoxTestBed);
-            this.tabPage3.Controls.Add(this.btnSaveEvent);
-            this.tabPage3.Controls.Add(this.btnFindEvent);
+            this.tabPage3.Controls.Add(this.buttonRegisterEvent);
+            this.tabPage3.Controls.Add(this.buttonFindEvent);
             this.tabPage3.Controls.Add(this.dateTimePickerEventDate);
             this.tabPage3.Controls.Add(this.buttonAddNoActivityEvent);
             this.tabPage3.Controls.Add(this.buttonAddPlannedMaintEvent);
@@ -245,10 +250,30 @@
             this.tabPage3.Text = "Register events";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(572, 393);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(85, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Total Time (min):";
+            // 
+            // textBoxTotalTime
+            // 
+            this.textBoxTotalTime.Location = new System.Drawing.Point(668, 390);
+            this.textBoxTotalTime.Name = "textBoxTotalTime";
+            this.textBoxTotalTime.ReadOnly = true;
+            this.textBoxTotalTime.Size = new System.Drawing.Size(58, 20);
+            this.textBoxTotalTime.TabIndex = 17;
+            this.textBoxTotalTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxTotalTime.TextChanged += new System.EventHandler(this.textBoxTotalTime_TextChanged);
+            // 
             // dataGridViewEventLogs
             // 
             this.dataGridViewEventLogs.AllowUserToAddRows = false;
             this.dataGridViewEventLogs.AutoGenerateColumns = false;
+            this.dataGridViewEventLogs.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridViewEventLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEventLogs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.EventTypeSubDescription,
@@ -269,6 +294,8 @@
             this.dataGridViewEventLogs.Size = new System.Drawing.Size(558, 291);
             this.dataGridViewEventLogs.TabIndex = 15;
             this.dataGridViewEventLogs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventLogs_CellContentClick);
+            this.dataGridViewEventLogs.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventLogs_CellValidated);
+            this.dataGridViewEventLogs.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridViewEventLogs_DataError);
             // 
             // eventLogBindingSource
             // 
@@ -302,25 +329,25 @@
             this.comboBoxTestBed.TabIndex = 12;
             this.comboBoxTestBed.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestBed_SelectedIndexChanged);
             // 
-            // btnSaveEvent
+            // buttonRegisterEvent
             // 
-            this.btnSaveEvent.Location = new System.Drawing.Point(736, 392);
-            this.btnSaveEvent.Name = "btnSaveEvent";
-            this.btnSaveEvent.Size = new System.Drawing.Size(75, 23);
-            this.btnSaveEvent.TabIndex = 11;
-            this.btnSaveEvent.Text = "Save";
-            this.btnSaveEvent.UseVisualStyleBackColor = true;
-            this.btnSaveEvent.Click += new System.EventHandler(this.btnSaveEvent_Click);
+            this.buttonRegisterEvent.Location = new System.Drawing.Point(736, 388);
+            this.buttonRegisterEvent.Name = "buttonRegisterEvent";
+            this.buttonRegisterEvent.Size = new System.Drawing.Size(75, 23);
+            this.buttonRegisterEvent.TabIndex = 11;
+            this.buttonRegisterEvent.Text = "Register";
+            this.buttonRegisterEvent.UseVisualStyleBackColor = true;
+            this.buttonRegisterEvent.Click += new System.EventHandler(this.buttonRegisterEvent_Click);
             // 
-            // btnFindEvent
+            // buttonFindEvent
             // 
-            this.btnFindEvent.Location = new System.Drawing.Point(294, 35);
-            this.btnFindEvent.Name = "btnFindEvent";
-            this.btnFindEvent.Size = new System.Drawing.Size(75, 23);
-            this.btnFindEvent.TabIndex = 11;
-            this.btnFindEvent.Text = "Find";
-            this.btnFindEvent.UseVisualStyleBackColor = true;
-            this.btnFindEvent.Click += new System.EventHandler(this.btnFindEvent_Click);
+            this.buttonFindEvent.Location = new System.Drawing.Point(294, 35);
+            this.buttonFindEvent.Name = "buttonFindEvent";
+            this.buttonFindEvent.Size = new System.Drawing.Size(75, 23);
+            this.buttonFindEvent.TabIndex = 11;
+            this.buttonFindEvent.Text = "Find";
+            this.buttonFindEvent.UseVisualStyleBackColor = true;
+            this.buttonFindEvent.Click += new System.EventHandler(this.buttonFindEvent_Click);
             // 
             // dateTimePickerEventDate
             // 
@@ -334,7 +361,7 @@
             // 
             // buttonAddNoActivityEvent
             // 
-            this.buttonAddNoActivityEvent.BackColor = System.Drawing.Color.Yellow;
+            this.buttonAddNoActivityEvent.BackColor = System.Drawing.Color.Gold;
             this.buttonAddNoActivityEvent.Location = new System.Drawing.Point(37, 301);
             this.buttonAddNoActivityEvent.Name = "buttonAddNoActivityEvent";
             this.buttonAddNoActivityEvent.Size = new System.Drawing.Size(93, 40);
@@ -356,7 +383,7 @@
             // 
             // buttonAddRigStopEvent
             // 
-            this.buttonAddRigStopEvent.BackColor = System.Drawing.Color.Red;
+            this.buttonAddRigStopEvent.BackColor = System.Drawing.Color.OrangeRed;
             this.buttonAddRigStopEvent.Location = new System.Drawing.Point(37, 209);
             this.buttonAddRigStopEvent.Name = "buttonAddRigStopEvent";
             this.buttonAddRigStopEvent.Size = new System.Drawing.Size(93, 40);
@@ -367,7 +394,7 @@
             // 
             // buttonAddLPEvent
             // 
-            this.buttonAddLPEvent.BackColor = System.Drawing.Color.ForestGreen;
+            this.buttonAddLPEvent.BackColor = System.Drawing.Color.SeaGreen;
             this.buttonAddLPEvent.Location = new System.Drawing.Point(38, 163);
             this.buttonAddLPEvent.Name = "buttonAddLPEvent";
             this.buttonAddLPEvent.Size = new System.Drawing.Size(93, 40);
@@ -378,7 +405,7 @@
             // 
             // buttonAddFPEvent
             // 
-            this.buttonAddFPEvent.BackColor = System.Drawing.Color.ForestGreen;
+            this.buttonAddFPEvent.BackColor = System.Drawing.Color.SeaGreen;
             this.buttonAddFPEvent.Location = new System.Drawing.Point(38, 117);
             this.buttonAddFPEvent.Name = "buttonAddFPEvent";
             this.buttonAddFPEvent.Size = new System.Drawing.Size(93, 40);
@@ -401,32 +428,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add event";
             // 
-            // comboBoxFpActivity
+            // comboBoxNoActivity
             // 
-            this.comboBoxFpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFpActivity.FormattingEnabled = true;
-            this.comboBoxFpActivity.Location = new System.Drawing.Point(113, 50);
-            this.comboBoxFpActivity.Name = "comboBoxFpActivity";
-            this.comboBoxFpActivity.Size = new System.Drawing.Size(102, 21);
-            this.comboBoxFpActivity.TabIndex = 17;
-            // 
-            // comboBoxLpActivity
-            // 
-            this.comboBoxLpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxLpActivity.FormattingEnabled = true;
-            this.comboBoxLpActivity.Location = new System.Drawing.Point(114, 96);
-            this.comboBoxLpActivity.Name = "comboBoxLpActivity";
-            this.comboBoxLpActivity.Size = new System.Drawing.Size(102, 21);
-            this.comboBoxLpActivity.TabIndex = 18;
-            // 
-            // comboBoxRigStop
-            // 
-            this.comboBoxRigStop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRigStop.FormattingEnabled = true;
-            this.comboBoxRigStop.Location = new System.Drawing.Point(113, 142);
-            this.comboBoxRigStop.Name = "comboBoxRigStop";
-            this.comboBoxRigStop.Size = new System.Drawing.Size(102, 21);
-            this.comboBoxRigStop.TabIndex = 18;
+            this.comboBoxNoActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxNoActivity.FormattingEnabled = true;
+            this.comboBoxNoActivity.Location = new System.Drawing.Point(113, 234);
+            this.comboBoxNoActivity.Name = "comboBoxNoActivity";
+            this.comboBoxNoActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxNoActivity.TabIndex = 18;
             // 
             // comboBoxPlannedMaintenance
             // 
@@ -437,20 +446,39 @@
             this.comboBoxPlannedMaintenance.Size = new System.Drawing.Size(102, 21);
             this.comboBoxPlannedMaintenance.TabIndex = 18;
             // 
-            // comboBoxNoActivity
+            // comboBoxRigStop
             // 
-            this.comboBoxNoActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxNoActivity.FormattingEnabled = true;
-            this.comboBoxNoActivity.Location = new System.Drawing.Point(113, 234);
-            this.comboBoxNoActivity.Name = "comboBoxNoActivity";
-            this.comboBoxNoActivity.Size = new System.Drawing.Size(102, 21);
-            this.comboBoxNoActivity.TabIndex = 18;
+            this.comboBoxRigStop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRigStop.FormattingEnabled = true;
+            this.comboBoxRigStop.Location = new System.Drawing.Point(113, 142);
+            this.comboBoxRigStop.Name = "comboBoxRigStop";
+            this.comboBoxRigStop.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxRigStop.TabIndex = 18;
+            // 
+            // comboBoxLpActivity
+            // 
+            this.comboBoxLpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLpActivity.FormattingEnabled = true;
+            this.comboBoxLpActivity.Location = new System.Drawing.Point(114, 96);
+            this.comboBoxLpActivity.Name = "comboBoxLpActivity";
+            this.comboBoxLpActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxLpActivity.TabIndex = 18;
+            // 
+            // comboBoxFpActivity
+            // 
+            this.comboBoxFpActivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFpActivity.FormattingEnabled = true;
+            this.comboBoxFpActivity.Location = new System.Drawing.Point(113, 50);
+            this.comboBoxFpActivity.Name = "comboBoxFpActivity";
+            this.comboBoxFpActivity.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxFpActivity.TabIndex = 17;
             // 
             // EventTypeSubDescription
             // 
             this.EventTypeSubDescription.DataPropertyName = "EventTypeSubDescription";
             this.EventTypeSubDescription.HeaderText = "Event";
             this.EventTypeSubDescription.Name = "EventTypeSubDescription";
+            this.EventTypeSubDescription.ReadOnly = true;
             this.EventTypeSubDescription.Width = 120;
             // 
             // EventTypeDescription
@@ -458,6 +486,7 @@
             this.EventTypeDescription.DataPropertyName = "EventTypeDescription";
             this.EventTypeDescription.HeaderText = "Reason";
             this.EventTypeDescription.Name = "EventTypeDescription";
+            this.EventTypeDescription.ReadOnly = true;
             this.EventTypeDescription.Width = 120;
             // 
             // eventLogIdDataGridViewTextBoxColumn
@@ -505,11 +534,14 @@
             // comboTestId
             // 
             this.comboTestId.DataPropertyName = "TestId";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboTestId.DefaultCellStyle = dataGridViewCellStyle1;
+            this.comboTestId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboTestId.HeaderText = "TestId";
             this.comboTestId.Name = "comboTestId";
             this.comboTestId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.comboTestId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.comboTestId.Width = 120;
+            this.comboTestId.Width = 130;
             // 
             // deviceIdDataGridViewTextBoxColumn
             // 
@@ -521,9 +553,11 @@
             // EventValue
             // 
             this.EventValue.DataPropertyName = "EventValue";
-            dataGridViewCellStyle1.Format = "N0";
-            dataGridViewCellStyle1.NullValue = null;
-            this.EventValue.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Format = "N0";
+            dataGridViewCellStyle2.NullValue = null;
+            this.EventValue.DefaultCellStyle = dataGridViewCellStyle2;
             this.EventValue.HeaderText = "Time (min)";
             this.EventValue.MaxInputLength = 5;
             this.EventValue.Name = "EventValue";
@@ -587,12 +621,12 @@
         private System.Windows.Forms.Button buttonAddLPEvent;
         private System.Windows.Forms.Button buttonAddFPEvent;
         private System.Windows.Forms.Button btnRename;
-        private System.Windows.Forms.Button btnFindEvent;
+        private System.Windows.Forms.Button buttonFindEvent;
         private System.Windows.Forms.DateTimePicker dateTimePickerEventDate;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxTestBed;
-        private System.Windows.Forms.Button btnSaveEvent;
+        private System.Windows.Forms.Button buttonRegisterEvent;
         private System.Windows.Forms.DataGridView dataGridViewEventLogs;
         private System.Windows.Forms.BindingSource eventLogBindingSource;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -602,6 +636,8 @@
         private System.Windows.Forms.ComboBox comboBoxRigStop;
         private System.Windows.Forms.ComboBox comboBoxLpActivity;
         private System.Windows.Forms.ComboBox comboBoxFpActivity;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxTotalTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventTypeSubDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventTypeDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn eventLogIdDataGridViewTextBoxColumn;
