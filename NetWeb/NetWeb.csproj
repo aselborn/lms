@@ -320,7 +320,11 @@
     <Content Include="Views\WCF\Pie2.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Shared\_myLayout.cshtml" />
+    <Content Include="Views\Home\MyOldView.cshtml" />
     <Content Include="Views\Home\MyView.cshtml" />
+    <Content Include="Views\Statistics\Stat.cshtml" />
+    <Content Include="Views\Shared\_LeftSide.cshtml" />
+    <Content Include="Views\Shared\_TopView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

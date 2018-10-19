@@ -1,0 +1,31 @@
+﻿@using NetWeb.Models
+@model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+
+
+<div class="divstyle">
+    <h3>Select statistics</h3>
+
+    <div class="form-group">
+
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId)
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+         "--SELECT--",
+         new { @class = "form-control", @onchange = "filterEvents();" })
+
+
+    </div>
+
+</div>
+
+
+<style>
+    .divstyle {
+        float: left;
+        width: 350px;
+        height: 680px;
+        background-color: darkgoldenrod;
+    }
+</style>

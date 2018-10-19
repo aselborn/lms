@@ -98,6 +98,8 @@ namespace NetWeb.Controllers
             var tupleModel = 
                 new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
+            
+
             return View(tupleModel);
         }
 
@@ -117,10 +119,43 @@ namespace NetWeb.Controllers
             
         }
 
+        //Statistics entry Point
+        public ActionResult Stat()
+        {
+            //return PartialView("_LeftSide");
+            DateSelectModel dateSelectModel = new DateSelectModel { FromDate = DateTime.Now, TomDate = DateTime.Now };
+            TestbedViewModel testbedModel = new TestbedViewModel
+            {
+                ListofTestbeds = GetTestBeds()
+            };
+
+            EventTypeViewModel eventTypeViewModel = new EventTypeViewModel
+            {
+                ListofEventTypes = GetEventTypes()
+            };
+
+            EventTypeViewModel topEvents = new EventTypeViewModel
+            {
+                ListofEventTypes = GetEventTypes(true)
+            };
+
+            var tupleModel =
+                new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
+
+
+
+            return View(tupleModel);
+        }
+
+        public ActionResult Data(FormCollection collection)
+        {
+
+            return null;
+        }
         
         // POST: Statistics/Create
         [HttpPost]
-        public ActionResult RecieveForm(FormCollection collection)
+        public ActionResult RecieveForm(FormCollection collection, string returnUrl)
         {
             try
             {
@@ -131,8 +166,8 @@ namespace NetWeb.Controllers
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
 
                 //return RedirectToAction("Pie2", "WCF", data);
-                return View(data);
-                //return RedirectToAction("Index");
+                //return View(data);
+                return RedirectToAction("Index");
             }
             catch
             {

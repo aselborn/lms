@@ -32,5 +32,7 @@ namespace NetWeb.Controllers
             ViewBag.Message = "MyView";
             return View();
         }
+
+
     }
 }

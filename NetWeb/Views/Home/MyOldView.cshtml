@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+<div class="jumbotron">
+    <h2>MyLayOut</h2>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <p>This is body.</p>
+    </div>
+
+    @section Diagram {
+        <h3>
+            coolt!
+        </h3>
+   }
+
+    @section footer{
+        <p class="lead">
+            This is footer section.
+        </p>
+    }
+</div>
