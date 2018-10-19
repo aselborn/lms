@@ -12,22 +12,14 @@
         Html.RenderPartial("_TopView");
     }
 
-
+   
 
     <!-- Header -->
-    <header>
-        <h1 style="text-align:center; color:bisque">LMS Statistics</h1>
-    </header>
+    @*<header>
+            <h1 style="text-align:center; color:bisque">LMS Statistics</h1>
+        </header>*@
     <!-- End of Header -->
     <!-- Left Sidebar -->
-    @*<nav>
-        <h3>Navigation</h3>
-        @Html.ActionLink("About", "About");<br />
-        @Html.ActionLink("Contact", "Contact");<br />
-        @Html.ActionLink("Enquiry", "Enquiry");<br />
-        @Html.ActionLink("Home", "Home");<br />
-        @Html.ActionLink("Purchase", "Purchase");<br />
-    </nav>*@
     <!-- End of Left Sidebar -->
     <!-- Content Body -->
     <div class="content">
@@ -47,17 +39,10 @@
             background-color: red;
         }
 
-        nav {
-            float: left;
-            width: 300px;
-            height: 650px;
-            background-color: darkgoldenrod;
-        }
-
         .content {
             background-color: blueviolet;
-            height: 610px;
-            padding: 20px;
+            /*/height: 700px;*/
+            position: inherit;
         }
 
         footer {

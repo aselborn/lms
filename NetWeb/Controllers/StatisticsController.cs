@@ -12,6 +12,10 @@ using static ReportDao.Model.Bridge;
 
 namespace NetWeb.Controllers
 {
+    /*
+     * https://www.codeproject.com/Articles/1079909/ASP-NET-MVC-Partial-Views-with-Partial-Models 
+     * 
+    */
     public class StatisticsController : Controller
     {
         private ChannelFactory<IReportService> reportChannelFactory = null;
@@ -103,13 +107,6 @@ namespace NetWeb.Controllers
             return View(tupleModel);
         }
 
-        [HttpPost]
-        public ActionResult Index(int testBedId)
-        {
-
-            return View();
-        }
-
         // GET: Statistics/Details/5
         public ActionResult Details(int MasterEventId)
         {
@@ -117,6 +114,35 @@ namespace NetWeb.Controllers
 
             return Json(SubCategories, JsonRequestBehavior.AllowGet);
             
+        }
+
+
+        
+        public ActionResult Data(FilterParameters data)
+        {
+
+
+            /*
+            SetupConnection();
+            FilterParameters selection = CreateSelectionParameters(formData);
+            List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
+
+            TempData["ResultObject"] = data;
+            */
+
+            List<ResultObject> test = new List<ResultObject>();
+            test.Add(new ResultObject { Text = "testValu", myValue = 1 });
+
+            return Json(test, JsonRequestBehavior.AllowGet);
+            
+            
+        }
+
+        [HttpGet]
+        public ActionResult GetData(List<ResultObject> results)
+        {
+            List<ResultObject> myResult = (List<ResultObject>)TempData["ResultObject"];
+            return View();
         }
 
         //Statistics entry Point
@@ -139,19 +165,19 @@ namespace NetWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
+            
+            List<WCFReportLib.Model.SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
+
+
             var tupleModel =
-                new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
+                new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel, List<WCFReportLib.Model.SimpleResultObject>>
+                (testbedModel, topEvents, eventTypeViewModel, dateSelectModel, lstModel);
 
 
 
             return View(tupleModel);
         }
 
-        public ActionResult Data(FormCollection collection)
-        {
-
-            return null;
-        }
         
         // POST: Statistics/Create
         [HttpPost]
@@ -162,7 +188,6 @@ namespace NetWeb.Controllers
 
                 SetupConnection();
                 FilterParameters selection = CreateSelectionParameters(collection);
-
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
 
                 //return RedirectToAction("Pie2", "WCF", data);
