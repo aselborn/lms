@@ -30,7 +30,6 @@ namespace WinReportTool
         {
             LoadData();
             PrepareControls();
-
         }
 
         private void LoadData()
@@ -45,6 +44,8 @@ namespace WinReportTool
         private void PrepareControls()
         {
             // Tab - Register events
+            dataGridViewEventLogs.DataSource = bsEventLog;
+
             dateTimePickerEventDate.Value.ToShortDateString();
             comboBoxTestBed.Items.Clear();
 
@@ -80,8 +81,6 @@ namespace WinReportTool
                 comboBoxNoActivity.Items.Add(item);
             }
             comboBoxNoActivity.SelectedIndex = 0;
-
-            dataGridViewEventLogs.DataSource = bsEventLog;
 
             PrepareGridComboBox();
         }
@@ -140,18 +139,25 @@ namespace WinReportTool
         }
         private void LoadEventLog()
         {
-            Bridge.FilterParameters searchParams = new Bridge.FilterParameters
+            try
             {
-                SearchDate = dateTimePickerEventDate.Value.Date
-            };
-            Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
-            searchParams.TestBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
+                Bridge.FilterParameters searchParams = new Bridge.FilterParameters
+                {
+                    SearchDate = dateTimePickerEventDate.Value.Date
+                };
+                Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
+                searchParams.TestBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
 
-            ClearGridEventLog();
+                ClearGridEventLog();
 
-            bsEventLog.DataSource = WcfConnector.GetReportService.GetEventLogs(searchParams).Where(e => e.Deleted == false).ToList();
+                bsEventLog.DataSource = WcfConnector.GetReportService.GetEventLogs(searchParams).Where(e => e.Deleted == false).ToList();
 
-            GridRePaint();
+                GridRePaint();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ClearGridEventLog()
@@ -266,13 +272,13 @@ namespace WinReportTool
 
         private void dateTimePickerEventDate_ValueChanged(object sender, EventArgs e)
         {
-            ClearGridEventLog();
+            LoadEventLog();
         }
 
         private void comboBoxTestBed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClearGridEventLog();
             PrepareGridComboBox();
+            LoadEventLog();
         }
 
         private void GridRePaint()
@@ -344,13 +350,16 @@ namespace WinReportTool
 
         private void textBoxTotalTime_TextChanged(object sender, EventArgs e)
         {
-            int totTime = Convert.ToInt32(textBoxTotalTime.Text);
+            //int totTime = Convert.ToInt32(textBoxTotalTime.Text);
 
-            if (totTime > 24 * 60)
+            string remainingTime = textBoxTotalTime.Text.Split('/')[1];
+
+            if (Convert.ToInt32(remainingTime) < 0)
             {
                 DialogResult dialogResult = MessageBox.Show($"Total time must not exceed 1440 min (24h)!", "Total Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            buttonRegisterEvent.Enabled = totTime > 24 * 60 ? false : true;
+            
+            buttonRegisterEvent.Enabled = Convert.ToInt32(remainingTime) >= 0 ? true : false;
         }
 
         private void CalcTotalTime()
@@ -364,19 +373,13 @@ namespace WinReportTool
                         totTime += eventLog.EventValue ?? 0;
                 }
             }
-            textBoxTotalTime.Text = totTime.ToString();
+            int remainingTime = 24 * 60 - totTime;
+            textBoxTotalTime.Text = $"{totTime} / {remainingTime}";
         }
 
         private void buttonFindEvent_Click(object sender, EventArgs e)
         {
-            try
-            {
-                LoadEventLog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            LoadEventLog();
         }
 
         private void buttonAddFPEvent_Click(object sender, EventArgs e)
@@ -438,7 +441,7 @@ namespace WinReportTool
             if (dataGridViewEventLogs.Rows.Count == 0)
                 return;
 
-            DialogResult dialogResult = MessageBox.Show($"Do you want register event(s)?", "Register events", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            DialogResult dialogResult = MessageBox.Show($"Do you want register/update event(s)?", "Register events", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Cancel)
             {
                 return;
