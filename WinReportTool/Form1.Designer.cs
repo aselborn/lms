@@ -35,20 +35,22 @@
             this.btnAddTestbed = new System.Windows.Forms.Button();
             this.txtTestBed = new System.Windows.Forms.TextBox();
             this.tbTestBed = new System.Windows.Forms.TabControl();
-            this.testBedTB = new System.Windows.Forms.TabPage();
-            this.btnRename = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnAddDevice = new System.Windows.Forms.Button();
-            this.txtDevice = new System.Windows.Forms.TextBox();
-            this.lstDevice = new System.Windows.Forms.ListBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnAddEventType = new System.Windows.Forms.Button();
-            this.txtEventType = new System.Windows.Forms.TextBox();
-            this.trEventTypes = new System.Windows.Forms.TreeView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPageRegisterEvent = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxTotalTime = new System.Windows.Forms.TextBox();
             this.dataGridViewEventLogs = new System.Windows.Forms.DataGridView();
+            this.EventTypeSubDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventTypeDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eventLogIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eventLogTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eventLogUserIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eventTypeIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eventLogManualTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.testBedIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboTestId = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.deviceIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Deleted = new System.Windows.Forms.DataGridViewButtonColumn();
             this.eventLogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -67,26 +69,24 @@
             this.comboBoxRigStop = new System.Windows.Forms.ComboBox();
             this.comboBoxLpActivity = new System.Windows.Forms.ComboBox();
             this.comboBoxFpActivity = new System.Windows.Forms.ComboBox();
-            this.EventTypeSubDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventTypeDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventLogIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventLogTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventLogUserIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventTypeIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventLogManualTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.testBedIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comboTestId = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.deviceIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Deleted = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tabPageTestBed = new System.Windows.Forms.TabPage();
+            this.btnRename = new System.Windows.Forms.Button();
+            this.tabPageDevice = new System.Windows.Forms.TabPage();
+            this.btnAddDevice = new System.Windows.Forms.Button();
+            this.txtDevice = new System.Windows.Forms.TextBox();
+            this.lstDevice = new System.Windows.Forms.ListBox();
+            this.tabPageEventType = new System.Windows.Forms.TabPage();
+            this.btnAddEventType = new System.Windows.Forms.Button();
+            this.txtEventType = new System.Windows.Forms.TextBox();
+            this.trEventTypes = new System.Windows.Forms.TreeView();
             this.tbTestBed.SuspendLayout();
-            this.testBedTB.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabPageRegisterEvent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLogBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tabPageTestBed.SuspendLayout();
+            this.tabPageDevice.SuspendLayout();
+            this.tabPageEventType.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstTestBed
@@ -118,153 +118,55 @@
             // 
             // tbTestBed
             // 
-            this.tbTestBed.Controls.Add(this.testBedTB);
-            this.tbTestBed.Controls.Add(this.tabPage2);
-            this.tbTestBed.Controls.Add(this.tabPage1);
-            this.tbTestBed.Controls.Add(this.tabPage3);
+            this.tbTestBed.Controls.Add(this.tabPageRegisterEvent);
+            this.tbTestBed.Controls.Add(this.tabPageTestBed);
+            this.tbTestBed.Controls.Add(this.tabPageDevice);
+            this.tbTestBed.Controls.Add(this.tabPageEventType);
             this.tbTestBed.Location = new System.Drawing.Point(12, 12);
             this.tbTestBed.Name = "tbTestBed";
             this.tbTestBed.SelectedIndex = 0;
             this.tbTestBed.Size = new System.Drawing.Size(844, 537);
             this.tbTestBed.TabIndex = 8;
             // 
-            // testBedTB
+            // tabPageRegisterEvent
             // 
-            this.testBedTB.Controls.Add(this.btnRename);
-            this.testBedTB.Controls.Add(this.lstTestBed);
-            this.testBedTB.Controls.Add(this.txtTestBed);
-            this.testBedTB.Controls.Add(this.btnAddTestbed);
-            this.testBedTB.Location = new System.Drawing.Point(4, 22);
-            this.testBedTB.Name = "testBedTB";
-            this.testBedTB.Padding = new System.Windows.Forms.Padding(3);
-            this.testBedTB.Size = new System.Drawing.Size(836, 511);
-            this.testBedTB.TabIndex = 0;
-            this.testBedTB.Text = "Test bed objects";
-            this.testBedTB.UseVisualStyleBackColor = true;
-            // 
-            // btnRename
-            // 
-            this.btnRename.Location = new System.Drawing.Point(510, 32);
-            this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(85, 20);
-            this.btnRename.TabIndex = 5;
-            this.btnRename.Text = "Rename";
-            this.btnRename.UseVisualStyleBackColor = true;
-            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.btnAddDevice);
-            this.tabPage2.Controls.Add(this.txtDevice);
-            this.tabPage2.Controls.Add(this.lstDevice);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(836, 511);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Devices";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnAddDevice
-            // 
-            this.btnAddDevice.Location = new System.Drawing.Point(576, 32);
-            this.btnAddDevice.Name = "btnAddDevice";
-            this.btnAddDevice.Size = new System.Drawing.Size(85, 20);
-            this.btnAddDevice.TabIndex = 10;
-            this.btnAddDevice.Text = "Add";
-            this.btnAddDevice.UseVisualStyleBackColor = true;
-            // 
-            // txtDevice
-            // 
-            this.txtDevice.Location = new System.Drawing.Point(438, 6);
-            this.txtDevice.Name = "txtDevice";
-            this.txtDevice.Size = new System.Drawing.Size(223, 20);
-            this.txtDevice.TabIndex = 9;
-            // 
-            // lstDevice
-            // 
-            this.lstDevice.FormattingEnabled = true;
-            this.lstDevice.Location = new System.Drawing.Point(6, 6);
-            this.lstDevice.Name = "lstDevice";
-            this.lstDevice.Size = new System.Drawing.Size(426, 238);
-            this.lstDevice.TabIndex = 8;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.btnAddEventType);
-            this.tabPage1.Controls.Add(this.txtEventType);
-            this.tabPage1.Controls.Add(this.trEventTypes);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(836, 511);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "EventType";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // btnAddEventType
-            // 
-            this.btnAddEventType.Location = new System.Drawing.Point(506, 14);
-            this.btnAddEventType.Name = "btnAddEventType";
-            this.btnAddEventType.Size = new System.Drawing.Size(108, 23);
-            this.btnAddEventType.TabIndex = 2;
-            this.btnAddEventType.Text = "Add EventType";
-            this.btnAddEventType.UseVisualStyleBackColor = true;
-            this.btnAddEventType.Click += new System.EventHandler(this.btnAddEventType_Click);
-            // 
-            // txtEventType
-            // 
-            this.txtEventType.Location = new System.Drawing.Point(234, 14);
-            this.txtEventType.Name = "txtEventType";
-            this.txtEventType.Size = new System.Drawing.Size(266, 20);
-            this.txtEventType.TabIndex = 1;
-            // 
-            // trEventTypes
-            // 
-            this.trEventTypes.Location = new System.Drawing.Point(16, 14);
-            this.trEventTypes.Name = "trEventTypes";
-            this.trEventTypes.Size = new System.Drawing.Size(212, 470);
-            this.trEventTypes.TabIndex = 0;
-            this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Controls.Add(this.textBoxTotalTime);
-            this.tabPage3.Controls.Add(this.dataGridViewEventLogs);
-            this.tabPage3.Controls.Add(this.label2);
-            this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Controls.Add(this.comboBoxTestBed);
-            this.tabPage3.Controls.Add(this.buttonRegisterEvent);
-            this.tabPage3.Controls.Add(this.buttonFindEvent);
-            this.tabPage3.Controls.Add(this.dateTimePickerEventDate);
-            this.tabPage3.Controls.Add(this.buttonAddNoActivityEvent);
-            this.tabPage3.Controls.Add(this.buttonAddPlannedMaintEvent);
-            this.tabPage3.Controls.Add(this.buttonAddRigStopEvent);
-            this.tabPage3.Controls.Add(this.buttonAddLPEvent);
-            this.tabPage3.Controls.Add(this.buttonAddFPEvent);
-            this.tabPage3.Controls.Add(this.groupBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(836, 511);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "Register events";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPageRegisterEvent.Controls.Add(this.label3);
+            this.tabPageRegisterEvent.Controls.Add(this.textBoxTotalTime);
+            this.tabPageRegisterEvent.Controls.Add(this.dataGridViewEventLogs);
+            this.tabPageRegisterEvent.Controls.Add(this.label2);
+            this.tabPageRegisterEvent.Controls.Add(this.label1);
+            this.tabPageRegisterEvent.Controls.Add(this.comboBoxTestBed);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonRegisterEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonFindEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.dateTimePickerEventDate);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonAddNoActivityEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonAddPlannedMaintEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonAddRigStopEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonAddLPEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.buttonAddFPEvent);
+            this.tabPageRegisterEvent.Controls.Add(this.groupBox1);
+            this.tabPageRegisterEvent.Location = new System.Drawing.Point(4, 22);
+            this.tabPageRegisterEvent.Name = "tabPageRegisterEvent";
+            this.tabPageRegisterEvent.Size = new System.Drawing.Size(836, 511);
+            this.tabPageRegisterEvent.TabIndex = 3;
+            this.tabPageRegisterEvent.Text = "Register events";
+            this.tabPageRegisterEvent.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(572, 393);
+            this.label3.Location = new System.Drawing.Point(512, 395);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 13);
+            this.label3.Size = new System.Drawing.Size(135, 13);
             this.label3.TabIndex = 18;
-            this.label3.Text = "Total Time (min):";
+            this.label3.Text = "Total/remaining Time (min):";
             // 
             // textBoxTotalTime
             // 
-            this.textBoxTotalTime.Location = new System.Drawing.Point(668, 390);
+            this.textBoxTotalTime.Location = new System.Drawing.Point(658, 392);
             this.textBoxTotalTime.Name = "textBoxTotalTime";
             this.textBoxTotalTime.ReadOnly = true;
-            this.textBoxTotalTime.Size = new System.Drawing.Size(58, 20);
+            this.textBoxTotalTime.Size = new System.Drawing.Size(68, 20);
             this.textBoxTotalTime.TabIndex = 17;
             this.textBoxTotalTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxTotalTime.TextChanged += new System.EventHandler(this.textBoxTotalTime_TextChanged);
@@ -296,6 +198,108 @@
             this.dataGridViewEventLogs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventLogs_CellContentClick);
             this.dataGridViewEventLogs.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventLogs_CellValidated);
             this.dataGridViewEventLogs.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridViewEventLogs_DataError);
+            // 
+            // EventTypeSubDescription
+            // 
+            this.EventTypeSubDescription.DataPropertyName = "EventTypeSubDescription";
+            this.EventTypeSubDescription.HeaderText = "Event";
+            this.EventTypeSubDescription.Name = "EventTypeSubDescription";
+            this.EventTypeSubDescription.ReadOnly = true;
+            this.EventTypeSubDescription.Width = 120;
+            // 
+            // EventTypeDescription
+            // 
+            this.EventTypeDescription.DataPropertyName = "EventTypeDescription";
+            this.EventTypeDescription.HeaderText = "Reason";
+            this.EventTypeDescription.Name = "EventTypeDescription";
+            this.EventTypeDescription.ReadOnly = true;
+            this.EventTypeDescription.Width = 120;
+            // 
+            // eventLogIdDataGridViewTextBoxColumn
+            // 
+            this.eventLogIdDataGridViewTextBoxColumn.DataPropertyName = "EventLogId";
+            this.eventLogIdDataGridViewTextBoxColumn.HeaderText = "EventLogId";
+            this.eventLogIdDataGridViewTextBoxColumn.Name = "eventLogIdDataGridViewTextBoxColumn";
+            this.eventLogIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // eventLogTimeDataGridViewTextBoxColumn
+            // 
+            this.eventLogTimeDataGridViewTextBoxColumn.DataPropertyName = "EventLogTime";
+            this.eventLogTimeDataGridViewTextBoxColumn.HeaderText = "EventLogTime";
+            this.eventLogTimeDataGridViewTextBoxColumn.Name = "eventLogTimeDataGridViewTextBoxColumn";
+            this.eventLogTimeDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // eventLogUserIdDataGridViewTextBoxColumn
+            // 
+            this.eventLogUserIdDataGridViewTextBoxColumn.DataPropertyName = "EventLogUserId";
+            this.eventLogUserIdDataGridViewTextBoxColumn.HeaderText = "EventLogUserId";
+            this.eventLogUserIdDataGridViewTextBoxColumn.Name = "eventLogUserIdDataGridViewTextBoxColumn";
+            this.eventLogUserIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // eventTypeIdDataGridViewTextBoxColumn
+            // 
+            this.eventTypeIdDataGridViewTextBoxColumn.DataPropertyName = "EventTypeId";
+            this.eventTypeIdDataGridViewTextBoxColumn.HeaderText = "EventTypeId";
+            this.eventTypeIdDataGridViewTextBoxColumn.Name = "eventTypeIdDataGridViewTextBoxColumn";
+            this.eventTypeIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // eventLogManualTimeDataGridViewTextBoxColumn
+            // 
+            this.eventLogManualTimeDataGridViewTextBoxColumn.DataPropertyName = "EventLogManualTime";
+            this.eventLogManualTimeDataGridViewTextBoxColumn.HeaderText = "EventLogManualTime";
+            this.eventLogManualTimeDataGridViewTextBoxColumn.Name = "eventLogManualTimeDataGridViewTextBoxColumn";
+            this.eventLogManualTimeDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // testBedIdDataGridViewTextBoxColumn
+            // 
+            this.testBedIdDataGridViewTextBoxColumn.DataPropertyName = "TestBedId";
+            this.testBedIdDataGridViewTextBoxColumn.HeaderText = "TestBedId";
+            this.testBedIdDataGridViewTextBoxColumn.Name = "testBedIdDataGridViewTextBoxColumn";
+            this.testBedIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // comboTestId
+            // 
+            this.comboTestId.DataPropertyName = "TestId";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboTestId.DefaultCellStyle = dataGridViewCellStyle1;
+            this.comboTestId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboTestId.HeaderText = "TestId";
+            this.comboTestId.Name = "comboTestId";
+            this.comboTestId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.comboTestId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.comboTestId.Width = 130;
+            // 
+            // deviceIdDataGridViewTextBoxColumn
+            // 
+            this.deviceIdDataGridViewTextBoxColumn.DataPropertyName = "DeviceId";
+            this.deviceIdDataGridViewTextBoxColumn.HeaderText = "DeviceId";
+            this.deviceIdDataGridViewTextBoxColumn.Name = "deviceIdDataGridViewTextBoxColumn";
+            this.deviceIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // EventValue
+            // 
+            this.EventValue.DataPropertyName = "EventValue";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Format = "N0";
+            dataGridViewCellStyle2.NullValue = null;
+            this.EventValue.DefaultCellStyle = dataGridViewCellStyle2;
+            this.EventValue.HeaderText = "Time (min)";
+            this.EventValue.MaxInputLength = 5;
+            this.EventValue.Name = "EventValue";
+            this.EventValue.Width = 80;
+            // 
+            // Deleted
+            // 
+            this.Deleted.DataPropertyName = "Deleted";
+            this.Deleted.FillWeight = 90F;
+            this.Deleted.HeaderText = "Delete";
+            this.Deleted.Name = "Deleted";
+            this.Deleted.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Deleted.Text = "Delete";
+            this.Deleted.ToolTipText = "Delete event";
+            this.Deleted.UseColumnTextForButtonValue = true;
+            this.Deleted.Width = 45;
             // 
             // eventLogBindingSource
             // 
@@ -331,7 +335,7 @@
             // 
             // buttonRegisterEvent
             // 
-            this.buttonRegisterEvent.Location = new System.Drawing.Point(736, 388);
+            this.buttonRegisterEvent.Location = new System.Drawing.Point(736, 390);
             this.buttonRegisterEvent.Name = "buttonRegisterEvent";
             this.buttonRegisterEvent.Size = new System.Drawing.Size(75, 23);
             this.buttonRegisterEvent.TabIndex = 11;
@@ -347,6 +351,7 @@
             this.buttonFindEvent.TabIndex = 11;
             this.buttonFindEvent.Text = "Find";
             this.buttonFindEvent.UseVisualStyleBackColor = true;
+            this.buttonFindEvent.Visible = false;
             this.buttonFindEvent.Click += new System.EventHandler(this.buttonFindEvent_Click);
             // 
             // dateTimePickerEventDate
@@ -473,107 +478,103 @@
             this.comboBoxFpActivity.Size = new System.Drawing.Size(102, 21);
             this.comboBoxFpActivity.TabIndex = 17;
             // 
-            // EventTypeSubDescription
+            // tabPageTestBed
             // 
-            this.EventTypeSubDescription.DataPropertyName = "EventTypeSubDescription";
-            this.EventTypeSubDescription.HeaderText = "Event";
-            this.EventTypeSubDescription.Name = "EventTypeSubDescription";
-            this.EventTypeSubDescription.ReadOnly = true;
-            this.EventTypeSubDescription.Width = 120;
+            this.tabPageTestBed.Controls.Add(this.btnRename);
+            this.tabPageTestBed.Controls.Add(this.lstTestBed);
+            this.tabPageTestBed.Controls.Add(this.txtTestBed);
+            this.tabPageTestBed.Controls.Add(this.btnAddTestbed);
+            this.tabPageTestBed.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTestBed.Name = "tabPageTestBed";
+            this.tabPageTestBed.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTestBed.Size = new System.Drawing.Size(836, 511);
+            this.tabPageTestBed.TabIndex = 0;
+            this.tabPageTestBed.Text = "Test bed objects";
+            this.tabPageTestBed.UseVisualStyleBackColor = true;
             // 
-            // EventTypeDescription
+            // btnRename
             // 
-            this.EventTypeDescription.DataPropertyName = "EventTypeDescription";
-            this.EventTypeDescription.HeaderText = "Reason";
-            this.EventTypeDescription.Name = "EventTypeDescription";
-            this.EventTypeDescription.ReadOnly = true;
-            this.EventTypeDescription.Width = 120;
+            this.btnRename.Location = new System.Drawing.Point(510, 32);
+            this.btnRename.Name = "btnRename";
+            this.btnRename.Size = new System.Drawing.Size(85, 20);
+            this.btnRename.TabIndex = 5;
+            this.btnRename.Text = "Rename";
+            this.btnRename.UseVisualStyleBackColor = true;
+            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
             // 
-            // eventLogIdDataGridViewTextBoxColumn
+            // tabPageDevice
             // 
-            this.eventLogIdDataGridViewTextBoxColumn.DataPropertyName = "EventLogId";
-            this.eventLogIdDataGridViewTextBoxColumn.HeaderText = "EventLogId";
-            this.eventLogIdDataGridViewTextBoxColumn.Name = "eventLogIdDataGridViewTextBoxColumn";
-            this.eventLogIdDataGridViewTextBoxColumn.Visible = false;
+            this.tabPageDevice.Controls.Add(this.btnAddDevice);
+            this.tabPageDevice.Controls.Add(this.txtDevice);
+            this.tabPageDevice.Controls.Add(this.lstDevice);
+            this.tabPageDevice.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDevice.Name = "tabPageDevice";
+            this.tabPageDevice.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDevice.Size = new System.Drawing.Size(836, 511);
+            this.tabPageDevice.TabIndex = 1;
+            this.tabPageDevice.Text = "Devices";
+            this.tabPageDevice.UseVisualStyleBackColor = true;
             // 
-            // eventLogTimeDataGridViewTextBoxColumn
+            // btnAddDevice
             // 
-            this.eventLogTimeDataGridViewTextBoxColumn.DataPropertyName = "EventLogTime";
-            this.eventLogTimeDataGridViewTextBoxColumn.HeaderText = "EventLogTime";
-            this.eventLogTimeDataGridViewTextBoxColumn.Name = "eventLogTimeDataGridViewTextBoxColumn";
-            this.eventLogTimeDataGridViewTextBoxColumn.Visible = false;
+            this.btnAddDevice.Location = new System.Drawing.Point(576, 32);
+            this.btnAddDevice.Name = "btnAddDevice";
+            this.btnAddDevice.Size = new System.Drawing.Size(85, 20);
+            this.btnAddDevice.TabIndex = 10;
+            this.btnAddDevice.Text = "Add";
+            this.btnAddDevice.UseVisualStyleBackColor = true;
             // 
-            // eventLogUserIdDataGridViewTextBoxColumn
+            // txtDevice
             // 
-            this.eventLogUserIdDataGridViewTextBoxColumn.DataPropertyName = "EventLogUserId";
-            this.eventLogUserIdDataGridViewTextBoxColumn.HeaderText = "EventLogUserId";
-            this.eventLogUserIdDataGridViewTextBoxColumn.Name = "eventLogUserIdDataGridViewTextBoxColumn";
-            this.eventLogUserIdDataGridViewTextBoxColumn.Visible = false;
+            this.txtDevice.Location = new System.Drawing.Point(438, 6);
+            this.txtDevice.Name = "txtDevice";
+            this.txtDevice.Size = new System.Drawing.Size(223, 20);
+            this.txtDevice.TabIndex = 9;
             // 
-            // eventTypeIdDataGridViewTextBoxColumn
+            // lstDevice
             // 
-            this.eventTypeIdDataGridViewTextBoxColumn.DataPropertyName = "EventTypeId";
-            this.eventTypeIdDataGridViewTextBoxColumn.HeaderText = "EventTypeId";
-            this.eventTypeIdDataGridViewTextBoxColumn.Name = "eventTypeIdDataGridViewTextBoxColumn";
-            this.eventTypeIdDataGridViewTextBoxColumn.Visible = false;
+            this.lstDevice.FormattingEnabled = true;
+            this.lstDevice.Location = new System.Drawing.Point(6, 6);
+            this.lstDevice.Name = "lstDevice";
+            this.lstDevice.Size = new System.Drawing.Size(426, 238);
+            this.lstDevice.TabIndex = 8;
             // 
-            // eventLogManualTimeDataGridViewTextBoxColumn
+            // tabPageEventType
             // 
-            this.eventLogManualTimeDataGridViewTextBoxColumn.DataPropertyName = "EventLogManualTime";
-            this.eventLogManualTimeDataGridViewTextBoxColumn.HeaderText = "EventLogManualTime";
-            this.eventLogManualTimeDataGridViewTextBoxColumn.Name = "eventLogManualTimeDataGridViewTextBoxColumn";
-            this.eventLogManualTimeDataGridViewTextBoxColumn.Visible = false;
+            this.tabPageEventType.Controls.Add(this.btnAddEventType);
+            this.tabPageEventType.Controls.Add(this.txtEventType);
+            this.tabPageEventType.Controls.Add(this.trEventTypes);
+            this.tabPageEventType.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEventType.Name = "tabPageEventType";
+            this.tabPageEventType.Size = new System.Drawing.Size(836, 511);
+            this.tabPageEventType.TabIndex = 2;
+            this.tabPageEventType.Text = "EventType";
+            this.tabPageEventType.UseVisualStyleBackColor = true;
             // 
-            // testBedIdDataGridViewTextBoxColumn
+            // btnAddEventType
             // 
-            this.testBedIdDataGridViewTextBoxColumn.DataPropertyName = "TestBedId";
-            this.testBedIdDataGridViewTextBoxColumn.HeaderText = "TestBedId";
-            this.testBedIdDataGridViewTextBoxColumn.Name = "testBedIdDataGridViewTextBoxColumn";
-            this.testBedIdDataGridViewTextBoxColumn.Visible = false;
+            this.btnAddEventType.Location = new System.Drawing.Point(506, 14);
+            this.btnAddEventType.Name = "btnAddEventType";
+            this.btnAddEventType.Size = new System.Drawing.Size(108, 23);
+            this.btnAddEventType.TabIndex = 2;
+            this.btnAddEventType.Text = "Add EventType";
+            this.btnAddEventType.UseVisualStyleBackColor = true;
+            this.btnAddEventType.Click += new System.EventHandler(this.btnAddEventType_Click);
             // 
-            // comboTestId
+            // txtEventType
             // 
-            this.comboTestId.DataPropertyName = "TestId";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboTestId.DefaultCellStyle = dataGridViewCellStyle1;
-            this.comboTestId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboTestId.HeaderText = "TestId";
-            this.comboTestId.Name = "comboTestId";
-            this.comboTestId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.comboTestId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.comboTestId.Width = 130;
+            this.txtEventType.Location = new System.Drawing.Point(234, 14);
+            this.txtEventType.Name = "txtEventType";
+            this.txtEventType.Size = new System.Drawing.Size(266, 20);
+            this.txtEventType.TabIndex = 1;
             // 
-            // deviceIdDataGridViewTextBoxColumn
+            // trEventTypes
             // 
-            this.deviceIdDataGridViewTextBoxColumn.DataPropertyName = "DeviceId";
-            this.deviceIdDataGridViewTextBoxColumn.HeaderText = "DeviceId";
-            this.deviceIdDataGridViewTextBoxColumn.Name = "deviceIdDataGridViewTextBoxColumn";
-            this.deviceIdDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // EventValue
-            // 
-            this.EventValue.DataPropertyName = "EventValue";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.Format = "N0";
-            dataGridViewCellStyle2.NullValue = null;
-            this.EventValue.DefaultCellStyle = dataGridViewCellStyle2;
-            this.EventValue.HeaderText = "Time (min)";
-            this.EventValue.MaxInputLength = 5;
-            this.EventValue.Name = "EventValue";
-            this.EventValue.Width = 80;
-            // 
-            // Deleted
-            // 
-            this.Deleted.DataPropertyName = "Deleted";
-            this.Deleted.FillWeight = 90F;
-            this.Deleted.HeaderText = "Delete";
-            this.Deleted.Name = "Deleted";
-            this.Deleted.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Deleted.Text = "Delete";
-            this.Deleted.ToolTipText = "Delete event";
-            this.Deleted.UseColumnTextForButtonValue = true;
-            this.Deleted.Width = 45;
+            this.trEventTypes.Location = new System.Drawing.Point(16, 14);
+            this.trEventTypes.Name = "trEventTypes";
+            this.trEventTypes.Size = new System.Drawing.Size(212, 470);
+            this.trEventTypes.TabIndex = 0;
+            this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
             // 
             // frmMain
             // 
@@ -585,17 +586,17 @@
             this.Text = "Report Tool";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tbTestBed.ResumeLayout(false);
-            this.testBedTB.ResumeLayout(false);
-            this.testBedTB.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tabPageRegisterEvent.ResumeLayout(false);
+            this.tabPageRegisterEvent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLogBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.tabPageTestBed.ResumeLayout(false);
+            this.tabPageTestBed.PerformLayout();
+            this.tabPageDevice.ResumeLayout(false);
+            this.tabPageDevice.PerformLayout();
+            this.tabPageEventType.ResumeLayout(false);
+            this.tabPageEventType.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -605,16 +606,16 @@
         private System.Windows.Forms.Button btnAddTestbed;
         private System.Windows.Forms.TextBox txtTestBed;
         private System.Windows.Forms.TabControl tbTestBed;
-        private System.Windows.Forms.TabPage testBedTB;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageTestBed;
+        private System.Windows.Forms.TabPage tabPageDevice;
         private System.Windows.Forms.Button btnAddDevice;
         private System.Windows.Forms.TextBox txtDevice;
         private System.Windows.Forms.ListBox lstDevice;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageEventType;
         private System.Windows.Forms.TreeView trEventTypes;
         private System.Windows.Forms.Button btnAddEventType;
         private System.Windows.Forms.TextBox txtEventType;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPageRegisterEvent;
         private System.Windows.Forms.Button buttonAddNoActivityEvent;
         private System.Windows.Forms.Button buttonAddPlannedMaintEvent;
         private System.Windows.Forms.Button buttonAddRigStopEvent;
