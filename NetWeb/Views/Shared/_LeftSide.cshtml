@@ -2,6 +2,7 @@
 @model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
 
 @Styles.Render("~/Content/css")
+@Styles.Render("~/Content/custom/css")
 @Scripts.Render("~/bundles/modernizr")
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
@@ -38,26 +39,44 @@
 
     function FetchStatistics() {
 
-        var selectObject = new Object();
-        selectObject.ValueA = "Anders"
-        selectObject.ValueB = "Olof"
-        selectObject.ValueC = "Selborn"
+        var filterParameters = {};
+
+        filterParameters.StartDate = '2018-01-01';
+        filterParameters.StopDate = '2018-10-31';
+        filterParameters.TestBedId = '1';
+        filterParameters.WithGrouping = true;
+        filterParameters.EventTypeId = '4';
 
         $.ajax({
             url: 'Data',
-            type: "POST",
-            dataType: "JSON",
-            data: JSON.stringify(selectObject),
-            success: function (SubEventTypes) {
-                alert('ok');
+            type: 'POST',
+            dataType: 'JSON',
+            data: '{data: ' + JSON.stringify(filterParameters) + '}',
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
 
+                var jsondata = response;
+                $("#chart").html("");
+
+                //Reply in JSON format, to build up statistic page.
+
+                $.each(jsondata, function (i, item) {
+                    $("#chart").html(item.Text);
+                });
+
+                DrawPieChart(jsondata);
+
+
+            },
+            error: function (xhr, status, error) {
+                alert('failed.');
             }
-        })
 
+        });
 
     }
 
-    
+
 
 
     $(function () {
@@ -88,7 +107,8 @@
 @using (Html.BeginForm("Data", "Statistics", FormMethod.Post))
 {
 
-    <div class="divstyle">
+    @*<div class="divstyle">*@
+    <div class="left-divstyle">
         <h3>Select statistics</h3>
 
         <div class="form-group">
@@ -144,43 +164,8 @@
                 <legend />
             </fieldset>
             @*<input type="submit" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />*@
-            @*<input type="button" onclick="FetchStatistics();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />*@
-            @*<input type="button" class="btn btn-info" value="Let's Go!" onclick="location.href='@Url.Action("Stat", "Statistics")'" />*@
-            @*@Html.ActionLink("Select statistics", "Stat", new { }, new { @id = "fetchStat" })*@
-            <input type="submit" value="Fetch!" name="btn" id="btnClick" />
+            <input type="button" onclick="FetchStatistics();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />
 
-            @section Scripts {
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#btnClick").click(function (e) {
-                            var myUser = {};
-                            var filterParameters = {};
-
-                            filterParameters.StartDate = '2018-01-01';
-                            filterParameters.StopDate = '2018-10-31';
-                            filterParameters.TestBedId = '1';
-                            filterParameters.WithGrouping = true;
-                            filterParameters.EventTypeId = '4';
-
-                            
-                            $.ajax({
-                                url: '@Url.Action("Data", "Statistics")',
-                                type: "GET",
-                                data: '{data: ' + JSON.stringify(filterParameters) + '}',
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (response) {
-                                    alert("Success");
-                                },
-                                error: function (xhr, status, error) {
-                                    alert('failed.');
-                                }
-                                
-                            });
-                        });
-                    });
-                </script>
-           }
         </div>
 
     </div>

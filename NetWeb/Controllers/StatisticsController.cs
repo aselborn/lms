@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using WCFReportLib;
+using WCFReportLib.Model;
 using static ReportDao.Model.Bridge;
 
 namespace NetWeb.Controllers
@@ -129,11 +130,13 @@ namespace NetWeb.Controllers
 
             TempData["ResultObject"] = data;
             */
+            SetupConnection();
+            List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
 
-            List<ResultObject> test = new List<ResultObject>();
-            test.Add(new ResultObject { Text = "testValu", myValue = 1 });
+            //List<ResultObject> test = new List<ResultObject>();
+            //test.Add(new ResultObject { Text = "testValu", myValue = 1 });
 
-            return Json(test, JsonRequestBehavior.AllowGet);
+            return Json(lstModel, JsonRequestBehavior.AllowGet);
             
             
         }
@@ -165,13 +168,13 @@ namespace NetWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
-            
-            List<WCFReportLib.Model.SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
+
+            List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
 
 
             var tupleModel =
-                new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel, List<WCFReportLib.Model.SimpleResultObject>>
-                (testbedModel, topEvents, eventTypeViewModel, dateSelectModel, lstModel);
+                new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel>
+                (testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
 
 

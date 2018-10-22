@@ -1,95 +1,133 @@
 ﻿@using System.Linq;
-@model List<WCFReportLib.Model.SimpleResultObject>
+@*@model List<WCFReportLib.Model.SimpleResultObject>*@
 
 @{
     ViewBag.Title = "Stat";
     Layout = "~/Views/Shared/_myLayout.cshtml";
-}
-
-@{
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.text).ToList());
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.myValue).ToList());
     ViewData["Title"] = "Pie Chart";
 }
 
 
 @Styles.Render("~/Content/css")
-@Scripts.Render("~/bundles/modernizr")
 
-@*<h2>Statistics page</h2>*@
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/Content/custom/")
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pie</title>
+</head>
+<body>
+    @*<div class="box-body">
+            <div class="chart-container">
+                <canvas id="chart" style="width:40px; height:50px"></canvas>
+            </div>
+        </div>*@
+
+    <div id="statisticsDiv" class="statDiv">
+        <canvas id="chart"></canvas>
+    </div>
+
+    @*<div style="width:600px;height:250px; border:solid">
+            <canvas id="chart" style="width:100%;height:100%;"></canvas>
+        </div>*@
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 
 <script type="text/javascript">
+    function DrawPieChart(SimpleResultObject) {
 
-        $(function () {
-    var chartName = "chart";
+        var chartName = "chart";
         var ctx = document.getElementById(chartName).getContext('2d');
-        var data = {
-                labels: @Html.Raw(XLabels),
-                datasets: [{
-                    label: "Drinks Chart",
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderWidth: 1,
-                    data: @Html.Raw(YValues)
-    }]
-            };
 
-var options = {
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: true,
-                            color: "rgba(255,99,164,0.2)"
-                        }
-}],
-                    xAxes: [{
-                        ticks: {
-                            min: 0,
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: false
-                        }
-                    }]
-                }
-            };
-
-       var myChart = new  Chart(ctx, {
-                options: options,
-                data: data,
-                type:'pie'
-
-            });
+        var myLabels = [];
+        var myValues = [];
+        $.each(SimpleResultObject, function (i, item) {
+            $(myLabels.push(item.text))
+            $(myValues.push(item.myValue))
         });
-</script>  
+
+        var data = {
+            labels: myLabels,
+            datasets: [{
+                label: "Drinks Chart",
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                borderWidth: 1,
+                data: myValues
+            }]
+        };
+
+        var options = {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: true,
+                        color: "rgba(255,99,164,0.2)"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            }
+        };
+
+        var myChart = new Chart(ctx, {
+            options: options,
+            data: data,
+            type: 'pie'
+
+        });
+    }
+
+    $(document).ready(function () {
+
+       
+    });
+
+</script>
+
+

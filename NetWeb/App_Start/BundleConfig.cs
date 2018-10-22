@@ -26,6 +26,7 @@ namespace NetWeb
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/custom/lms.css",
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datepicker3.css",
                       "~/Content/site.css"));

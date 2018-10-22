@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/custom/css")
 </head>
 <body style="background-color:aliceblue">
     <!--Render a partial view.-->
@@ -12,8 +13,7 @@
         Html.RenderPartial("_TopView");
     }
 
-   
-
+  
     <!-- Header -->
     @*<header>
             <h1 style="text-align:center; color:bisque">LMS Statistics</h1>
@@ -22,12 +22,12 @@
     <!-- Left Sidebar -->
     <!-- End of Left Sidebar -->
     <!-- Content Body -->
-    <div class="content">
+    <div class="statDiv">
         @RenderBody()
     </div>
     <!-- End of Content Body -->
     <!-- Footer -->
-    <footer>
+    <footer class="footer-style">
         <h4>Date is @DateTime.Now.ToShortDateString()</h4>
     </footer>
 
@@ -41,8 +41,8 @@
 
         .content {
             background-color: blueviolet;
-            /*/height: 700px;*/
-            position: inherit;
+            height: 700px;
+            /*/position: inherit;*/
         }
 
         footer {
