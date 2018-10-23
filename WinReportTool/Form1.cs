@@ -111,7 +111,7 @@ namespace WinReportTool
             var categories = eventTypes.Where(p => p.EventTypeSubId is null);
             foreach(var cat in categories)
             {
-                
+
                 TreeNode node = trEventTypes.Nodes.Add(cat.EventTypeId.ToString(), cat.EventTypeDescription);
                 node.Tag = cat.EventTypeSubId.ToString();
 
@@ -124,6 +124,7 @@ namespace WinReportTool
             }
 
             trEventTypes.ExpandAll();
+            _selectedTreeNode = null;
 
             // Load register event reason:s
             eventTypeReasons = eventTypes.Where(p => (p.EventTypeSubId == (int)Bridge.eEventType.FpActivity 
@@ -137,6 +138,7 @@ namespace WinReportTool
                                                         || p.EventTypeId == (int)Bridge.eEventType.PlannedMaintenance
                                                         || p.EventTypeId == (int)Bridge.eEventType.NoActivity)).ToList();
         }
+
         private void LoadEventLog()
         {
             try
@@ -164,8 +166,7 @@ namespace WinReportTool
         {
             bsEventLog.DataSource = null;
         }
-
-
+        
         private void LoadTestBed()
         {
             lstTestBed.Items.Clear();
@@ -185,6 +186,7 @@ namespace WinReportTool
                 lstDevice.Items.Add(device.DeviceName);
             }
         }
+
         private void btnAddTestbed_Click(object sender, EventArgs e)
         {
             if (txtTestBed.Text.Length > 0)
@@ -214,33 +216,91 @@ namespace WinReportTool
             }
         }
 
+        private void trEventTypes_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            if (trEventTypes.SelectedNode != null && trEventTypes.SelectedNode.IsSelected)
+            {
+                trEventTypes.SelectedNode.BackColor = System.Drawing.SystemColors.Window;
+                trEventTypes.SelectedNode.ForeColor = System.Drawing.SystemColors.WindowText;
+            }
+        }
+
         private void trEventTypes_AfterSelect(object sender, TreeViewEventArgs e)
         {
             _selectedTreeNode = e.Node;
+
+            trEventTypes.SelectedNode.BackColor = System.Drawing.SystemColors.Highlight;
+            trEventTypes.SelectedNode.ForeColor = System.Drawing.SystemColors.HighlightText;
+
+            txtEventType.Text = _selectedTreeNode.Text;
+            btnAddEventType.Enabled = !string.IsNullOrEmpty(txtEventType.Text);
         }
 
         private void btnAddEventType_Click(object sender, EventArgs e)
         {
-            int? eventTypeID = null;
-            if (_selectedTreeNode != null)
-            {
-                if (_selectedTreeNode.FullPath.Contains("\\"))
-                    eventTypeID = Convert.ToInt32(_selectedTreeNode.Tag);
-                else
-                    eventTypeID = null;
-            }
+            try
+            { 
+                int? eventTypeID = null;
+                if (_selectedTreeNode != null)
+                {
+                    if (_selectedTreeNode.FullPath.Contains("\\"))
+                        eventTypeID = Convert.ToInt32(_selectedTreeNode.Parent.Name);
+                    else
+                        eventTypeID = null;
+                }
 
-            if (txtEventType.Text.Length > 0)
+                if (txtEventType.Text.Length > 0)
+                {
+                    if (WcfConnector.GetReportService.SaveEventType(
+                        new Bridge.EventType
+                        {
+                            EventTypeDescription = txtEventType.Text,
+                            EventTypeSubId = eventTypeID
+                        }))
+                    {
+                        LoadEventType();
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                if (WcfConnector.GetReportService.SaveEventType(
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonDeleteEventType_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int eventTypeID = 0;
+                if (_selectedTreeNode != null)
+                {
+                    DialogResult dialogResult = MessageBox.Show($"Do you want delete EventType '{_selectedTreeNode.Text}'?", "Delete EventType", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+
+                    eventTypeID = Convert.ToInt32(_selectedTreeNode.Name);
+
+                    if (WcfConnector.GetReportService.DeleteEventType(
                     new Bridge.EventType
                     {
                         EventTypeDescription = txtEventType.Text,
-                        EventTypeSubId= eventTypeID
+                        EventTypeId = eventTypeID
                     }))
-                {
-                    LoadEventType();
+                    {
+                        LoadEventType();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Failed to delete EventType '{_selectedTreeNode.Text}', it's in use and can not be deleted!");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -463,5 +523,29 @@ namespace WinReportTool
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void trEventTypes_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Make sure this is the right button.
+            if (e.Button != MouseButtons.Right) return;
+
+            // Select this node.
+            TreeNode node_here = trEventTypes.GetNodeAt(e.X, e.Y);
+            trEventTypes.SelectedNode = node_here;
+
+            // See if we got a node.
+            if (node_here == null) return;
+
+            // See what kind of object this is and
+            // display the appropriate popup menu.
+            if (node_here.Tag is Bridge.EventType)
+            {
+                Bridge.EventType eventType = (Bridge.EventType)node_here.Tag;
+                AddEvent(Bridge.eEventType.FpActivity, eventType);
+
+            }
+
+        }
+
     }
 }

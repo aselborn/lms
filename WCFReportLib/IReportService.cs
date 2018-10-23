@@ -82,6 +82,10 @@ namespace WCFReportLib
 
         [OperationContract]
         bool SaveEventLog(Bridge.EventLog eventLog);
+
+        [OperationContract]
+        bool DeleteEventType(Bridge.EventType eventType);
+
     }
 
     [DataContract]
