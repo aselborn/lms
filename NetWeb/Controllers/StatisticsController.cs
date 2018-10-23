@@ -48,6 +48,18 @@ namespace NetWeb.Controllers
             return new SelectList(myData, "Value", "Text");
         }
 
+        private IEnumerable<SelectListItem> GetReportTypes()
+        {
+            SetupConnection();
+            List<ReportType> reportTypes = _iReportService.GetReportTypes();
+            var data = reportTypes.Select(x => new SelectListItem()
+            {
+                Text = x.ReportTypeText,
+                Value = x.ReportTypeId.ToString()
+            });
+
+            return new SelectList(data, "Value", "Text");
+        }
         private IEnumerable<SelectListItem> GetEventTypes(bool topTypes = false)
         {
             SetupConnection();
@@ -121,24 +133,9 @@ namespace NetWeb.Controllers
         
         public ActionResult Data(FilterParameters data)
         {
-
-
-            /*
             SetupConnection();
-            FilterParameters selection = CreateSelectionParameters(formData);
-            List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
-
-            TempData["ResultObject"] = data;
-            */
-            SetupConnection();
-            List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
-
-            //List<ResultObject> test = new List<ResultObject>();
-            //test.Add(new ResultObject { Text = "testValu", myValue = 1 });
-
-            return Json(lstModel, JsonRequestBehavior.AllowGet);
-            
-            
+            List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
+            return Json(statistics, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -152,6 +149,12 @@ namespace NetWeb.Controllers
         public ActionResult Stat()
         {
             //return PartialView("_LeftSide");
+
+            ReportTypeViewModel reportTypes = new ReportTypeViewModel
+            {
+                ListOfReportTypes = GetReportTypes()
+            };
+
             DateSelectModel dateSelectModel = new DateSelectModel { FromDate = DateTime.Now, TomDate = DateTime.Now };
             TestbedViewModel testbedModel = new TestbedViewModel
             {
@@ -176,7 +179,7 @@ namespace NetWeb.Controllers
                 new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel>
                 (testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
-
+            TempData["ReportTypes"] = reportTypes;
 
             return View(tupleModel);
         }

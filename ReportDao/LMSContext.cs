@@ -31,6 +31,7 @@ namespace ReportDao
 
         public DbSet<Device> DbDevice { get; set; }
         
+        public DbSet<ReportType> DbReportType { get; set; }
 
     }
 

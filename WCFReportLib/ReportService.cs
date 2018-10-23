@@ -231,6 +231,10 @@ namespace WCFReportLib
         {
             return new ReportDaoManager().DeleteEventType(eventType);
         }
+        public List<Bridge.ReportType> GetReportTypes()
+        {
+            return new ReportDaoManager().GetReportTypes();
+        }
 
     }
 }

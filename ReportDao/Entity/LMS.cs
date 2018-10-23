@@ -18,6 +18,7 @@ namespace ReportDao.Entity
         public virtual DbSet<EventType> EventType { get; set; }
         public virtual DbSet<Item> Item { get; set; }
         public virtual DbSet<ItemGroup> ItemGroup { get; set; }
+        public virtual DbSet<ReportType> ReportType { get; set; }
         public virtual DbSet<Test> Test { get; set; }
         public virtual DbSet<TestBed> TestBed { get; set; }
         public virtual DbSet<TestModule> TestModule { get; set; }
@@ -49,6 +50,10 @@ namespace ReportDao.Entity
 
             modelBuilder.Entity<Item>()
                 .Property(e => e.ItemName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ReportType>()
+                .Property(e => e.ReportTypeText)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Test>()

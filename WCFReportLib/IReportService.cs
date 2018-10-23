@@ -86,6 +86,8 @@ namespace WCFReportLib
         [OperationContract]
         bool DeleteEventType(Bridge.EventType eventType);
 
+        [OperationContract]
+        List<Bridge.ReportType> GetReportTypes();
     }
 
     [DataContract]
