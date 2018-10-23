@@ -175,6 +175,7 @@
     </Compile>
     <Compile Include="Models\DateSelectModel.cs" />
     <Compile Include="Models\EventTypeViewModel.cs" />
+    <Compile Include="Models\ReportTypeViewModel.cs" />
     <Compile Include="Models\TestbedViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

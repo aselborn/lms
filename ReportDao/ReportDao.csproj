@@ -78,6 +78,7 @@
     <Compile Include="Entity\Item.cs" />
     <Compile Include="Entity\ItemGroup.cs" />
     <Compile Include="Entity\LMS.cs" />
+    <Compile Include="Entity\ReportType.cs" />
     <Compile Include="Entity\Test.cs" />
     <Compile Include="Entity\TestBed.cs" />
     <Compile Include="Entity\TestModule.cs" />

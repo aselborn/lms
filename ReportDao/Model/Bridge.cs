@@ -156,5 +156,15 @@ namespace ReportDao.Model
             [DataMember]
             public string DeviceName { get; set; }
         }
+
+        [DataContract]
+        public class ReportType
+        {
+            [DataMember]
+            public int ReportTypeId { get; set; }
+            [DataMember]
+            public string ReportTypeText { get; set; }
+        }
+
     }
 }

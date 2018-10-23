@@ -226,5 +226,10 @@ namespace WCFReportLib
             return new ReportDaoManager().SaveTestBed(currentTestbed);
             
         }
+
+        public List<Bridge.ReportType> GetReportTypes()
+        {
+            return new ReportDaoManager().GetReportTypes();
+        }
     }
 }

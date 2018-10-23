@@ -27,6 +27,14 @@ namespace ReportDao
 
         public List<EventLog> GetEventLog() => m_LmsContext.DbEventLog.ToList();
         public List<EventType> GetEventType() => m_LmsContext.DbEventType.ToList();
+        public List<Bridge.ReportType> GetReportTypes()
+        {
+            List<Bridge.ReportType> reportTypes = new List<Bridge.ReportType>();
+            var reportT = m_LmsContext.DbReportType.ToList();
+            foreach (ReportType report in reportT)
+                reportTypes.Add(new Bridge.ReportType { ReportTypeId = report.ReportTypeId, ReportTypeText = report.ReportTypeText });
+            return reportTypes;
+        }
 
         private class MonthReply
         {
