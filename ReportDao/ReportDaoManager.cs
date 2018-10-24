@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using ReportDao.Entity;
 using System.Configuration;
+using ReportDao.Util;
 
 namespace ReportDao
 {
@@ -42,6 +43,12 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
+        private class WeekReply
+        {
+            public DateTime Week { get; set; }
+            public int Quantity { get; set; }
+        }
+
         private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
         {
             SqlParameter[] sqls = new SqlParameter[]
@@ -59,6 +66,14 @@ namespace ReportDao
                             ParameterName = "@stop",
                             Value =(DateTime)filterParameters.StopDate,
                             SqlDbType = System.Data.SqlDbType.DateTime,
+                            Direction =System.Data.ParameterDirection.Input
+                        },
+
+                        new SqlParameter
+                        {
+                            ParameterName="@testBedId",
+                            Value =filterParameters.TestBedId,
+                            DbType = System.Data.DbType.Int32,
                             Direction =System.Data.ParameterDirection.Input
                         },
                         new SqlParameter
@@ -83,6 +98,7 @@ namespace ReportDao
 
         public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.FilterParameters filterParameters)
         {
+            string qry = string.Empty;
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
             SqlParameter[] sqls = null;
             //DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
@@ -93,7 +109,7 @@ namespace ReportDao
             {
                 case Bridge.FilterParameters.GroupByOperator.Month:
 
-                    string qry = "p_EventCountByPeriod @start, @stop, @eventTypeId, @grpBy";
+                    qry = "p_EventCountByPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
 
                     List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
                     foreach(MonthReply reply in replys)
@@ -104,6 +120,18 @@ namespace ReportDao
                     break;
 
                 case Bridge.FilterParameters.GroupByOperator.Day:
+
+                    qry = "p_EventCountByPeriod @start, @stop,@testBedId, @eventTypeId, @grpBy";
+
+                    break;
+
+                case Bridge.FilterParameters.GroupByOperator.Week:
+                    qry = "p_EventCountByPeriod @start, @stop,@testBedId, @eventTypeId, @grpBy";
+                    List<WeekReply> weekreplys = m_LmsContext.Database.SqlQuery<WeekReply>(qry, sqls).ToList();
+                    foreach(WeekReply week in weekreplys)
+                    {
+                        result.Add(new Bridge.ResultObject { myValue = week.Quantity, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString() });
+                    }
 
                     break;
 
