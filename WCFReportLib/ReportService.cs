@@ -227,9 +227,14 @@ namespace WCFReportLib
             
         }
 
+        public bool DeleteEventType(Bridge.EventType eventType)
+        {
+            return new ReportDaoManager().DeleteEventType(eventType);
+        }
         public List<Bridge.ReportType> GetReportTypes()
         {
             return new ReportDaoManager().GetReportTypes();
         }
+
     }
 }

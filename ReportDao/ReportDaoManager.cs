@@ -301,6 +301,76 @@ namespace ReportDao
             return p > 0;
         }
 
+        public bool DeleteEventType(Bridge.EventType eventType)
+        {
+            int result = 0;
+
+            if (_connection.State != System.Data.ConnectionState.Open)
+                _connection.Open();
+
+            if (_connection.State == System.Data.ConnectionState.Open)
+            {
+                string sqlCommand = "";
+                sqlCommand = $"Delete From EventType Where EventTypeId={eventType.EventTypeId}";
+
+                if (!CheckIfEventTypeInUse(eventType))
+                {
+                    SqlCommand sql = new SqlCommand(sqlCommand, _connection);
+                    result = sql.ExecuteNonQuery();
+                }
+            }
+
+            //_connection.Close();
+
+            return result > 0;
+
+            //GetEventType();
+            //m_LmsContext.DbEventType.SingleOrDefault(e => e.EventTypeId == eventType.EventTypeId);
+
+            //m_LmsContext.DbEventType.Remove(
+            //    new EventType
+            //    {
+            //        EventTypeDescription = eventType.EventTypeDescription,
+            //        EventTypeId = eventType.EventTypeId,
+            //    });
+
+            //int p = m_LmsContext.SaveChanges();
+            //return p > 0;
+        }
+
+        private bool CheckIfEventTypeInUse(Bridge.EventType eventType)
+        {
+            object result = 0;
+            if (_connection.State != System.Data.ConnectionState.Open)
+                _connection.Open();
+
+            if (_connection.State == System.Data.ConnectionState.Open)
+            {
+                string sqlCommand = "";
+                sqlCommand = $"Select count(*) From EventLog Where EventTypeId={eventType.EventTypeId}";
+
+                SqlCommand sql = new SqlCommand(sqlCommand, _connection);
+                result = sql.ExecuteScalar();
+            }
+
+            //_connection.Close();
+
+            return (int)result > 0; 
+
+            //GetEventType();
+            //m_LmsContext.DbEventType.SingleOrDefault(e => e.EventTypeId == eventType.EventTypeId);
+
+            //m_LmsContext.DbEventType.Remove(
+            //    new EventType
+            //    {
+            //        EventTypeDescription = eventType.EventTypeDescription,
+            //        EventTypeId = eventType.EventTypeId,
+            //    });
+
+            //int p = m_LmsContext.SaveChanges();
+            //return p > 0;
+        }
+
         public bool SaveEventLog(Bridge.EventLog eventLog)
         {
             if (eventLog.EventLogId == 0)
