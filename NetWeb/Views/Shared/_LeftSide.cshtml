@@ -46,7 +46,7 @@
                 // You have a checked radio button here...
                 myCheckedValue = $(this).val();
             }
-           
+
         });
 
         filterParameters.StartDate = $("#FromDate").val();
@@ -57,7 +57,7 @@
         filterParameters.TopCategory = $('#chkSubEventTypes').is(":checked") == true ? true : false;
 
         var jsonData = JSON.stringify(filterParameters);
-        var s = 'hej';
+
         $.ajax({
             url: 'Data',
             type: 'POST',
@@ -76,7 +76,8 @@
                     $("#chart").html(item.Text);
                 });
 
-
+               
+                //What type of diagram should we draw?
                 //Drawing a pie-chart.
                 DrawPieChart(jsondata);
 
@@ -89,8 +90,6 @@
         });
 
     }
-
-
 
 
     $(function () {
@@ -122,69 +121,81 @@
 {
 
     @*<div class="divstyle">*@
-    <div class="left-divstyle">
-        <h3>Select statistics</h3>
+<div class="left-divstyle">
+    <h3>Filter statistics</h3>
 
-        <div class="form-group">
+    <!--To select report type of diagram-->
+    <div class="form-group">
+        @Html.Label("Select report-type")
+        @{
+            ReportTypeViewModel reportType = (ReportTypeViewModel)TempData["ReportTypes"];
+        }
 
-            @{
-                ReportTypeViewModel reportType = (ReportTypeViewModel)TempData["ReportType"];
-                string s = "sk";
-            }
-
-            @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
-            @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
-          "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })
-
-
-
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(tuple => tuple.Item2.EventTypeId)
-            @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
-          "--SELECT--",
-          new {@class = "form-control", @onchange = "filterEvents();"})
-
-        </div>
-
-        <div class="form-inline">
-
-            <select name="ddlSubEvent" class="form-control" id="idSubEvent">
-                <option>--SUB-EVENTTYPE--</option>
-            </select>
-
-            @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange = "AllEventsSelected(this);" })
-            @Html.Label("All subevents")
-
-        </div>
-
-        <div class="form-group input-group-sm">
-
-            @Html.LabelFor(model => model.Item4.FromDate)
-            @Html.TextBoxFor(model => model.Item4.FromDate, "{0:yyyy-MM-dd}", new { @id = "FromDate", @class = "form-control" })
-
-
-
-            @Html.LabelFor(model => model.Item4.TomDate)
-            @Html.TextBoxFor(model => model.Item4.TomDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "TomDate" })
-            <br />
-
-            <fieldset>
-                <legend>Select grouping option</legend>
-                @Html.RadioButton("group", "Year", false, new { @class = "control-label", @value = "1", @id="chkYear" }) Year<br />
-                @Html.RadioButton("group", "Month", true, new { @class = "control-label", @value = "2", @id = "chkMonth" }) Month<br />
-                @Html.RadioButton("group", "Week", false, new { @class = "control-label", @value = "3", @id = "chkWeek" }) Week<br />
-                @Html.RadioButton("group", "Day", false, new { @class = "control-label", @value = "4", @id = "chkDay" }) Day<br /><br />
-                <legend />
-            </fieldset>
-            @*<input type="submit" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />*@
-            <input type="button" onclick="FetchStatistics();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />
-
-        </div>
+        @Html.DropDownList("kalle", new SelectList(reportType.ListOfReportTypes, "Value", "Text"), new { @class = "form-control", @id = "ddlReportType" })
 
     </div>
+
+    <!--To select type of diagram-->
+    <div class="form-group">
+        @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
+        @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
+        @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
+        @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
+
+    </div>
+
+    <!--Select testbed-->
+    <div class="form-group">
+        @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
+        @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
+      "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId)
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+      "--SELECT--",
+      new {@class = "form-control", @onchange = "filterEvents();"})
+
+    </div>
+
+    <div class="form-inline">
+
+        <select name="ddlSubEvent" class="form-control" id="idSubEvent">
+            <option>--SUB-EVENTTYPE--</option>
+        </select>
+
+        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange = "AllEventsSelected(this);" })
+        @Html.Label("All subevents")
+
+    </div>
+
+    <div class="form-group input-group-sm">
+
+        @Html.LabelFor(model => model.Item4.FromDate)
+        @Html.TextBoxFor(model => model.Item4.FromDate, "{0:yyyy-MM-dd}", new { @id = "FromDate", @class = "form-control" })
+
+
+
+        @Html.LabelFor(model => model.Item4.TomDate)
+        @Html.TextBoxFor(model => model.Item4.TomDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "TomDate" })
+        <br />
+
+        <fieldset>
+            <legend>Select grouping option</legend>
+            @Html.RadioButton("group", "Year", false, new { @class = "control-label", @value = "1", @id = "chkYear" }) Year<br />
+            @Html.RadioButton("group", "Month", true, new { @class = "control-label", @value = "2", @id = "chkMonth" }) Month<br />
+            @Html.RadioButton("group", "Week", false, new { @class = "control-label", @value = "3", @id = "chkWeek" }) Week<br />
+            @Html.RadioButton("group", "Day", false, new { @class = "control-label", @value = "4", @id = "chkDay" }) Day<br /><br />
+            <legend />
+        </fieldset>
+        @*<input type="submit" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />*@
+        <input type="button" onclick="FetchStatistics();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />
+
+    </div>
+
+</div>
 
 }
 

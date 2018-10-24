@@ -11,6 +11,7 @@ namespace NetWeb.Models
     {
         [Display(Name = "RapportTyp")]
         public int ReportTypeId { get; set; }
+        public string SelectedReportTypeText { get; set; }
         public IEnumerable<SelectListItem> ListOfReportTypes { get; set; }
     }
 }

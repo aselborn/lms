@@ -180,7 +180,7 @@ namespace NetWeb.Controllers
                 (testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
             TempData["ReportTypes"] = reportTypes;
-
+            
             return View(tupleModel);
         }
 
