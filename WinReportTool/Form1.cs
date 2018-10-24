@@ -16,10 +16,11 @@ namespace WinReportTool
     {
 
         private TreeNode _selectedTreeNode = null;
+        private TreeNode _selectedTreeNodeAddEventToLog = null;
         private ListBox _selectedTestbed = null;
 
         BindingSource bsEventLog = new BindingSource();
-        List<Bridge.EventType> eventTypeReasons;
+        List<Bridge.EventType> _eventTypes;
 
         public frmMain()
         {
@@ -56,32 +57,6 @@ namespace WinReportTool
             }
             comboBoxTestBed.SelectedIndex = 0;
 
-            foreach (Bridge.EventType item in eventTypeReasons.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.FpActivity))
-            {
-                comboBoxFpActivity.Items.Add(item);
-            }
-            comboBoxFpActivity.SelectedIndex = 0;
-            foreach (Bridge.EventType item in eventTypeReasons.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.LpActivity))
-            {
-                comboBoxLpActivity.Items.Add(item);
-            }
-            comboBoxLpActivity.SelectedIndex = 0;
-            foreach (Bridge.EventType item in eventTypeReasons.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.RigStop))
-            {
-                comboBoxRigStop.Items.Add(item);
-            }
-            comboBoxRigStop.SelectedIndex = 0;
-            foreach (Bridge.EventType item in eventTypeReasons.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance))
-            {
-                comboBoxPlannedMaintenance.Items.Add(item);
-            }
-            comboBoxPlannedMaintenance.SelectedIndex = 0;
-            foreach (Bridge.EventType item in eventTypeReasons.Where(p => p.EventTypeSubId == (int)Bridge.eEventType.NoActivity))
-            {
-                comboBoxNoActivity.Items.Add(item);
-            }
-            comboBoxNoActivity.SelectedIndex = 0;
-
             PrepareGridComboBox();
         }
 
@@ -105,38 +80,33 @@ namespace WinReportTool
         private void LoadEventType()
         {
             trEventTypes.Nodes.Clear();
+            treeViewAddEventToLog.Nodes.Clear();
 
-            List<Bridge.EventType> eventTypes = WcfConnector.GetReportService.GetEventTypes();
+            _eventTypes = WcfConnector.GetReportService.GetEventTypes();
 
-            var categories = eventTypes.Where(p => p.EventTypeSubId is null);
+            var categories = _eventTypes.Where(p => p.EventTypeSubId is null);
             foreach(var cat in categories)
             {
-
                 TreeNode node = trEventTypes.Nodes.Add(cat.EventTypeId.ToString(), cat.EventTypeDescription);
                 node.Tag = cat.EventTypeSubId.ToString();
+                TreeNode nodeAddEventToLog = treeViewAddEventToLog.Nodes.Add(cat.EventTypeId.ToString(), cat.EventTypeDescription);
+                nodeAddEventToLog.Tag = cat.EventTypeSubId.ToString();
 
-                var subCategories = eventTypes.Where(p => p.EventTypeSubId.Equals(cat.EventTypeId));
+                var subCategories = _eventTypes.Where(p => p.EventTypeSubId.Equals(cat.EventTypeId));
                 foreach(var sub in subCategories)
                 {
                     node.Nodes.Add(sub.EventTypeId.ToString(), sub.EventTypeDescription);
                     node.Tag = sub.EventTypeSubId.ToString();
+                    nodeAddEventToLog.Nodes.Add(sub.EventTypeId.ToString(), sub.EventTypeDescription);
+                    nodeAddEventToLog.Tag = sub.EventTypeSubId.ToString();
                 }
             }
 
             trEventTypes.ExpandAll();
             _selectedTreeNode = null;
 
-            // Load register event reason:s
-            eventTypeReasons = eventTypes.Where(p => (p.EventTypeSubId == (int)Bridge.eEventType.FpActivity 
-                                                        || p.EventTypeSubId == (int)Bridge.eEventType.LpActivity
-                                                        || p.EventTypeSubId == (int)Bridge.eEventType.RigStop
-                                                        || p.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance
-                                                        || p.EventTypeSubId == (int)Bridge.eEventType.NoActivity
-                                                        || p.EventTypeId == (int)Bridge.eEventType.FpActivity
-                                                        || p.EventTypeId == (int)Bridge.eEventType.LpActivity
-                                                        || p.EventTypeId == (int)Bridge.eEventType.RigStop
-                                                        || p.EventTypeId == (int)Bridge.eEventType.PlannedMaintenance
-                                                        || p.EventTypeId == (int)Bridge.eEventType.NoActivity)).ToList();
+            treeViewAddEventToLog.ExpandAll();
+            _selectedTreeNodeAddEventToLog = null;
         }
 
         private void LoadEventLog()
@@ -234,6 +204,26 @@ namespace WinReportTool
 
             txtEventType.Text = _selectedTreeNode.Text;
             btnAddEventType.Enabled = !string.IsNullOrEmpty(txtEventType.Text);
+        }
+
+        private void treeViewAddEventToLog_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            if (treeViewAddEventToLog.SelectedNode != null /*&& treeViewAddEventToLog.SelectedNode.IsSelected*/)
+            {
+                treeViewAddEventToLog.SelectedNode.BackColor = System.Drawing.SystemColors.Window;
+                treeViewAddEventToLog.SelectedNode.ForeColor = System.Drawing.SystemColors.WindowText;
+            }
+        }
+
+        private void treeViewAddEventToLog_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            _selectedTreeNodeAddEventToLog = e.Node;
+          
+            treeViewAddEventToLog.SelectedNode.BackColor = System.Drawing.SystemColors.Highlight;
+            treeViewAddEventToLog.SelectedNode.ForeColor = System.Drawing.SystemColors.HighlightText;
+
+            // Only possible to add event with reason
+            buttonAddEvent.Enabled = _selectedTreeNodeAddEventToLog.FullPath.Contains("\\");
         }
 
         private void btnAddEventType_Click(object sender, EventArgs e)
@@ -348,7 +338,7 @@ namespace WinReportTool
                 Bridge.EventLog selectedRowItem = this.dataGridViewEventLogs.Rows[index].DataBoundItem as Bridge.EventLog;
                 if (selectedRowItem != null)
                 {
-                    Bridge.EventType eventTypeSub = eventTypeReasons.Where(t => t.EventTypeId == selectedRowItem.EventTypeSubId).FirstOrDefault();
+                    Bridge.EventType eventTypeSub = _eventTypes.Where(t => t.EventTypeId == selectedRowItem.EventTypeSubId).FirstOrDefault();
                     selectedRowItem.EventTypeSubDescription = eventTypeSub.EventTypeDescription;
                     if (selectedRowItem.Deleted)
                     {
@@ -429,7 +419,11 @@ namespace WinReportTool
             {
                 if (dataGridViewEventLogs.Rows[index].DataBoundItem is Bridge.EventLog eventLog)
                 {
-                    if (!eventLog.Deleted)
+                    if (!eventLog.Deleted && (eventLog.EventTypeSubId == (int)Bridge.eEventType.FpActivity ||
+                                                eventLog.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
+                                                eventLog.EventTypeSubId == (int)Bridge.eEventType.NoActivity ||
+                                                eventLog.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
+                                                eventLog.EventTypeSubId == (int)Bridge.eEventType.RigStop))
                         totTime += eventLog.EventValue ?? 0;
                 }
             }
@@ -442,42 +436,14 @@ namespace WinReportTool
             LoadEventLog();
         }
 
-        private void buttonAddFPEvent_Click(object sender, EventArgs e)
+        private void buttonAddEvent_Click(object sender, EventArgs e)
         {
-            Bridge.EventType reason = (Bridge.EventType)comboBoxFpActivity.SelectedItem;
-            if (reason != null)
-                AddEvent(Bridge.eEventType.FpActivity, reason);
+            AddEvent( Convert.ToInt32(_selectedTreeNodeAddEventToLog.Parent.Name), 
+                      Convert.ToInt32(_selectedTreeNodeAddEventToLog.Name), 
+                      _selectedTreeNodeAddEventToLog.Text);
         }
 
-        private void buttonAddLPEvent_Click(object sender, EventArgs e)
-        {
-            Bridge.EventType reason = (Bridge.EventType)comboBoxLpActivity.SelectedItem;
-            if (reason != null)
-                AddEvent(Bridge.eEventType.LpActivity, reason);
-        }
-
-        private void buttonAddRigStopEvent_Click(object sender, EventArgs e)
-        {
-            Bridge.EventType reason = (Bridge.EventType)comboBoxRigStop.SelectedItem;
-            if (reason != null)
-                AddEvent(Bridge.eEventType.RigStop, reason);
-        }
-
-        private void buttonAddPlannedMaintEvent_Click(object sender, EventArgs e)
-        {
-            Bridge.EventType reason = (Bridge.EventType)comboBoxPlannedMaintenance.SelectedItem;
-            if (reason != null)
-                AddEvent(Bridge.eEventType.PlannedMaintenance, reason);
-        }
-
-        private void buttonAddNoActivityEvent_Click(object sender, EventArgs e)
-        {
-            Bridge.EventType reason = (Bridge.EventType)comboBoxNoActivity.SelectedItem;
-            if (reason != null)
-                AddEvent(Bridge.eEventType.NoActivity, reason);
-        }
-
-        private void AddEvent(Bridge.eEventType eventType, Bridge.EventType reason)
+        private void AddEvent(int eventTypeSubId, int reasonEventTypeId, string reasonDescription)
         {
             Bridge.TestBed selectedTestBed = (Bridge.TestBed)comboBoxTestBed.SelectedItem;
             Bridge.EventLog newItem = new Bridge.EventLog
@@ -485,10 +451,10 @@ namespace WinReportTool
                 TestBedId = selectedTestBed.TestBedId,
                 EventLogManualTime = dateTimePickerEventDate.Value.Date,
 
-                EventTypeSubId = (int)eventType,
-                EventTypeSubDescription = eventType.ToString(),
-                EventTypeId = reason.EventTypeId,
-                EventTypeDescription = reason.EventTypeDescription,
+                EventTypeSubId = eventTypeSubId,
+                EventTypeSubDescription = "",
+                EventTypeId = reasonEventTypeId,
+                EventTypeDescription = reasonDescription,
                 EventValue = 0
             };
             bsEventLog.Add(newItem);
@@ -541,11 +507,9 @@ namespace WinReportTool
             if (node_here.Tag is Bridge.EventType)
             {
                 Bridge.EventType eventType = (Bridge.EventType)node_here.Tag;
-                AddEvent(Bridge.eEventType.FpActivity, eventType);
+               // AddEvent(Bridge.eEventType.FpActivity, eventType);
 
             }
-
         }
-
     }
 }
