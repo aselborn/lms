@@ -13,6 +13,17 @@
 <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript">
 
+    var selectedChartType = null;
+
+    $(function () {
+        selectedChartType = $('[name="dgr"]:checked').val();
+    });
+
+    $(document).on('click', '[name="dgr"]', function () {
+        selectedChartType = $(this).val();
+        selectedChartType = selectedChartType.toLowerCase();
+    });
+
     function filterEvents() {
         var eventTypeId = $('#Item2_EventTypeId').val();
 
@@ -79,7 +90,7 @@
                
                 //What type of diagram should we draw?
                 //Drawing a pie-chart.
-                DrawPieChart(jsondata);
+                DrawChart(jsondata, selectedChartType);
 
 
             },
@@ -126,6 +137,7 @@
 
     <!--To select report type of diagram-->
     <div class="form-group">
+        
         @Html.Label("Select report-type")
         @{
             ReportTypeViewModel reportType = (ReportTypeViewModel)TempData["ReportTypes"];
@@ -137,11 +149,14 @@
 
     <!--To select type of diagram-->
     <div class="form-group">
-        @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
-        @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
-        @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
-        @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
 
+        <form name="frmDiagramType">
+            @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
+            @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
+            @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
+            @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
+        </form>
+        
     </div>
 
     <!--Select testbed-->
