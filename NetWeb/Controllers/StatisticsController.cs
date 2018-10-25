@@ -220,7 +220,7 @@ namespace NetWeb.Controllers
                 EventTypeId = UseSubitems ? Convert.ToInt32(collection.Get("Item2.EventTypeId")): Convert.ToInt32(collection.Get("ddlSubEvent")),
                 StartDate = Convert.ToDateTime(collection.Get("Item4.FromDate")),
                 StopDate = Convert.ToDateTime(collection.Get("Item4.TomDate")),
-                TopCategory = UseSubitems,
+                AllSubEvents = UseSubitems,
                 WithGrouping = groupByOperator
             };
 
