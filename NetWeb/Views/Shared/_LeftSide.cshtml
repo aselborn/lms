@@ -2,7 +2,7 @@
 @model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
 
 @Styles.Render("~/Content/css")
-@Styles.Render("~/Content/custom/css")
+@*@Styles.Render("~/Content/custom/css")*@
 @Scripts.Render("~/bundles/modernizr")
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
@@ -12,6 +12,17 @@
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript">
+
+    var selectedChartType = null;
+
+    $(function () {
+        selectedChartType = $('[name="dgr"]:checked').val();
+    });
+
+    $(document).on('click', '[name="dgr"]', function () {
+        selectedChartType = $(this).val();
+        selectedChartType = selectedChartType.toLowerCase();
+    });
 
     function filterEvents() {
         var eventTypeId = $('#Item2_EventTypeId').val();
@@ -54,7 +65,13 @@
         filterParameters.TestBedId = $("#ddlTestBed").val();
         filterParameters.WithGrouping = myCheckedValue;
         filterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
-        filterParameters.TopCategory = $('#chkSubEventTypes').is(":checked") == true ? true : false;
+        filterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
+        filterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
+
+        if (filterParameters.TestBedId == "") {
+            alert('A testbed must be selected. Exiting.');
+            return;
+        }
 
         var jsonData = JSON.stringify(filterParameters);
 
@@ -79,7 +96,7 @@
                
                 //What type of diagram should we draw?
                 //Drawing a pie-chart.
-                DrawPieChart(jsondata);
+                DrawChart(jsondata, selectedChartType);
 
 
             },
@@ -106,11 +123,36 @@
         });
     })
 
+    function AllSubEventsSelected(element) {
+        //element.checked ? alert('checked.') : alert('not checked');
+        //allEvents.checked = element.checked ? true : false;
+        var checked = element.checked ? true : false;
+        //$('#IsSubAllEvents').val(checked);
+        
+        if (checked) {
+            document.getElementById("idSubEvent").disabled = checked;            
+        } else {
+            document.getElementById("idSubEvent").disabled = checked;
+        }
+
+
+    }
+
     function AllEventsSelected(element) {
         //element.checked ? alert('checked.') : alert('not checked');
         //allEvents.checked = element.checked ? true : false;
         var checked = element.checked ? true : false;
-        $('#IsAllEvents').val(checked);
+
+        //Set this control disabled.
+        if (checked) {
+            document.getElementById("Item2_EventTypeId").disabled = checked;
+            document.getElementById("idSubEvent").disabled = checked;            
+        } else {
+            document.getElementById("Item2_EventTypeId").disabled = checked;
+            document.getElementById("idSubEvent").disabled = checked;
+        }
+
+        
     }
 
 </script>
@@ -126,22 +168,26 @@
 
     <!--To select report type of diagram-->
     <div class="form-group">
+        
         @Html.Label("Select report-type")
         @{
             ReportTypeViewModel reportType = (ReportTypeViewModel)TempData["ReportTypes"];
         }
 
-        @Html.DropDownList("kalle", new SelectList(reportType.ListOfReportTypes, "Value", "Text"), new { @class = "form-control", @id = "ddlReportType" })
+        @Html.DropDownList("drpSelectReportType", new SelectList(reportType.ListOfReportTypes, "Value", "Text"), new { @class = "form-control", @id = "ddlReportType" })
 
     </div>
 
     <!--To select type of diagram-->
     <div class="form-group">
-        @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
-        @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
-        @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
-        @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
 
+        <form name="frmDiagramType">
+            @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
+            @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
+            @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
+            @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
+        </form>
+        
     </div>
 
     <!--Select testbed-->
@@ -151,23 +197,28 @@
       "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })
     </div>
 
-    <div class="form-group">
 
-        @Html.LabelFor(tuple => tuple.Item2.EventTypeId)
+    <!--All eventtypes-->
+    <div class="form-inline">
+
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId)<br/>
         @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
       "--SELECT--",
       new {@class = "form-control", @onchange = "filterEvents();"})
 
+        @Html.CheckBox("chkEventTypes", false, new { onchange = "AllEventsSelected(this);" })
+        @Html.Label("All Events")
+
     </div>
 
     <div class="form-inline">
-
+        <br />
         <select name="ddlSubEvent" class="form-control" id="idSubEvent">
             <option>--SUB-EVENTTYPE--</option>
         </select>
 
-        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange = "AllEventsSelected(this);" })
-        @Html.Label("All subevents")
+        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange = "AllSubEventsSelected(this);"})
+        @Html.Label("All Subevents")
 
     </div>
 

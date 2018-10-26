@@ -6,7 +6,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/custom/css")
 </head>
-<body style="background-color:aliceblue">
+<body>
     <!--Render a partial view.-->
     @{
         Html.RenderPartial("_LeftSide");
@@ -22,17 +22,17 @@
     <!-- Left Sidebar -->
     <!-- End of Left Sidebar -->
     <!-- Content Body -->
-    <div class="statDiv">
+    <div class="statDiv" >
         @RenderBody()
     </div>
     <!-- End of Content Body -->
     <!-- Footer -->
     <footer class="footer-style">
-        <h4>Date is @DateTime.Now.ToShortDateString()</h4>
+        <h4>Date is: @DateTime.Now.ToShortDateString()</h4>
     </footer>
 
     <!-- Style -->
-    <style>
+    @*<style>
         header {
             height: 100%;
             width: 100%;
@@ -52,6 +52,6 @@
             float: right;
             text-align: center;
         }
-    </style>
+    </style>*@
 </body>
 </html>
