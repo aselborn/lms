@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lstTestBed = new System.Windows.Forms.ListBox();
             this.btnAddTestbed = new System.Windows.Forms.Button();
             this.txtTestBed = new System.Windows.Forms.TextBox();
@@ -59,11 +59,13 @@
             this.buttonFindEvent = new System.Windows.Forms.Button();
             this.dateTimePickerEventDate = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonAddEvent = new System.Windows.Forms.Button();
+            this.treeViewAddEventToLog = new System.Windows.Forms.TreeView();
             this.tabPageTestBed = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnRename = new System.Windows.Forms.Button();
+            this.btnDeleteTestBed = new System.Windows.Forms.Button();
             this.tabPageDevice = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonDeleteDevice = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.btnAddDevice = new System.Windows.Forms.Button();
             this.txtDevice = new System.Windows.Forms.TextBox();
@@ -74,8 +76,6 @@
             this.btnAddEventType = new System.Windows.Forms.Button();
             this.txtEventType = new System.Windows.Forms.TextBox();
             this.trEventTypes = new System.Windows.Forms.TreeView();
-            this.treeViewAddEventToLog = new System.Windows.Forms.TreeView();
-            this.buttonAddEvent = new System.Windows.Forms.Button();
             this.tbTestBed.SuspendLayout();
             this.tabPageRegisterEvent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).BeginInit();
@@ -147,11 +147,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(512, 459);
+            this.label3.Location = new System.Drawing.Point(555, 459);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(141, 13);
+            this.label3.Size = new System.Drawing.Size(85, 13);
             this.label3.TabIndex = 18;
-            this.label3.Text = "Total / remaining Time (min):";
+            this.label3.Text = "Total Time (min):";
             // 
             // textBoxTotalTime
             // 
@@ -252,8 +252,8 @@
             // comboTestId
             // 
             this.comboTestId.DataPropertyName = "TestId";
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboTestId.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboTestId.DefaultCellStyle = dataGridViewCellStyle5;
             this.comboTestId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboTestId.HeaderText = "Test";
             this.comboTestId.Name = "comboTestId";
@@ -271,11 +271,11 @@
             // EventValue
             // 
             this.EventValue.DataPropertyName = "EventValue";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.Format = "N0";
-            dataGridViewCellStyle10.NullValue = null;
-            this.EventValue.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.Format = "N0";
+            dataGridViewCellStyle6.NullValue = null;
+            this.EventValue.DefaultCellStyle = dataGridViewCellStyle6;
             this.EventValue.HeaderText = "Time (min)";
             this.EventValue.MaxInputLength = 5;
             this.EventValue.Name = "EventValue";
@@ -367,10 +367,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add event to log";
             // 
+            // buttonAddEvent
+            // 
+            this.buttonAddEvent.Enabled = false;
+            this.buttonAddEvent.Location = new System.Drawing.Point(146, 379);
+            this.buttonAddEvent.Name = "buttonAddEvent";
+            this.buttonAddEvent.Size = new System.Drawing.Size(85, 23);
+            this.buttonAddEvent.TabIndex = 19;
+            this.buttonAddEvent.Text = "Add";
+            this.buttonAddEvent.UseVisualStyleBackColor = true;
+            this.buttonAddEvent.Click += new System.EventHandler(this.buttonAddEvent_Click);
+            // 
+            // treeViewAddEventToLog
+            // 
+            this.treeViewAddEventToLog.BackColor = System.Drawing.SystemColors.Window;
+            this.treeViewAddEventToLog.Location = new System.Drawing.Point(10, 19);
+            this.treeViewAddEventToLog.Name = "treeViewAddEventToLog";
+            this.treeViewAddEventToLog.Size = new System.Drawing.Size(221, 352);
+            this.treeViewAddEventToLog.TabIndex = 19;
+            this.treeViewAddEventToLog.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeViewAddEventToLog_BeforeSelect);
+            this.treeViewAddEventToLog.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAddEventToLog_AfterSelect);
+            // 
             // tabPageTestBed
             // 
             this.tabPageTestBed.Controls.Add(this.label6);
-            this.tabPageTestBed.Controls.Add(this.btnRename);
+            this.tabPageTestBed.Controls.Add(this.btnDeleteTestBed);
             this.tabPageTestBed.Controls.Add(this.lstTestBed);
             this.tabPageTestBed.Controls.Add(this.txtTestBed);
             this.tabPageTestBed.Controls.Add(this.btnAddTestbed);
@@ -391,19 +412,19 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "TestBed name:";
             // 
-            // btnRename
+            // btnDeleteTestBed
             // 
-            this.btnRename.Location = new System.Drawing.Point(205, 452);
-            this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(80, 23);
-            this.btnRename.TabIndex = 5;
-            this.btnRename.Text = "Rename";
-            this.btnRename.UseVisualStyleBackColor = true;
-            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
+            this.btnDeleteTestBed.Location = new System.Drawing.Point(205, 452);
+            this.btnDeleteTestBed.Name = "btnDeleteTestBed";
+            this.btnDeleteTestBed.Size = new System.Drawing.Size(80, 23);
+            this.btnDeleteTestBed.TabIndex = 5;
+            this.btnDeleteTestBed.Text = "Delete";
+            this.btnDeleteTestBed.UseVisualStyleBackColor = true;
+            this.btnDeleteTestBed.Click += new System.EventHandler(this.btnDeleteTestBed_Click);
             // 
             // tabPageDevice
             // 
-            this.tabPageDevice.Controls.Add(this.button1);
+            this.tabPageDevice.Controls.Add(this.buttonDeleteDevice);
             this.tabPageDevice.Controls.Add(this.label5);
             this.tabPageDevice.Controls.Add(this.btnAddDevice);
             this.tabPageDevice.Controls.Add(this.txtDevice);
@@ -416,14 +437,15 @@
             this.tabPageDevice.Text = "Devices";
             this.tabPageDevice.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonDeleteDevice
             // 
-            this.button1.Location = new System.Drawing.Point(197, 454);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Delete";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonDeleteDevice.Location = new System.Drawing.Point(197, 454);
+            this.buttonDeleteDevice.Name = "buttonDeleteDevice";
+            this.buttonDeleteDevice.Size = new System.Drawing.Size(80, 23);
+            this.buttonDeleteDevice.TabIndex = 12;
+            this.buttonDeleteDevice.Text = "Delete";
+            this.buttonDeleteDevice.UseVisualStyleBackColor = true;
+            this.buttonDeleteDevice.Click += new System.EventHandler(this.buttonDeleteDevice_Click);
             // 
             // label5
             // 
@@ -457,6 +479,7 @@
             this.lstDevice.Name = "lstDevice";
             this.lstDevice.Size = new System.Drawing.Size(265, 407);
             this.lstDevice.TabIndex = 8;
+            this.lstDevice.Click += new System.EventHandler(this.lstDevice_Click);
             // 
             // tabPageEventType
             // 
@@ -519,27 +542,6 @@
             this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
             this.trEventTypes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trEventTypes_MouseDown);
             // 
-            // treeViewAddEventToLog
-            // 
-            this.treeViewAddEventToLog.BackColor = System.Drawing.SystemColors.Window;
-            this.treeViewAddEventToLog.Location = new System.Drawing.Point(10, 19);
-            this.treeViewAddEventToLog.Name = "treeViewAddEventToLog";
-            this.treeViewAddEventToLog.Size = new System.Drawing.Size(221, 352);
-            this.treeViewAddEventToLog.TabIndex = 19;
-            this.treeViewAddEventToLog.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeViewAddEventToLog_BeforeSelect);
-            this.treeViewAddEventToLog.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAddEventToLog_AfterSelect);
-            // 
-            // buttonAddEvent
-            // 
-            this.buttonAddEvent.Enabled = false;
-            this.buttonAddEvent.Location = new System.Drawing.Point(146, 379);
-            this.buttonAddEvent.Name = "buttonAddEvent";
-            this.buttonAddEvent.Size = new System.Drawing.Size(85, 23);
-            this.buttonAddEvent.TabIndex = 19;
-            this.buttonAddEvent.Text = "Add";
-            this.buttonAddEvent.UseVisualStyleBackColor = true;
-            this.buttonAddEvent.Click += new System.EventHandler(this.buttonAddEvent_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -580,7 +582,7 @@
         private System.Windows.Forms.Button btnAddEventType;
         private System.Windows.Forms.TextBox txtEventType;
         private System.Windows.Forms.TabPage tabPageRegisterEvent;
-        private System.Windows.Forms.Button btnRename;
+        private System.Windows.Forms.Button btnDeleteTestBed;
         private System.Windows.Forms.Button buttonFindEvent;
         private System.Windows.Forms.DateTimePicker dateTimePickerEventDate;
         private System.Windows.Forms.Label label2;
@@ -594,7 +596,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxTotalTime;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonDeleteDevice;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonDeleteEventType;

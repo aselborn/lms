@@ -155,6 +155,11 @@ namespace ReportDao.Model
             public int DeviceId { get; set; }
             [DataMember]
             public string DeviceName { get; set; }
+
+            public override string ToString()
+            {
+                return DeviceName;
+            }
         }
 
         [DataContract]

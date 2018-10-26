@@ -18,6 +18,7 @@ namespace WinReportTool
         private TreeNode _selectedTreeNode = null;
         private TreeNode _selectedTreeNodeAddEventToLog = null;
         private ListBox _selectedTestbed = null;
+        private ListBox _selectedDevice = null;
 
         BindingSource bsEventLog = new BindingSource();
         List<Bridge.EventType> _eventTypes;
@@ -47,7 +48,7 @@ namespace WinReportTool
             // Tab - Register events
             dataGridViewEventLogs.DataSource = bsEventLog;
 
-            dateTimePickerEventDate.Value.ToShortDateString();
+            dateTimePickerEventDate.Value = DateTime.Today;
             comboBoxTestBed.Items.Clear();
 
             List<Bridge.TestBed> testBeds = WcfConnector.GetReportService.GetTestBeds().ToList();
@@ -151,40 +152,12 @@ namespace WinReportTool
         {
             lstDevice.Items.Clear();
             List<Bridge.Device> devices = WcfConnector.GetReportService.GetDevices();
-            foreach(Bridge.Device device in devices)
+            foreach (Bridge.Device item in devices)
             {
-                lstDevice.Items.Add(device.DeviceName);
+                lstDevice.Items.Add(item);
             }
         }
 
-        private void btnAddTestbed_Click(object sender, EventArgs e)
-        {
-            if (txtTestBed.Text.Length > 0)
-            {
-                if (lstTestBed.Items.Contains(txtTestBed.Text))
-                {
-                    MessageBox.Show($"Testbed item {txtTestBed.Text} already exists");
-                    return;
-                }
-                if (WcfConnector.GetReportService.AddNewTestbed(new Bridge.TestBed { TestBedName = txtTestBed.Text }))
-                {
-                    txtTestBed.Text = "";
-                    LoadTestBed();
-                }
-            }
-        }
-
-        private void btnAddDevice_Click(object sender, EventArgs e)
-        {
-            if (txtDevice.Text.Length > 0)
-            {
-                if (WcfConnector.GetReportService.SaveDevice(new Bridge.Device { DeviceName = txtDevice.Text }))
-                {
-                    txtDevice.Text = "";
-                    LoadDevice();
-                }
-            }
-        }
 
         private void trEventTypes_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
@@ -233,22 +206,25 @@ namespace WinReportTool
                 int? eventTypeID = null;
                 if (_selectedTreeNode != null)
                 {
+                    // Check if parent exists
                     if (_selectedTreeNode.FullPath.Contains("\\"))
                         eventTypeID = Convert.ToInt32(_selectedTreeNode.Parent.Name);
-                    else
-                        eventTypeID = null;
-                }
 
-                if (txtEventType.Text.Length > 0)
-                {
-                    if (WcfConnector.GetReportService.SaveEventType(
-                        new Bridge.EventType
-                        {
-                            EventTypeDescription = txtEventType.Text,
-                            EventTypeSubId = eventTypeID
-                        }))
+                    if (txtEventType.Text.Length > 0)
                     {
-                        LoadEventType();
+                        if (WcfConnector.GetReportService.SaveEventType(
+                            new Bridge.EventType
+                            {
+                                EventTypeDescription = txtEventType.Text,
+                                EventTypeSubId = eventTypeID
+                            }))
+                        {
+                            LoadEventType();
+                        }
+                        else
+                        {
+                            MessageBox.Show($"EventType '{_selectedTreeNode.Text}' already exists and can not be added!");
+                        }
                     }
                 }
             }
@@ -262,7 +238,6 @@ namespace WinReportTool
         {
             try
             {
-                int eventTypeID = 0;
                 if (_selectedTreeNode != null)
                 {
                     DialogResult dialogResult = MessageBox.Show($"Do you want delete EventType '{_selectedTreeNode.Text}'?", "Delete EventType", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
@@ -271,7 +246,7 @@ namespace WinReportTool
                         return;
                     }
 
-                    eventTypeID = Convert.ToInt32(_selectedTreeNode.Name);
+                    int eventTypeID = Convert.ToInt32(_selectedTreeNode.Name);
 
                     if (WcfConnector.GetReportService.DeleteEventType(
                     new Bridge.EventType
@@ -284,7 +259,30 @@ namespace WinReportTool
                     }
                     else
                     {
-                        MessageBox.Show($"Failed to delete EventType '{_selectedTreeNode.Text}', it's in use and can not be deleted!");
+                        MessageBox.Show($"EventType '{_selectedTreeNode.Text}' is in use and can not be deleted!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+    
+        private void btnAddTestbed_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtTestBed.Text.Length > 0)
+                {
+                    if (WcfConnector.GetReportService.AddNewTestbed(new Bridge.TestBed { TestBedName = txtTestBed.Text }))
+                    {
+                        txtTestBed.Text = "";
+                        LoadTestBed();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Testbed '{txtTestBed.Text}' already exists and can not be added!");
                     }
                 }
             }
@@ -294,19 +292,91 @@ namespace WinReportTool
             }
         }
 
-        private void btnRename_Click(object sender, EventArgs e)
+        private void btnDeleteTestBed_Click(object sender, EventArgs e)
         {
-            if (txtTestBed.Text.Length == 0)
-                return;
-
-            Bridge.TestBed testBed = (Bridge.TestBed)_selectedTestbed.SelectedItem;
-            testBed.TestBedName = txtTestBed.Text;
-
-            if (WcfConnector.GetReportService.SaveTestBed(testBed))
+            try
             {
-                LoadTestBed();
+                if (_selectedTestbed != null)
+                {
+                    Bridge.TestBed testBed = (Bridge.TestBed)_selectedTestbed.SelectedItem;
+                    if (testBed != null)
+                    {
+                        DialogResult dialogResult = MessageBox.Show($"Do you want delete TestBed '{_selectedTestbed.Text}'?", "Delete TestBed", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.Cancel)
+                        {
+                            return;
+                        }
+
+                        if (WcfConnector.GetReportService.DeleteTestBed(testBed))
+                        {
+                            LoadTestBed();
+                        }
+                        else
+                        {
+                            MessageBox.Show($"TestBed '{_selectedTestbed.Text}' is in use and can not be deleted!");
+                        }
+                    }
+                }
             }
-           
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnAddDevice_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtDevice.Text.Length > 0)
+                {
+                    if (WcfConnector.GetReportService.SaveDevice(new Bridge.Device { DeviceName = txtDevice.Text }))
+                    {
+                        txtDevice.Text = "";
+                        LoadDevice();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Device '{txtDevice.Text}' already exists and can not be added!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonDeleteDevice_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_selectedDevice != null)
+                {
+                    Bridge.Device device = (Bridge.Device)_selectedDevice.SelectedItem;
+                    if (device != null)
+                    {
+                        DialogResult dialogResult = MessageBox.Show($"Do you want delete TestBed '{_selectedDevice.Text}'?", "Delete Device", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.Cancel)
+                        {
+                            return;
+                        }
+
+                        if (WcfConnector.GetReportService.DeleteDevice(device))
+                        {
+                            LoadTestBed();
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Device '{_selectedDevice.Text}' is in use and can not be deleted!");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void lstTestBed_Click(object sender, EventArgs e)
@@ -318,6 +388,12 @@ namespace WinReportTool
         private void lstTestBed_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void lstDevice_Click(object sender, EventArgs e)
+        {
+            _selectedDevice = (ListBox)sender;
+            txtDevice.Text = _selectedDevice.Text;
         }
 
         private void dateTimePickerEventDate_ValueChanged(object sender, EventArgs e)

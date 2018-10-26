@@ -227,10 +227,22 @@ namespace WCFReportLib
             
         }
 
+        public bool DeleteTestBed(Bridge.TestBed currentTestbed)
+        {
+            return new ReportDaoManager().DeleteTestBed(currentTestbed);
+
+        }
+
         public bool DeleteEventType(Bridge.EventType eventType)
         {
             return new ReportDaoManager().DeleteEventType(eventType);
         }
+
+        public bool DeleteDevice(Bridge.Device device)
+        {
+            return new ReportDaoManager().DeleteDevice(device);
+        }
+
         public List<Bridge.ReportType> GetReportTypes()
         {
             return new ReportDaoManager().GetReportTypes();

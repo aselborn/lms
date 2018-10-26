@@ -284,24 +284,60 @@ namespace ReportDao
             m_LmsContext.DbTestBed.SingleOrDefault(h => h.TestBedId.Equals(currentTestbed.TestBedId)).TestBedName = currentTestbed.TestBedName;
             int p = m_LmsContext.SaveChanges();
 
+            return p > 0;
+        }
+
+        public bool DeleteTestBed(Bridge.TestBed testBed)
+        {
+            int p = 0;
+            var tbInUse = m_LmsContext.DbEventLog.FirstOrDefault(t => t.TestBedId == testBed.TestBedId);
+
+            if (tbInUse == null)
+            {
+                var delItem = m_LmsContext.DbTestBed.FirstOrDefault(t => t.TestBedId == testBed.TestBedId);
+
+                m_LmsContext.DbTestBed.Remove(delItem);
+                p = m_LmsContext.SaveChanges();
+            }
 
             return p > 0;
         }
 
         public bool SaveEventType(Bridge.EventType eventType)
         {
-            m_LmsContext.DbEventType.Add(
+            int p = 0;
+            var etExist = m_LmsContext.DbEventType.FirstOrDefault(e => e.EventTypeSubId == eventType.EventTypeSubId && e.EventTypeDescription == eventType.EventTypeDescription);
+
+            if (etExist == null)
+            {
+                m_LmsContext.DbEventType.Add(
                 new EventType
                 {
                     EventTypeDescription = eventType.EventTypeDescription,
                     EventTypeSubId = eventType.EventTypeSubId,
                 });
 
-            int p = m_LmsContext.SaveChanges();
+                p = m_LmsContext.SaveChanges();
+            }
             return p > 0;
         }
 
         public bool DeleteEventType(Bridge.EventType eventType)
+        {
+            int p = 0;
+            var etInUse = m_LmsContext.DbEventLog.FirstOrDefault(e => e.EventTypeId == eventType.EventTypeId);
+
+            if (etInUse == null)
+            {
+                var delItem = m_LmsContext.DbEventType.FirstOrDefault(e => e.EventTypeId == eventType.EventTypeId);
+
+                m_LmsContext.DbEventType.Remove(delItem);
+                p = m_LmsContext.SaveChanges();
+            }
+            return p > 0;
+        }
+
+        public bool DeleteEventType_(Bridge.EventType eventType)
         {
             int result = 0;
 
@@ -323,19 +359,6 @@ namespace ReportDao
             //_connection.Close();
 
             return result > 0;
-
-            //GetEventType();
-            //m_LmsContext.DbEventType.SingleOrDefault(e => e.EventTypeId == eventType.EventTypeId);
-
-            //m_LmsContext.DbEventType.Remove(
-            //    new EventType
-            //    {
-            //        EventTypeDescription = eventType.EventTypeDescription,
-            //        EventTypeId = eventType.EventTypeId,
-            //    });
-
-            //int p = m_LmsContext.SaveChanges();
-            //return p > 0;
         }
 
         private bool CheckIfEventTypeInUse(Bridge.EventType eventType)
@@ -353,26 +376,12 @@ namespace ReportDao
                 result = sql.ExecuteScalar();
             }
 
-            //_connection.Close();
-
             return (int)result > 0; 
-
-            //GetEventType();
-            //m_LmsContext.DbEventType.SingleOrDefault(e => e.EventTypeId == eventType.EventTypeId);
-
-            //m_LmsContext.DbEventType.Remove(
-            //    new EventType
-            //    {
-            //        EventTypeDescription = eventType.EventTypeDescription,
-            //        EventTypeId = eventType.EventTypeId,
-            //    });
-
-            //int p = m_LmsContext.SaveChanges();
-            //return p > 0;
         }
 
         public bool SaveEventLog(Bridge.EventLog eventLog)
         {
+            int p = 0;
             if (eventLog.EventLogId == 0)
             {
                 m_LmsContext.DbEventLog.Add(
@@ -388,8 +397,7 @@ namespace ReportDao
                         Deleted = eventLog.Deleted
                     });
 
-                int p = m_LmsContext.SaveChanges();
-                return p > 0;
+                p = m_LmsContext.SaveChanges();
             }
             else
             {
@@ -398,9 +406,9 @@ namespace ReportDao
                 m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).TestId = eventLog.TestId;
                 m_LmsContext.DbEventLog.SingleOrDefault(l => l.EventLogId.Equals(eventLog.EventLogId)).Deleted = eventLog.Deleted;
 
-                int p = m_LmsContext.SaveChanges();
-                return p > 0;
+                p = m_LmsContext.SaveChanges();
             }
+            return p > 0;
         }
 
         public bool SaveEventLog2_(Bridge.EventLog eventLog)
@@ -439,16 +447,38 @@ namespace ReportDao
             List<Bridge.Device> result = new List<Bridge.Device>();
             var data = m_LmsContext.DbDevice.ToList();
             foreach (var item in data)
-                result.Add(new Bridge.Device { DeviceName = item.DeviceName, DeviceId = item.DeviceId });
+                result.Add(new Bridge.Device { DeviceName = item.DeviceName.Trim(), DeviceId = item.DeviceId });
             return result;
         }
 
         public bool SaveDevice(Bridge.Device device)
         {
-            m_LmsContext.DbDevice.Add(new Device { DeviceName = device.DeviceName });
-            int p = m_LmsContext.SaveChanges();
+            int p = 0;
+            var dvExist = m_LmsContext.DbDevice.FirstOrDefault(d => d.DeviceName == device.DeviceName);
+
+            if (dvExist == null)
+            {
+                m_LmsContext.DbDevice.Add(new Device { DeviceName = device.DeviceName });
+                p = m_LmsContext.SaveChanges();
+            }
             return p > 0;
         }
+
+        public bool DeleteDevice(Bridge.Device device)
+        {
+            int p = 0;
+            var dvInUse = m_LmsContext.DbDevice.FirstOrDefault(t => t.DeviceId == device.DeviceId);
+
+            if (dvInUse == null)
+            {
+                var delItem = m_LmsContext.DbDevice.FirstOrDefault(t => t.DeviceId == device.DeviceId);
+
+                m_LmsContext.DbDevice.Remove(delItem);
+                p = m_LmsContext.SaveChanges();
+            }
+            return p > 0;
+        }
+
         #endregion
         public List<Bridge.Test> GetTests()
         {
@@ -533,10 +563,16 @@ namespace ReportDao
 
         public bool AddNewTestbed(Bridge.TestBed testBed)
         {
-            m_LmsContext.DbTestBed.Add(new TestBed { TestBedName = testBed.TestBedName });
-            int p = m_LmsContext.SaveChanges();
+            int p = 0;
+            var tbExist = m_LmsContext.DbTestBed.FirstOrDefault(e => e.TestBedName == testBed.TestBedName);
 
-            return p > +0;
+            if (tbExist == null)
+            {
+                m_LmsContext.DbTestBed.Add(new TestBed { TestBedName = testBed.TestBedName });
+                p = m_LmsContext.SaveChanges();
+            }
+
+            return p > 0;
         }
     }
 }
