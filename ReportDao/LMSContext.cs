@@ -28,9 +28,12 @@ namespace ReportDao
         public DbSet<EventLog> DbEventLog { get; set; }
         public DbSet<Test> DbTest { get; set; }
         public DbSet<TestBed> DbTestBed { get; set; }
-
+        public DbSet<TestObject> DbTestObject { get; set; }
+        public DbSet<TestModule> DbTestModule { get; set; }
         public DbSet<Device> DbDevice { get; set; }
-        
+        public DbSet<ItemGroup> DbItemGroup { get; set; }
+        public DbSet<Item> DbItem { get; set; }
+        public DbSet<UserObject> DbUserObject { get; set; }
         public DbSet<ReportType> DbReportType { get; set; }
 
     }

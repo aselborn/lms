@@ -21,7 +21,8 @@ namespace NetWeb.Controllers
     {
         private ChannelFactory<IReportService> reportChannelFactory = null;
         private EndpointAddress endpointAddress = null;
-        private string epAddr = "net.tcp://localhost:7778/";
+//        private string epAddr = "net.tcp://localhost:7778/";
+        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
         private IReportService _iReportService;
 
 

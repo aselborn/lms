@@ -54,6 +54,9 @@ namespace WCFReportLib
         List<Bridge.TestBed> GetTestBeds();
 
         [OperationContract]
+        List<Bridge.TestObject> GetTestObjects();
+
+        [OperationContract]
         List<Bridge.EventType> GetEventTypes();
 
         [OperationContract]
@@ -72,7 +75,13 @@ namespace WCFReportLib
         bool AddNewTestbed(Bridge.TestBed newTestBed);
 
         [OperationContract]
-        bool SaveTestBed(Bridge.TestBed currentTestbed);
+        bool AddNewTest(Bridge.Test test);
+
+        [OperationContract]
+        bool AddNewTestObject(Bridge.TestObject testObject);
+
+        [OperationContract]
+        bool SaveTestBed(Bridge.TestBed testbed);
 
         [OperationContract]
         bool SaveDevice(Bridge.Device device);
@@ -84,7 +93,13 @@ namespace WCFReportLib
         bool SaveEventLog(Bridge.EventLog eventLog);
 
         [OperationContract]
-        bool DeleteTestBed(Bridge.TestBed currentTestbed);
+        bool DeleteTestBed(Bridge.TestBed testbed);
+
+        [OperationContract]
+        bool DeleteTest(Bridge.Test test);
+
+        [OperationContract]
+        bool DeleteTestObject(Bridge.TestObject testObject);
 
         [OperationContract]
         bool DeleteEventType(Bridge.EventType eventType);

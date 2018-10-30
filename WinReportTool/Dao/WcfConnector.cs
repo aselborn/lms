@@ -12,7 +12,7 @@ namespace WinReportTool.Dao
     {
         private static ChannelFactory<IReportService> reportChannelFactory = null;
         private static EndpointAddress endpointAddress = null;
-        private static string epAddr = "net.tcp://localhost:7778/";
+        private static string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
         private static IReportService _iReportService;
 
         public static IReportService GetReportService

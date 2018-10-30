@@ -342,6 +342,38 @@ namespace ReportDao
             return p > 0;
         }
 
+        public bool DeleteTest(Bridge.Test test)
+        {
+            int p = 0;
+            var tstInUse = m_LmsContext.DbEventLog.FirstOrDefault(t => t.TestId == test.TestId);
+
+            if (tstInUse == null)
+            {
+                var delItem = m_LmsContext.DbTest.FirstOrDefault(t => t.TestId == test.TestId);
+
+                m_LmsContext.DbTest.Remove(delItem);
+                p = m_LmsContext.SaveChanges();
+            }
+
+            return p > 0;
+        }
+
+        public bool DeleteTestObject(Bridge.TestObject testObject)
+        {
+            int p = 0;
+            var toInUse = m_LmsContext.DbEventLog.FirstOrDefault(t => t.TestObjectId == testObject.TestObjectId);
+
+            if (toInUse == null)
+            {
+                var delItem = m_LmsContext.DbTestObject.FirstOrDefault(t => t.TestObjectId == testObject.TestObjectId);
+
+                m_LmsContext.DbTestObject.Remove(delItem);
+                p = m_LmsContext.SaveChanges();
+            }
+
+            return p > 0;
+        }
+
         public bool SaveEventType(Bridge.EventType eventType)
         {
             int p = 0;
@@ -506,7 +538,7 @@ namespace ReportDao
         public bool DeleteDevice(Bridge.Device device)
         {
             int p = 0;
-            var dvInUse = m_LmsContext.DbDevice.FirstOrDefault(t => t.DeviceId == device.DeviceId);
+            var dvInUse = m_LmsContext.DbEventLog.FirstOrDefault(t => t.DeviceId == device.DeviceId);
 
             if (dvInUse == null)
             {
@@ -528,7 +560,6 @@ namespace ReportDao
             {
                 result.Add(new Bridge.Test { TestId = t.TestId, TestName = t.TestName.Trim(), TestObjectId = t.TestObjectId?? 0, TestBedId = t.TestBedId, TestModuleId = t.TestModuleId?? 0});
             }
-
             return result;
         }
         public List<Bridge.TestBed> GetTestBeds()
@@ -540,7 +571,17 @@ namespace ReportDao
             {
                 result.Add(new Bridge.TestBed { TestBedId = t.TestBedId, TestBedName = t.TestBedName.Trim() });
             }
+            return result;
+        }
+        public List<Bridge.TestObject> GetTestObjects()
+        {
+            List<Bridge.TestObject> result = new List<Bridge.TestObject>();
 
+            var data = m_LmsContext.DbTestObject.ToList();
+            foreach (TestObject t in data)
+            {
+                result.Add(new Bridge.TestObject { TestObjectId = t.TestObjectId, TestObjectName = t.TestObjectIdName.Trim() });
+            }
             return result;
         }
         public List<Bridge.EventLog> GetEventLogs()
@@ -584,7 +625,6 @@ namespace ReportDao
             {
                 result.Add(v);
             }
-
             return result;
         }
 
@@ -596,7 +636,6 @@ namespace ReportDao
             {
                 result.Add(v.EventTypeId);
             }
-
             return result;
         }
 
@@ -610,7 +649,32 @@ namespace ReportDao
                 m_LmsContext.DbTestBed.Add(new TestBed { TestBedName = testBed.TestBedName });
                 p = m_LmsContext.SaveChanges();
             }
+            return p > 0;
+        }
 
+        public bool AddNewTest(Bridge.Test test)
+        {
+            int p = 0;
+            var tstExist = m_LmsContext.DbTest.FirstOrDefault(e => e.TestName == test.TestName && e.TestBedId == test.TestBedId);
+
+            if (tstExist == null)
+            {
+                m_LmsContext.DbTest.Add(new Test { TestName = test.TestName, TestBedId = test.TestBedId });
+                p = m_LmsContext.SaveChanges();
+            }
+            return p > 0;
+        }
+
+        public bool AddNewTestObject(Bridge.TestObject testObject)
+        {
+            int p = 0;
+            var toExist = m_LmsContext.DbTestObject.FirstOrDefault(t => t.TestObjectIdName == testObject.TestObjectName);
+
+            if (toExist == null)
+            {
+                m_LmsContext.DbTestObject.Add(new TestObject { TestObjectIdName = testObject.TestObjectName });
+                p = m_LmsContext.SaveChanges();
+            }
             return p > 0;
         }
     }

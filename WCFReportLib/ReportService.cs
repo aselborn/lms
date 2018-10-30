@@ -173,6 +173,12 @@ namespace WCFReportLib
             return daoManager.GetTestBeds();
         }
 
+        public List<Bridge.TestObject> GetTestObjects()
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.GetTestObjects();
+        }
+
         public List<Person> GetPerson()
         {
             Person p = new Person();
@@ -194,10 +200,22 @@ namespace WCFReportLib
             return result;
         }
 
-        public bool AddNewTestbed(Bridge.TestBed newTestBed)
+        public bool AddNewTestbed(Bridge.TestBed testBed)
         {
             ReportDaoManager daoManager = new ReportDaoManager();
-            return daoManager.AddNewTestbed(newTestBed);
+            return daoManager.AddNewTestbed(testBed);
+        }
+
+        public bool AddNewTest(Bridge.Test test)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.AddNewTest(test);
+        }
+
+        public bool AddNewTestObject(Bridge.TestObject testObject)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.AddNewTestObject(testObject);
         }
 
         public bool SaveDevice(Bridge.Device device)
@@ -221,16 +239,24 @@ namespace WCFReportLib
             return new ReportDaoManager().SaveEventLog(eventLog);
         }
 
-        public bool SaveTestBed(Bridge.TestBed currentTestbed)
+        public bool SaveTestBed(Bridge.TestBed testbed)
         {
-            return new ReportDaoManager().SaveTestBed(currentTestbed);
-            
+            return new ReportDaoManager().SaveTestBed(testbed);
         }
 
-        public bool DeleteTestBed(Bridge.TestBed currentTestbed)
+        public bool DeleteTestBed(Bridge.TestBed testbed)
         {
-            return new ReportDaoManager().DeleteTestBed(currentTestbed);
+            return new ReportDaoManager().DeleteTestBed(testbed);
+        }
 
+        public bool DeleteTest(Bridge.Test test)
+        {
+            return new ReportDaoManager().DeleteTest(test);
+        }
+
+        public bool DeleteTestObject(Bridge.TestObject testObject)
+        {
+            return new ReportDaoManager().DeleteTestObject(testObject);
         }
 
         public bool DeleteEventType(Bridge.EventType eventType)

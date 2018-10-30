@@ -150,6 +150,20 @@ namespace ReportDao.Model
         }
 
         [DataContract]
+        public class TestObject
+        {
+            [DataMember]
+            public int TestObjectId { get; set; }
+            [DataMember]
+            public string TestObjectName { get; set; }
+
+            public override string ToString()
+            {
+                return TestObjectName;
+            }
+        }
+
+        [DataContract]
         public class Device
         {
             [DataMember]
