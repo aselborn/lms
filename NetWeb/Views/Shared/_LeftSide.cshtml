@@ -62,6 +62,7 @@
 
         filterParameters.StartDate = $("#FromDate").val();
         filterParameters.StopDate = $("#TomDate").val();
+        filterParameters.WithReporting = $("#ddlReportType").val();
         filterParameters.TestBedId = $("#ddlTestBed").val();
         filterParameters.WithGrouping = myCheckedValue;
         filterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
