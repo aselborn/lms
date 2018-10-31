@@ -57,6 +57,8 @@ namespace WinReportTool
             comboBoxTestBed.Items.Clear();
 
             List<Bridge.TestBed> testBeds = WcfConnector.GetReportService.GetTestBeds().ToList();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
+
             foreach (Bridge.TestBed item in testBeds)
             {
                 comboBoxTestBed.Items.Add(item);
@@ -74,6 +76,7 @@ namespace WinReportTool
             treeViewAddEventToLog.Nodes.Clear();
 
             _eventTypes = WcfConnector.GetReportService.GetEventTypes();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
 
             var categories = _eventTypes.Where(p => p.EventTypeSubId is null);
             foreach(var cat in categories)
@@ -118,6 +121,7 @@ namespace WinReportTool
                 ClearGridEventLog();
 
                 bsEventLog.DataSource = WcfConnector.GetReportService.GetEventLogs(searchParams).Where(e => e.Deleted == false).ToList();
+                ((IClientChannel)WcfConnector.GetReportService).Close();
 
                 GridRePaint();
             }
@@ -131,6 +135,8 @@ namespace WinReportTool
         {
             lstTestBed.Items.Clear();
             List<Bridge.TestBed> testBeds = WcfConnector.GetReportService.GetTestBeds();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
+
             foreach (Bridge.TestBed item in testBeds)
             {
                 lstTestBed.Items.Add(item);
@@ -145,6 +151,8 @@ namespace WinReportTool
             int testBedId = selectedTestBedTests != null ? selectedTestBedTests.TestBedId : 0;
 
             List<Bridge.Test> tests = WcfConnector.GetReportService.GetTests().Where(t => t.TestBedId == testBedId).ToList();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
+
             foreach (Bridge.Test item in tests)
             {
                 listBoxTest.Items.Add(item);
@@ -155,6 +163,8 @@ namespace WinReportTool
         {
             listBoxTestObject.Items.Clear();
             List<Bridge.TestObject> testObjects = WcfConnector.GetReportService.GetTestObjects();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
+
             foreach (Bridge.TestObject item in testObjects)
             {
                 listBoxTestObject.Items.Add(item);
@@ -165,6 +175,8 @@ namespace WinReportTool
         {
             lstDevice.Items.Clear();
             List<Bridge.Device> devices = WcfConnector.GetReportService.GetDevices();
+            ((IClientChannel)WcfConnector.GetReportService).Close();
+
             foreach (Bridge.Device item in devices)
             {
                 lstDevice.Items.Add(item);
@@ -289,6 +301,7 @@ namespace WinReportTool
                     if (dataGridViewEventLogs.Rows[index].DataBoundItem is Bridge.EventLog selectedRowItem)
                     {
                         WcfConnector.GetReportService.SaveEventLog(selectedRowItem);
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
 
@@ -386,6 +399,8 @@ namespace WinReportTool
                 int testBedId = selectedTestBed != null ? selectedTestBed.TestBedId : 0;
                 DataGridViewComboBoxColumn comboTestId = (DataGridViewComboBoxColumn)dataGridViewEventLogs.Columns["comboTestId"];
                 comboTestId.DataSource = WcfConnector.GetReportService.GetTests().Where(t => t.TestBedId == testBedId).ToList();
+                ((IClientChannel)WcfConnector.GetReportService).Close();
+
                 comboTestId.DisplayMember = "TestName";
                 comboTestId.ValueMember = "TestId";
             }
@@ -424,6 +439,7 @@ namespace WinReportTool
                     {
                         MessageBox.Show($"Testbed '{txtTestBed.Text}' already exists and can not be added!");
                     }
+                    ((IClientChannel)WcfConnector.GetReportService).Close();
                 }
             }
             catch (Exception ex)
@@ -455,6 +471,7 @@ namespace WinReportTool
                         {
                             MessageBox.Show($"TestBed '{_selectedTestbed.Text}' is in use and can not be deleted!");
                         }
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
             }
@@ -491,6 +508,7 @@ namespace WinReportTool
                     {
                         MessageBox.Show($"Test '{textBoxTestName.Text}' already exists and can not be added!");
                     }
+                    ((IClientChannel)WcfConnector.GetReportService).Close();
                 }
             }
             catch (Exception ex)
@@ -528,6 +546,7 @@ namespace WinReportTool
                         {
                             MessageBox.Show($"Test '{_selectedTest.Text}' is in use and can not be deleted!");
                         }
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
             }
@@ -562,6 +581,7 @@ namespace WinReportTool
                     {
                         MessageBox.Show($"TestObject '{textBoxTestObjectName.Text}' already exists and can not be added!");
                     }
+                    ((IClientChannel)WcfConnector.GetReportService).Close();
                 }
             }
             catch (Exception ex)
@@ -593,6 +613,7 @@ namespace WinReportTool
                         {
                             MessageBox.Show($"TestObject '{_selectedTestObject.Text}' is in use and can not be deleted!");
                         }
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
             }
@@ -622,6 +643,7 @@ namespace WinReportTool
                     {
                         MessageBox.Show($"Device '{txtDevice.Text}' already exists and can not be added!");
                     }
+                    ((IClientChannel)WcfConnector.GetReportService).Close();
                 }
             }
             catch (Exception ex)
@@ -653,6 +675,7 @@ namespace WinReportTool
                         {
                             MessageBox.Show($"Device '{_selectedDevice.Text}' is in use and can not be deleted!");
                         }
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
             }
@@ -698,6 +721,7 @@ namespace WinReportTool
                         {
                             MessageBox.Show($"EventType '{_selectedTreeNode.Text}' already exists and can not be added!");
                         }
+                        ((IClientChannel)WcfConnector.GetReportService).Close();
                     }
                 }
             }
@@ -734,6 +758,7 @@ namespace WinReportTool
                     {
                         MessageBox.Show($"EventType '{_selectedTreeNode.Text}' is in use and can not be deleted!");
                     }
+                    ((IClientChannel)WcfConnector.GetReportService).Close();
                 }
             }
             catch (Exception ex)

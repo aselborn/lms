@@ -20,14 +20,7 @@ namespace WinReportTool.Dao
             get
             {
                 //if (_iReportService == null)
-                //    SetupConnection();
-
-                //return _iReportService;
-
-                if (reportChannelFactory != null)
-                    reportChannelFactory.Close();
-
-                SetupConnection();                //((IClientChannel)_iReportService).Close();
+                SetupConnection();
 
                 return _iReportService;
             }
@@ -40,7 +33,5 @@ namespace WinReportTool.Dao
             endpointAddress = new EndpointAddress(epAddr);
             _iReportService = reportChannelFactory.CreateChannel(endpointAddress);
         }
-
-        
     }
 }
