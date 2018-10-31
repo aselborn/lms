@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -202,6 +203,17 @@ namespace WinReportTool
 
             // Only possible to add event with reason
             buttonAddEvent.Enabled = _selectedTreeNodeAddEventToLog.FullPath.Contains("\\");
+        }
+
+
+        private void treeViewAddEventToLog_DoubleClick(object sender, EventArgs e)
+        {
+            if (treeViewAddEventToLog.SelectedNode != null && treeViewAddEventToLog.SelectedNode.Parent != null)
+            {
+                AddEvent(Convert.ToInt32(_selectedTreeNodeAddEventToLog.Parent.Name),
+                         Convert.ToInt32(_selectedTreeNodeAddEventToLog.Name),
+                         _selectedTreeNodeAddEventToLog.Text);
+            }
         }
 
         private void dataGridViewEventLogs_CellContentClick(object sender, DataGridViewCellEventArgs e)

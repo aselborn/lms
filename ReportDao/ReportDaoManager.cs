@@ -590,12 +590,13 @@ namespace ReportDao
 
             var data = m_LmsContext.DbEventLog.ToList();
 
-            foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
-                                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
-                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
-                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
-                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
-                                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
+            foreach (EventLog t in data)
+                //foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
+                //                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
+                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
+                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
+                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
+                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
             {
                 result.Add(new Bridge.EventLog { EventLogId = t.EventLogId,
                                                 EventTypeDescription = t.EventType.EventTypeDescription.Trim(),

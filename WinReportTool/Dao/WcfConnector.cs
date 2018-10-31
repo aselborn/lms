@@ -19,8 +19,15 @@ namespace WinReportTool.Dao
         {
             get
             {
-                if (_iReportService == null)
-                    SetupConnection();
+                //if (_iReportService == null)
+                //    SetupConnection();
+
+                //return _iReportService;
+
+                if (reportChannelFactory != null)
+                    reportChannelFactory.Close();
+
+                SetupConnection();                //((IClientChannel)_iReportService).Close();
 
                 return _iReportService;
             }

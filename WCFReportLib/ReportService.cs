@@ -179,19 +179,6 @@ namespace WCFReportLib
             return daoManager.GetTestObjects();
         }
 
-        public List<Person> GetPerson()
-        {
-            Person p = new Person();
-            p.Age = 45;
-            p.Name = "Anders";
-
-            List<Person> personList = new List<Person>();
-            personList.Add(p);
-
-            return personList;
-            //return new List<Person>({ new Person() { Name = "Anders", Age = 45 } });
-        }
-
         public List< Bridge.ResultObject > EventlogObjectForRig(FilterParameters filterParameters)
         {
             ReportDaoManager daoManager = new ReportDaoManager();

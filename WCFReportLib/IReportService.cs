@@ -69,9 +69,6 @@ namespace WCFReportLib
         string GetDummy();
 
         [OperationContract]
-        List<Person> GetPerson();
-
-        [OperationContract]
         bool AddNewTestbed(Bridge.TestBed newTestBed);
 
         [OperationContract]
@@ -111,12 +108,4 @@ namespace WCFReportLib
         List<Bridge.ReportType> GetReportTypes();
     }
 
-    [DataContract]
-  public class Person
-    {
-        [DataMember]
-        public String Name { get; set; }
-        [DataMember]
-        public int Age { get; set; }
-    }
 }
