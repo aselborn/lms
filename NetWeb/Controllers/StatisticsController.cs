@@ -21,8 +21,8 @@ namespace NetWeb.Controllers
     {
         private ChannelFactory<IReportService> reportChannelFactory = null;
         private EndpointAddress endpointAddress = null;
-        private string epAddr = "net.tcp://localhost:7778/";
-//        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
+//        private string epAddr = "net.tcp://localhost:7778/";
+        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
         private IReportService _iReportService;
 
 
@@ -38,7 +38,7 @@ namespace NetWeb.Controllers
         {
             SetupConnection();
             List<TestBed> testBeds = _iReportService.GetTestBeds();
-
+            ((IClientChannel)_iReportService).Close();
 
             var myData = testBeds.Select(x => new SelectListItem()
             {
@@ -53,6 +53,8 @@ namespace NetWeb.Controllers
         {
             SetupConnection();
             List<ReportType> reportTypes = _iReportService.GetReportTypes();
+            ((IClientChannel)_iReportService).Close();
+
             var data = reportTypes.Select(x => new SelectListItem()
             {
                 Text = x.ReportTypeText,
@@ -65,6 +67,7 @@ namespace NetWeb.Controllers
         {
             SetupConnection();
             List<EventType> eventTypes = _iReportService.GetEventTypes();
+            ((IClientChannel)_iReportService).Close();
 
             if (topTypes)
             {
@@ -85,6 +88,7 @@ namespace NetWeb.Controllers
             //This is not good, two calls to DB.
             SetupConnection();
             var filtered = _iReportService.GetEventTypes().Where(h => h.EventTypeSubId == masterId).ToList();
+            ((IClientChannel)_iReportService).Close();
 
             var myData = filtered.Select(x => new SelectListItem()
             {
@@ -187,9 +191,9 @@ namespace NetWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
-
+            SetupConnection();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
-
+            ((IClientChannel)_iReportService).Close();
 
             var tupleModel =
                 new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel>
@@ -211,6 +215,7 @@ namespace NetWeb.Controllers
                 SetupConnection();
                 FilterParameters selection = CreateSelectionParameters(collection);
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
+                ((IClientChannel)_iReportService).Close();
 
                 //return RedirectToAction("Pie2", "WCF", data);
                 //return View(data);

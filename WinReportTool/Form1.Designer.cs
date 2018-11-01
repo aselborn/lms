@@ -405,6 +405,7 @@
             this.treeViewAddEventToLog.TabIndex = 19;
             this.treeViewAddEventToLog.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeViewAddEventToLog_BeforeSelect);
             this.treeViewAddEventToLog.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewAddEventToLog_AfterSelect);
+            this.treeViewAddEventToLog.DoubleClick += new System.EventHandler(this.treeViewAddEventToLog_DoubleClick);
             // 
             // tabPageTestBed
             // 

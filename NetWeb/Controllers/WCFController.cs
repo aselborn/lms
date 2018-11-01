@@ -33,7 +33,7 @@ namespace NetWeb.Controllers
         {
             SetupConnection();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
-
+            ((IClientChannel)_iReportService).Close();
             return View(lstModel);
         }
 
@@ -41,18 +41,15 @@ namespace NetWeb.Controllers
         {
             SetupConnection();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
-
+            ((IClientChannel)_iReportService).Close();
             return View(lstModel);
         }
 
         public ActionResult Line()
         {
             SetupConnection();
-
-            
-
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
-
+            ((IClientChannel)_iReportService).Close();
             return View(lstModel);
         }
 
@@ -63,6 +60,7 @@ namespace NetWeb.Controllers
 
             FilterParameters parameters = new FilterParameters { WithGrouping = FilterParameters.GroupByOperator.Month };
             List<ResultObject> data = _iReportService.EventlogObjectForRig(parameters);
+            ((IClientChannel)_iReportService).Close();
             return View(data);
         }
 
