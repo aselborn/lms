@@ -56,6 +56,11 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
+        private class DayDistributeReply
+        {
+            public string EventTypeDescription { get; set; }
+            public int Number { get; set; }
+        }
         private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
         {
             SqlParameter[] sqls = new SqlParameter[]
@@ -157,11 +162,25 @@ namespace ReportDao
 
                 case Bridge.FilterParameters.GroupByOperator.Day:
 
-                    List<DayReply> daysReply = m_LmsContext.Database.SqlQuery<DayReply>(qry, sqls).ToList();
-                    foreach(DayReply reply in daysReply)
+                    //IF grouping per day, show event-groups.
+                    if (filterParameters.StartDate.Equals(filterParameters.StopDate))
                     {
-                        result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Day.ToShortDateString() });
+                        List<DayDistributeReply> daysDistributeReply = m_LmsContext.Database.SqlQuery<DayDistributeReply>(qry, sqls).ToList();
+                        foreach(DayDistributeReply reply in daysDistributeReply)
+                        {
+                            result.Add(new Bridge.ResultObject { Text = reply.EventTypeDescription.Trim(), myValue = reply.Number } );
+                        }
                     }
+                    else
+                    {
+                        List<DayReply> daysReply = m_LmsContext.Database.SqlQuery<DayReply>(qry, sqls).ToList();
+                        foreach (DayReply reply in daysReply)
+                        {
+                            result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Day.ToShortDateString() });
+                        }
+                    }
+
+                    
                     break;
 
                 case Bridge.FilterParameters.GroupByOperator.Week:

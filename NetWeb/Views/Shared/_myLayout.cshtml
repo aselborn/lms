@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/custom/css")
+   
 </head>
 <body>
     <!--Render a partial view.-->
@@ -13,7 +14,8 @@
         Html.RenderPartial("_TopView");
     }
 
-  
+
+
     <!-- Header -->
     @*<header>
             <h1 style="text-align:center; color:bisque">LMS Statistics</h1>
@@ -22,7 +24,7 @@
     <!-- Left Sidebar -->
     <!-- End of Left Sidebar -->
     <!-- Content Body -->
-    <div class="statDiv" >
+    <div class="statDiv">
         @RenderBody()
     </div>
     <!-- End of Content Body -->
@@ -33,25 +35,25 @@
 
     <!-- Style -->
     @*<style>
-        header {
-            height: 100%;
-            width: 100%;
-            background-color: red;
-        }
+            header {
+                height: 100%;
+                width: 100%;
+                background-color: red;
+            }
 
-        .content {
-            background-color: blueviolet;
-            height: 700px;
-            /*/position: inherit;*/
-        }
+            .content {
+                background-color: blueviolet;
+                height: 700px;
+                /*/position: inherit;*/
+            }
 
-        footer {
-            background-color: green;
-            width: 100%;
-            height: 50px;
-            float: right;
-            text-align: center;
-        }
-    </style>*@
+            footer {
+                background-color: green;
+                width: 100%;
+                height: 50px;
+                float: right;
+                text-align: center;
+            }
+        </style>*@
 </body>
 </html>

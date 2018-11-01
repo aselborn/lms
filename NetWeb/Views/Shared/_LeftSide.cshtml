@@ -10,6 +10,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/Util.js"></script>
 <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript">
 
@@ -97,7 +98,8 @@
                
                 //What type of diagram should we draw?
                 //Drawing a pie-chart.
-                DrawChart(jsondata, selectedChartType);
+                //DrawChart(jsondata, selectedChartType);
+                DrawStacked();
 
 
             },
