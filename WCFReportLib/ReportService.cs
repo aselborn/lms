@@ -186,7 +186,13 @@ namespace WCFReportLib
 
             return result;
         }
+        public List<List<Bridge.DayDistributeReply>> EventLogDayDistribute(FilterParameters filterParameters)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            List<List<Bridge.DayDistributeReply>> result = daoManager.EventLogDayDistribute(filterParameters);
 
+            return result;
+        }
         public bool AddNewTestbed(Bridge.TestBed testBed)
         {
             ReportDaoManager daoManager = new ReportDaoManager();

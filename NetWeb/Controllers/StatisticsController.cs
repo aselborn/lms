@@ -21,8 +21,8 @@ namespace NetWeb.Controllers
     {
         private ChannelFactory<IReportService> reportChannelFactory = null;
         private EndpointAddress endpointAddress = null;
-//        private string epAddr = "net.tcp://localhost:7778/";
-        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
+        private string epAddr = "net.tcp://localhost:7778/";
+        //private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
         private IReportService _iReportService;
 
 
@@ -144,8 +144,22 @@ namespace NetWeb.Controllers
             {
                 case FilterParameters.ReportType.numberofevents:
 
-                    List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
-                    return Json(statistics, JsonRequestBehavior.AllowGet);
+                    if (data.WithGrouping == FilterParameters.GroupByOperator.Day)
+                    {
+                        List<List<DayDistributeReply>> statistics = _iReportService.EventLogDayDistribute(data);
+                        ((IClientChannel)_iReportService).Close();
+
+                        return Json(statistics);
+                    }
+                    else
+                    {
+                        List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
+                        ((IClientChannel)_iReportService).Close();
+
+                        return Json(statistics, JsonRequestBehavior.AllowGet);
+                    }
+                    
+                    
                     
 
                 case FilterParameters.ReportType.utilization:

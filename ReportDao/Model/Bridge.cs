@@ -50,10 +50,21 @@ namespace ReportDao.Model
             
         }
      
-        public class ResultObject
+        public abstract class ResultInfo
+        {
+            public string info { get; set; }
+        }
+        public class ResultObject : ResultInfo
         {
             public string Text { get; set; }
             public int myValue { get; set; }
+        }
+
+        public class DayDistributeReply
+        {
+            public string EventTime { get; set; }
+            public string EventTypeDescription { get; set; }
+            public int Number { get; set; }
         }
 
         public class MonthReply

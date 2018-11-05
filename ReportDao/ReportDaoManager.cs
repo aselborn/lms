@@ -20,14 +20,8 @@ namespace ReportDao
         private string _connectionString;
         private SqlConnection _connection;
 
-        private List<Model.Rig> m_GetRig { get; }
-
-        public List<Model.Rig> GetRig => m_contextManager.Rig.ToList();
-        public List<Model.Category> GetCategories => m_contextManager.Category.ToList();
-
         public List<RigRecord> GetRigRecords => m_contextManager.RigRecord.ToList();
 
-        public List<EventLog> GetEventLog() => m_LmsContext.DbEventLog.ToList();
         public List<EventType> GetEventType() => m_LmsContext.DbEventType.ToList();
         public List<Bridge.ReportType> GetReportTypes()
         {
@@ -56,11 +50,7 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
-        private class DayDistributeReply
-        {
-            public string EventTypeDescription { get; set; }
-            public int Number { get; set; }
-        }
+        
         private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
         {
             SqlParameter[] sqls = new SqlParameter[]
@@ -112,34 +102,47 @@ namespace ReportDao
         {
             string qry = String.Empty;
 
-            if (filterParameters.AllSubEvents)
+            switch (filterParameters.WithGrouping)
             {
-                qry = "p_EventCountByPeriodSubEvents @start, @stop, @testBedId, @eventTypeId, @grpBy";
-            }
-            else if (filterParameters.AllEvents)
-            {
-                qry = "p_EventCountByPeriodAllEvents @start, @stop, @testBedId, @eventTypeId, @grpBy";
-            }
-            else
-            {
-                qry = "p_EventCountByPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                case Bridge.FilterParameters.GroupByOperator.Day:
+                    qry = "p_EventCountByDayPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                    break;
+
+                default:
+
+                    if (filterParameters.AllSubEvents)
+                    {
+                        qry = "p_EventCountByPeriodSubEvents @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                    }
+                    else if (filterParameters.AllEvents)
+                    {
+                        qry = "p_EventCountByPeriodAllEvents @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                    }
+                    else
+                    {
+                        qry = "p_EventCountByPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                    }
+
+                    break;
             }
 
             return qry;
         }
 
+        
+
         public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.FilterParameters filterParameters)
         {
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
             SqlParameter[] sqls = null;
-            //DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
+            
 
-            sqls = createParameters(filterParameters);
             string qry = ProcedureToExecute(filterParameters);
+            sqls = createParameters(filterParameters);
 
             Console.WriteLine("#Printing some debug#");
             Console.WriteLine();
-            Console.Write("p_EventCountByPeriod ");
+            Console.Write($"Procedure to execute=> {qry}");
             foreach (SqlParameter prm in sqls)
             {
                 Console.Write(prm.Value.ToString() + " ");
@@ -153,40 +156,18 @@ namespace ReportDao
                 case Bridge.FilterParameters.GroupByOperator.Month:
 
                     List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
-                    foreach(MonthReply reply in replys)
+                    foreach (MonthReply reply in replys)
                     {
                         result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Month.ToString("MMMM") });
                     }
 
                     break;
 
-                case Bridge.FilterParameters.GroupByOperator.Day:
-
-                    //IF grouping per day, show event-groups.
-                    if (filterParameters.StartDate.Equals(filterParameters.StopDate))
-                    {
-                        List<DayDistributeReply> daysDistributeReply = m_LmsContext.Database.SqlQuery<DayDistributeReply>(qry, sqls).ToList();
-                        foreach(DayDistributeReply reply in daysDistributeReply)
-                        {
-                            result.Add(new Bridge.ResultObject { Text = reply.EventTypeDescription.Trim(), myValue = reply.Number } );
-                        }
-                    }
-                    else
-                    {
-                        List<DayReply> daysReply = m_LmsContext.Database.SqlQuery<DayReply>(qry, sqls).ToList();
-                        foreach (DayReply reply in daysReply)
-                        {
-                            result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Day.ToShortDateString() });
-                        }
-                    }
-
-                    
-                    break;
-
+                
                 case Bridge.FilterParameters.GroupByOperator.Week:
-                    
+
                     List<WeekReply> weekreplys = m_LmsContext.Database.SqlQuery<WeekReply>(qry, sqls).ToList();
-                    foreach(WeekReply week in weekreplys)
+                    foreach (WeekReply week in weekreplys)
                     {
                         result.Add(new Bridge.ResultObject { myValue = week.Quantity, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString() });
                     }
@@ -197,9 +178,24 @@ namespace ReportDao
                     break;
             }
 
-            
+
             return result;
         }
+
+        public List<List<Bridge.DayDistributeReply>> EventLogDayDistribute(Bridge.FilterParameters filterParameters)
+        {
+            SqlParameter[] sqls = null;
+
+            sqls = createParameters(filterParameters);
+            string qry = ProcedureToExecute(filterParameters);
+
+            List<Bridge.DayDistributeReply> daysDistributeReply = m_LmsContext.Database.SqlQuery<Bridge.DayDistributeReply>(qry, sqls).ToList();
+
+            var resultList = daysDistributeReply.GroupBy(p => p.EventTime.Trim()).Select(grp => grp.ToList()).ToList();
+            
+            return resultList;
+        }
+
         public Dictionary<DateTime, int> GetEventLogByEvent(Bridge.EventType eventType, Bridge.FilterParameters filterParamteters)
         {
             Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
@@ -466,7 +462,7 @@ namespace ReportDao
                 result = sql.ExecuteScalar();
             }
 
-            return (int)result > 0; 
+            return (int)result > 0;
         }
 
         public bool SaveEventLog(Bridge.EventLog eventLog)
@@ -518,7 +514,7 @@ namespace ReportDao
                 }
                 else
                 {
-                    short deleted = eventLog.Deleted? (short)1 : (short)0;
+                    short deleted = eventLog.Deleted ? (short)1 : (short)0;
                     sqlCommand = $"UPDATE EVENTLOG SET EventLogUserId='{Environment.UserName}', EventValue ={eventLog.EventValue}, Deleted={deleted} WHERE EventLogId={eventLog.EventLogId}";
                 }
 
@@ -577,7 +573,7 @@ namespace ReportDao
             var data = m_LmsContext.DbTest.ToList();
             foreach (Test t in data)
             {
-                result.Add(new Bridge.Test { TestId = t.TestId, TestName = t.TestName.Trim(), TestObjectId = t.TestObjectId?? 0, TestBedId = t.TestBedId, TestModuleId = t.TestModuleId?? 0});
+                result.Add(new Bridge.Test { TestId = t.TestId, TestName = t.TestName.Trim(), TestObjectId = t.TestObjectId ?? 0, TestBedId = t.TestBedId, TestModuleId = t.TestModuleId ?? 0 });
             }
             return result;
         }
@@ -610,29 +606,32 @@ namespace ReportDao
             var data = m_LmsContext.DbEventLog.ToList();
 
             foreach (EventLog t in data)
-                //foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
-                //                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
-                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
-                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
-                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
-                //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
+            //foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
+            //                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
             {
-                result.Add(new Bridge.EventLog { EventLogId = t.EventLogId,
-                                                EventTypeDescription = t.EventType.EventTypeDescription.Trim(),
-                                                EventLogTime = t.EventLogTime,
-                                                EventLogUserId = t.EventLogUserId,
-                                                EventTypeId = t.EventTypeId,
-                                                EventTypeSubId = t.EventType.EventTypeSubId ?? 0,
-                                                EventLogManualTime = t.EventLogManualTime,
-                                                CustomerId = t.CustomerId,
-                                                TestBedId = t.TestBedId,
-                                                TestId = t.TestId,
-                                                TestObjectId = t.TestObjectId,
-                                                DeviceId = t.DeviceId,
-                                                UserObjectId = t.UserObjectId,
-                                                ItemId = t.ItemId,
-                                                EventValue = t.EventValue,
-                                                Deleted = t.Deleted?? false });
+                result.Add(new Bridge.EventLog
+                {
+                    EventLogId = t.EventLogId,
+                    EventTypeDescription = t.EventType.EventTypeDescription.Trim(),
+                    EventLogTime = t.EventLogTime,
+                    EventLogUserId = t.EventLogUserId,
+                    EventTypeId = t.EventTypeId,
+                    EventTypeSubId = t.EventType.EventTypeSubId ?? 0,
+                    EventLogManualTime = t.EventLogManualTime,
+                    CustomerId = t.CustomerId,
+                    TestBedId = t.TestBedId,
+                    TestId = t.TestId,
+                    TestObjectId = t.TestObjectId,
+                    DeviceId = t.DeviceId,
+                    UserObjectId = t.UserObjectId,
+                    ItemId = t.ItemId,
+                    EventValue = t.EventValue,
+                    Deleted = t.Deleted ?? false
+                });
             }
 
             return result;

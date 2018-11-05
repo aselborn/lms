@@ -105,5 +105,10 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBScripts\LMS.sql" />
+    <Content Include="DBScripts\LMS_procedures.sql" />
+    <Content Include="DBScripts\Readme.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

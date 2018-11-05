@@ -45,6 +45,10 @@ namespace WCFReportLib
 
         [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
+        List<List<Bridge.DayDistributeReply>> EventLogDayDistribute(FilterParameters filterParameters);
+
+        [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [OperationContract]
         List<Bridge.ResultObject> EventUtilization(FilterParameters filterParameters);
 
         [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]

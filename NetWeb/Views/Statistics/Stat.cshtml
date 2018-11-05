@@ -32,6 +32,88 @@
 <script src="~/Scripts/Util.js"></script>
 <script type="text/javascript">
 
+    function DrawMyStacked(dataSets) {
+
+        resetCanvas();
+
+        var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+
+        var myDateLabels = [];
+
+        var myValues = [];
+        var myEventLabels = [];
+        var mydataSets = [];
+
+        for (var n = 0; n <= dataSets.length -1; n++) {
+
+            var myObject = dataSets[n];
+
+            for (var p = 0; p <= myObject.length -1; p++) {
+                if (myDateLabels.indexOf(myObject[p].EventTime) == -1) {
+                    myDateLabels.push(myObject[p].EventTime);
+                }
+
+                //myDataSets.push(myObject[p].EventTypeDescription.trim());
+                myValues.push(myObject[p].Number);
+                myEventLabels.push(myObject[p].EventTypeDescription.trim());   
+            }
+        }
+
+        var chartData = {
+            labels: myEventLabels,
+            datasets: [{
+                //label: myEventLabels,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                data: myValues
+                }]
+
+        };
+
+
+        var newOptions = {
+
+            title: {
+                display: true,
+                text: 'Chart.js Bar Chart - Stacked'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+
+        }
+
+        var myChart = new Chart(ctx, {
+            options: newOptions,
+            data: chartData,
+            type: 'bar'
+
+        });
+    }
+
     function DrawStacked() {
 
         resetCanvas();
@@ -153,6 +235,7 @@
 
         var myLabels = [];
         var myValues = [];
+
         $.each(SimpleResultObject, function (i, item) {
             $(myLabels.push(item.Text))
             $(myValues.push(item.myValue))
