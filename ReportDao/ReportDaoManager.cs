@@ -628,7 +628,7 @@ namespace ReportDao
                     TestObjectId = t.TestObjectId,
                     DeviceId = t.DeviceId,
                     UserObjectId = t.UserObjectId,
-                    ItemId = t.ItemId,
+                    ItemGroupId = t.ItemGroupId,
                     EventValue = t.EventValue,
                     Deleted = t.Deleted ?? false
                 });

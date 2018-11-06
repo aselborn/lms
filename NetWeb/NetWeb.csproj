@@ -180,6 +180,7 @@
     <Compile Include="Models\ReportTypeViewModel.cs" />
     <Compile Include="Models\TestbedViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\TEStatController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -261,7 +262,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -280,6 +283,7 @@
     <Content Include="Views\Statistics\Stat.cshtml" />
     <Content Include="Views\Shared\_LeftSide.cshtml" />
     <Content Include="Views\Shared\_TopView.cshtml" />
+    <Content Include="Views\Statistics\TEStat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

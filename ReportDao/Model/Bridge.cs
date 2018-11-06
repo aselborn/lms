@@ -123,7 +123,7 @@ namespace ReportDao.Model
             [DataMember]
             public int? UserObjectId { get; set; }
             [DataMember]
-            public int? ItemId { get; set; }
+            public int? ItemGroupId { get; set; }
             [DataMember]
             public int? EventValue { get; set; }
             [DataMember]

@@ -32,38 +32,76 @@
 <script src="~/Scripts/Util.js"></script>
 <script type="text/javascript">
 
+    var MyChart;
+    var MyChartData = {};
+
+    var ChartOptions= {
+
+        title: {
+            display: true,
+            text: 'Chart.js Bar Chart - Stacked'
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false
+        },
+        responsive: true,
+        scales: {
+            xAxes: [{
+                stacked: true,
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        }
+
+    }
+
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(231,233,237)'
+    };
+
     function DrawMyStacked(dataSets) {
 
         resetCanvas();
 
-        var chartName = "chart";
-        var ctx = document.getElementById(chartName).getContext('2d');
+        
 
         var myDateLabels = [];
 
         var myValues = [];
         var myEventLabels = [];
-        var mydataSets = [];
 
-        for (var n = 0; n <= dataSets.length -1; n++) {
+        var mydataArray = new Array(3);
+
+        for (var n = 0; n <= dataSets.length - 1; n++) {
 
             var myObject = dataSets[n];
 
-            for (var p = 0; p <= myObject.length -1; p++) {
+            for (var p = 0; p <= myObject.length - 1; p++) {
+
                 if (myDateLabels.indexOf(myObject[p].EventTime) == -1) {
                     myDateLabels.push(myObject[p].EventTime);
                 }
 
-                //myDataSets.push(myObject[p].EventTypeDescription.trim());
+                //mydataArray.push(myObject[p].EventTime, myObject[p].EventTypeDescription.trim(), myObject[p].Number)
+
                 myValues.push(myObject[p].Number);
-                myEventLabels.push(myObject[p].EventTypeDescription.trim());   
+                myEventLabels.push(myObject[p].EventTypeDescription.trim());
+
             }
         }
 
-        var chartData = {
-            labels: myEventLabels,
+        var data = {
+            labels: myDateLabels,
             datasets: [{
-                //label: myEventLabels,
+                label: "Sammanställning",
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -78,41 +116,114 @@
                     'rgba(255, 255, 0)',
                     'rgba(255, 0, 255)'
                 ],
-                data: myValues
-                }]
-
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                borderWidth: 1,
+                data: []
+            }]
         };
 
+        var testValues = [];
+        testValues.push(Math.random() * 10);
+        testValues.push(Math.random() * 10);
+        testValues.push(Math.random() * 10);
 
-        var newOptions = {
+        MyChart = addData2(MyChart, "kalle", testValues)
+    }
 
-            title: {
-                display: true,
-                text: 'Chart.js Bar Chart - Stacked'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false
-            },
-            responsive: true,
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                }],
-                yAxes: [{
-                    stacked: true
+    function addData2(myBarChart, label, myValues) {
+
+        var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        
+
+        if (myBarChart === undefined) {
+
+            MyChartData = {
+                labels: ['label1','label2'],
+                datasets: [{
+                    label: "Sammanställning",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: myValues
                 }]
-            }
+            };
+            
+            myBarChart = new Chart(ctx, {
+                label: label,
+                data: MyChartData,
+                options: ChartOptions,
+                type: 'bar'
+            });
+
+        } else {
+
+            var newDataset = {
+                label: "new-dataset",
+                backgroundColor: 'rgba(99, 255, 132, 0.2)',
+                borderColor: 'rgba(99, 255, 132, 1)',
+                borderWidth: 1,
+                data: myValues
+            };
+
+            MyChartData.datasets.push(newDataset);
+
+            myBarChart.update();
 
         }
 
-        var myChart = new Chart(ctx, {
-            options: newOptions,
-            data: chartData,
-            type: 'bar'
-
-        });
+        return MyChartData;
     }
+
+   
+
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    }
+
 
     function DrawStacked() {
 

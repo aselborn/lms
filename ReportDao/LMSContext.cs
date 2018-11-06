@@ -36,6 +36,9 @@ namespace ReportDao
         public DbSet<UserObject> DbUserObject { get; set; }
         public DbSet<ReportType> DbReportType { get; set; }
 
+        public System.Data.Entity.DbSet<ReportDao.Model.Rig> Rigs { get; set; }
+
+        public System.Data.Entity.DbSet<ReportDao.Model.RigUse> RigUses { get; set; }
     }
 
     
