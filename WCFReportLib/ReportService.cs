@@ -179,6 +179,12 @@ namespace WCFReportLib
             return daoManager.GetTestObjects();
         }
 
+        public List<Bridge.UserObject> GetUserObjects()
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            return daoManager.GetUserObjects();
+        }
+
         public List< Bridge.ResultObject > EventlogObjectForRig(FilterParameters filterParameters)
         {
             ReportDaoManager daoManager = new ReportDaoManager();

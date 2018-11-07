@@ -1,0 +1,148 @@
+﻿@using System.Linq;
+@*@model List<WCFReportLib.Model.SimpleResultObject>*@
+
+@{
+    ViewBag.Title = "Stat";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+    ViewData["Title"] = "Pie Chart";
+    if (Session["userObjectId"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+
+@Styles.Render("~/Content/css")
+
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/Content/custom/")
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div id="statisticsDiv" class="statDiv">
+        <canvas id="chart"></canvas>
+    </div>
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
+<script type="text/javascript">
+
+    
+
+    function DrawChart(SimpleResultObject, typeOfChart) {
+
+        resetCanvas();
+
+        var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+
+        var myLabels = [];
+        var myValues = [];
+        $.each(SimpleResultObject, function (i, item) {
+            $(myLabels.push(item.Text))
+            $(myValues.push(item.myValue))
+        });
+
+        var data = {
+            labels: myLabels,
+            datasets: [{
+                label: "Sammanställning",
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 0, 0)',
+                    'rgba(0, 255, 0)',
+                    'rgba(0, 0, 255)',
+                    'rgba(192, 192, 192)',
+                    'rgba(255, 255, 0)',
+                    'rgba(255, 0, 255)'
+                ],
+                borderWidth: 1,
+                data: myValues
+            }]
+        };
+
+        var options = {
+            title: {
+                display: true,
+                text:'Antal händelser.'
+            },
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: true,
+                        color: "rgba(255,99,164,0.2)"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            }
+        };
+
+        var myChart = new Chart(ctx, {
+            options: options,
+            data: data,
+            type: typeOfChart.toLowerCase()
+
+        });
+
+       
+    }
+
+
+    var resetCanvas = function () {
+        $('#chart').remove(); // this is my <canvas> element
+        $('#statisticsDiv').append('<canvas id="chart"><canvas>');
+        canvas = document.querySelector('#chart');
+        ctx = canvas.getContext('2d');
+        ctx.canvas.width = $('#graph').width(); // resize to parent width
+        ctx.canvas.height = $('#graph').height(); // resize to parent height
+        var x = canvas.width / 2;
+        var y = canvas.height / 2;
+        ctx.font = '10pt Verdana';
+        ctx.textAlign = 'center';
+        ctx.fillText('This text is centered on the canvas', x, y);
+    };
+
+   
+</script>
+
+

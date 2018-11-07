@@ -103,7 +103,7 @@ namespace ReportDao.Model
             [DataMember]
             public int? UserObjectId { get; set; }
             [DataMember]
-            public int? ItemId { get; set; }
+            public int? ItemGroupId { get; set; }
             [DataMember]
             public int? EventValue { get; set; }
             [DataMember]
@@ -184,6 +184,22 @@ namespace ReportDao.Model
             public int ReportTypeId { get; set; }
             [DataMember]
             public string ReportTypeText { get; set; }
+        }
+
+        [DataContract]
+        public class UserObject
+        {
+            [DataMember]
+            public int UserObjectId { get; set; }
+            [DataMember]
+            public string UserObjectName { get; set; }
+            [DataMember]
+            public string UserObjectPassword { get; set; }
+
+            public override string ToString()
+            {
+                return UserObjectName;
+            }
         }
 
     }

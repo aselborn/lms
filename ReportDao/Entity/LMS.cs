@@ -52,6 +52,10 @@ namespace ReportDao.Entity
                 .Property(e => e.ItemName)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<ItemGroup>()
+                .Property(e => e.ItemGroupName)
+                .IsUnicode(false);
+
             modelBuilder.Entity<ReportType>()
                 .Property(e => e.ReportTypeText)
                 .IsUnicode(false);
@@ -74,6 +78,10 @@ namespace ReportDao.Entity
 
             modelBuilder.Entity<UserObject>()
                 .Property(e => e.UserObjectName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<UserObject>()
+                .Property(e => e.UserObjectPassword)
                 .IsUnicode(false);
         }
     }

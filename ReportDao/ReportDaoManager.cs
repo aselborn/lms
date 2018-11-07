@@ -584,6 +584,17 @@ namespace ReportDao
             }
             return result;
         }
+        public List<Bridge.UserObject> GetUserObjects()
+        {
+            List<Bridge.UserObject> result = new List<Bridge.UserObject>();
+
+            var data = m_LmsContext.DbUserObject.ToList();
+            foreach (UserObject u in data)
+            {
+                result.Add(new Bridge.UserObject { UserObjectId = u.UserObjectId, UserObjectName = u.UserObjectName.Trim(), UserObjectPassword = u.UserObjectPassword.Trim() });
+            }
+            return result;
+        }
         public List<Bridge.EventLog> GetEventLogs()
         {
             List<Bridge.EventLog> result = new List<Bridge.EventLog>();
@@ -611,7 +622,7 @@ namespace ReportDao
                                                 TestObjectId = t.TestObjectId,
                                                 DeviceId = t.DeviceId,
                                                 UserObjectId = t.UserObjectId,
-                                                ItemId = t.ItemId,
+                                                ItemGroupId = t.ItemGroupId,
                                                 EventValue = t.EventValue,
                                                 Deleted = t.Deleted?? false });
             }

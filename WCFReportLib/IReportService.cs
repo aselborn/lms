@@ -66,6 +66,9 @@ namespace WCFReportLib
         List<Bridge.Device> GetDevices();
 
         [OperationContract]
+        List<Bridge.UserObject> GetUserObjects();
+
+        [OperationContract]
         string GetDummy();
 
         [OperationContract]

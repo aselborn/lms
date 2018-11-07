@@ -32,7 +32,7 @@ namespace ReportDao.Entity
 
         public int? UserObjectId { get; set; }
 
-        public int? ItemId { get; set; }
+        public int? ItemGroupId { get; set; }
 
         public int? EventValue { get; set; }
 
@@ -44,7 +44,7 @@ namespace ReportDao.Entity
 
         public virtual EventType EventType { get; set; }
 
-        public virtual Item Item { get; set; }
+        public virtual ItemGroup ItemGroup { get; set; }
 
         public virtual Test Test { get; set; }
 
