@@ -139,9 +139,23 @@ namespace LMSWeb.Controllers
         public ActionResult Data(FilterParameters data)
         {
             SetupConnection();
-            List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
-            ((IClientChannel)_iReportService).Close();
-            return Json(statistics, JsonRequestBehavior.AllowGet);
+
+            switch (data.WithReporting)
+            {
+                case FilterParameters.ReportType.numberofevents:
+
+                    List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
+                    return Json(statistics, JsonRequestBehavior.AllowGet);
+                    
+
+                case FilterParameters.ReportType.utilization:
+                    break;
+
+                default:
+                    return RedirectToAction("Index");
+            }
+
+            return null;
         }
 
         [HttpGet]

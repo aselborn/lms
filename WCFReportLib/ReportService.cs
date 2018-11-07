@@ -267,5 +267,9 @@ namespace WCFReportLib
             return new ReportDaoManager().GetReportTypes();
         }
 
+        public List<ResultObject> EventUtilization(FilterParameters filterParameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

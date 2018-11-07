@@ -30,6 +30,14 @@ namespace ReportDao.Model
                 Day = 4,
                 Date=5,
             }
+
+            public enum ReportType
+            {
+                none=0,
+                numberofevents = 1,
+                utilization = 2
+            }
+
             public DateTime StartDate { get; set; }
             public DateTime StopDate { get; set; }
             public DateTime SearchDate { get; set; }
@@ -38,7 +46,8 @@ namespace ReportDao.Model
             public bool AllSubEvents { get; set; }
             public bool AllEvents { get; set; }
             public GroupByOperator WithGrouping { get; set; }
-            //public List<EventType> EventTypeList { get; set; }
+            public ReportType WithReporting { get; set; }
+            
         }
      
         public class ResultObject
