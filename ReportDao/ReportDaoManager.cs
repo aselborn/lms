@@ -610,10 +610,27 @@ namespace ReportDao
             var data = m_LmsContext.DbUserObject.ToList();
             foreach (UserObject u in data)
             {
-                result.Add(new Bridge.UserObject { UserObjectId = u.UserObjectId, UserObjectName = u.UserObjectName.Trim(), UserObjectPassword = u.UserObjectPassword.Trim() });
+                result.Add(new Bridge.UserObject { UserObjectId = u.UserObjectId,
+                                                   UserObjectName = u.UserObjectName.Trim(),
+                                                   UserObjectPassword = u.UserObjectPassword.Trim(),
+                                                   LastLoginTime = u.LastLoginTime,
+                                                   Locked = u.Locked });
             }
             return result;
         }
+        public bool SaveUserObjectLogin(Bridge.UserObject userObject)
+        {
+            int p = 0;
+            var userExist = m_LmsContext.DbUserObject.FirstOrDefault(u => u.UserObjectId == userObject.UserObjectId);
+
+            if (userExist != null)
+            {
+                m_LmsContext.DbUserObject.SingleOrDefault(l => l.UserObjectId.Equals(userObject.UserObjectId)).LastLoginTime = DateTime.Now;
+                p = m_LmsContext.SaveChanges();
+            }
+            return p > 0;
+        }
+
         public List<Bridge.EventLog> GetEventLogs()
         {
             List<Bridge.EventLog> result = new List<Bridge.EventLog>();

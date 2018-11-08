@@ -204,6 +204,10 @@ namespace ReportDao.Model
             public string UserObjectName { get; set; }
             [DataMember]
             public string UserObjectPassword { get; set; }
+            [DataMember]
+            public DateTime? LastLoginTime { get; set; }
+            [DataMember]
+            public bool Locked { get; set; }
 
             public override string ToString()
             {

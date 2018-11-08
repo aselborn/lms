@@ -185,6 +185,26 @@ namespace WCFReportLib
             return daoManager.GetUserObjects();
         }
 
+        public int UserLogin(Bridge.UserObject user)
+        {
+            ReportDaoManager daoManager = new ReportDaoManager();
+            Bridge.UserObject userExist = daoManager.GetUserObjects().Where(u => u.UserObjectName.ToLower() == user.UserObjectName.Trim().ToLower() &&
+                                                u.UserObjectPassword == user.UserObjectPassword.Trim()).FirstOrDefault();
+            int result = 0;
+            if (userExist != null)
+            {
+                if (userExist.Locked)
+                {
+                    result = -1;
+                }
+                else
+                {
+                    result = daoManager.SaveUserObjectLogin(userExist) ? userExist.UserObjectId : 0;
+                }
+            }
+            return result;
+        }
+
         public List< Bridge.ResultObject > EventlogObjectForRig(FilterParameters filterParameters)
         {
             ReportDaoManager daoManager = new ReportDaoManager();

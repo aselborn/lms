@@ -19,24 +19,12 @@ namespace LMSWeb.Controllers
     */
     public class StatisticsController : Controller
     {
-        private ChannelFactory<IReportService> reportChannelFactory = null;
-        private EndpointAddress endpointAddress = null;
-//        private string epAddr = "net.tcp://localhost:7778/";
-        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
-        private IReportService _iReportService;
-
-
-        private void SetupConnection()
-        {
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-            reportChannelFactory = new ChannelFactory<IReportService>(tcpBinding);
-            endpointAddress = new EndpointAddress(epAddr);
-            _iReportService = reportChannelFactory.CreateChannel(endpointAddress);
-        }
+        ServiceHelper _serviceHelper = new ServiceHelper();
+        IReportService _iReportService;
 
         private IEnumerable<SelectListItem> GetTestBeds()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<TestBed> testBeds = _iReportService.GetTestBeds();
             ((IClientChannel)_iReportService).Close();
 
@@ -51,7 +39,7 @@ namespace LMSWeb.Controllers
 
         private IEnumerable<SelectListItem> GetReportTypes()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<ReportType> reportTypes = _iReportService.GetReportTypes();
             ((IClientChannel)_iReportService).Close();
 
@@ -65,7 +53,7 @@ namespace LMSWeb.Controllers
         }
         private IEnumerable<SelectListItem> GetEventTypes(bool topTypes = false)
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<EventType> eventTypes = _iReportService.GetEventTypes();
             ((IClientChannel)_iReportService).Close();
 
@@ -86,7 +74,7 @@ namespace LMSWeb.Controllers
         private IEnumerable<SelectListItem> GetSubEventTypes(int masterId)
         {
             //This is not good, two calls to DB.
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             var filtered = _iReportService.GetEventTypes().Where(h => h.EventTypeSubId == masterId).ToList();
             ((IClientChannel)_iReportService).Close();
 
@@ -138,13 +126,14 @@ namespace LMSWeb.Controllers
         
         public ActionResult Data(FilterParameters data)
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
 
             switch (data.WithReporting)
             {
                 case FilterParameters.ReportType.numberofevents:
 
                     List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
+                    ((IClientChannel)_iReportService).Close();
                     return Json(statistics, JsonRequestBehavior.AllowGet);
                     
 
@@ -191,7 +180,7 @@ namespace LMSWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
             ((IClientChannel)_iReportService).Close();
 
@@ -211,8 +200,7 @@ namespace LMSWeb.Controllers
         {
             try
             {
-
-                SetupConnection();
+                _iReportService = _serviceHelper.GetReportService();
                 FilterParameters selection = CreateSelectionParameters(collection);
                 List<ResultObject> data = _iReportService.EventlogObjectForRig(selection);
                 ((IClientChannel)_iReportService).Close();

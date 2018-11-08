@@ -11,21 +11,8 @@ namespace LMSWeb.Controllers
 {
     public class LoginController : Controller
     {
-        private ChannelFactory<IReportService> reportChannelFactory = null;
-        private EndpointAddress endpointAddress = null;
-        //        private string epAddr = "net.tcp://localhost:7778/";
-        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
-        private IReportService _iReportService;
-
-
-        private void SetupConnection()
-        {
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-            reportChannelFactory = new ChannelFactory<IReportService>(tcpBinding);
-            endpointAddress = new EndpointAddress(epAddr);
-            _iReportService = reportChannelFactory.CreateChannel(endpointAddress);
-        }
-
+        ServiceHelper _serviceHelper = new ServiceHelper();
+        IReportService _iReportService;
 
         // GET: Login
         public ActionResult Index()
@@ -36,18 +23,30 @@ namespace LMSWeb.Controllers
         [HttpPost]
         public ActionResult Authorize(LMSWeb.Models.UserObjectModel userObjectModel )
         {
-            var userDetails = GetUsers().Where(u => u.UserObjectName.ToLower() == userObjectModel.UserObjectName.Trim().ToLower() &&
-                                                u.UserObjectPassword == userObjectModel.UserObjectPassword.Trim()).FirstOrDefault();
-            if (userDetails == null)
+            _iReportService = _serviceHelper.GetReportService();
+            UserObject user = new UserObject
+            {
+                UserObjectName = userObjectModel.UserObjectName,
+                UserObjectPassword = userObjectModel.UserObjectPassword
+            };
+            int userObjectId = _iReportService.UserLogin(user);
+            ((IClientChannel)_iReportService).Close();
+
+            if (userObjectId > 0)
+            {
+                Session["userObjectId"] = user.UserObjectId;
+                Session["userObjectName"] = user.UserObjectName;
+                return RedirectToAction("Stat", "statistics");
+            }
+            else if (userObjectId == 0)
             {
                 userObjectModel.LoginErrorMessage = "Wrong 'User Name' or 'Password!";
                 return View("Index", userObjectModel);
             }
             else
             {
-                Session["userObjectId"] = userDetails.UserObjectId;
-                Session["userObjectName"] = userDetails.UserObjectName;
-                return RedirectToAction("Stat", "statistics");
+                userObjectModel.LoginErrorMessage = "User is locked!";
+                return View("Index", userObjectModel);
             }
         }
 
@@ -55,15 +54,6 @@ namespace LMSWeb.Controllers
         {
             Session.Abandon();
             return RedirectToAction("Index", "Login");
-
-        }
-
-        private List<UserObject> GetUsers()
-        {
-            SetupConnection();
-            List<UserObject> users = _iReportService.GetUserObjects();
-            ((IClientChannel)_iReportService).Close();
-            return users;
         }
     }
 }

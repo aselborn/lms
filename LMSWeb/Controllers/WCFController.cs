@@ -12,26 +12,13 @@ namespace LMSWeb.Controllers
 {
     public class WCFController : Controller
     {
-
-        private ChannelFactory<IReportService> reportChannelFactory = null;
-        private EndpointAddress endpointAddress = null;
-        private string epAddr = "net.tcp://10.8.227.128:7778/";//"net.tcp://localhost:7778/";
-        private IReportService _iReportService;
-
-
-        private void SetupConnection()
-        {
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-            reportChannelFactory = new ChannelFactory<IReportService>(tcpBinding);
-            endpointAddress = new EndpointAddress(epAddr);
-            _iReportService = reportChannelFactory.CreateChannel(endpointAddress);
-        }
-
-
+        ServiceHelper _serviceHelper = new ServiceHelper();
+        IReportService _iReportService;
+        
         // GET: WCF
         public ActionResult Index()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
             ((IClientChannel)_iReportService).Close();
             return View(lstModel);
@@ -39,7 +26,7 @@ namespace LMSWeb.Controllers
 
         public ActionResult Pie()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
             ((IClientChannel)_iReportService).Close();
             return View(lstModel);
@@ -47,7 +34,7 @@ namespace LMSWeb.Controllers
 
         public ActionResult Line()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
             ((IClientChannel)_iReportService).Close();
             return View(lstModel);
@@ -56,7 +43,7 @@ namespace LMSWeb.Controllers
 
         public ActionResult Pie2()
         {
-            SetupConnection();
+            _iReportService = _serviceHelper.GetReportService();
 
             FilterParameters parameters = new FilterParameters { WithGrouping = FilterParameters.GroupByOperator.Month };
             List<ResultObject> data = _iReportService.EventlogObjectForRig(parameters);

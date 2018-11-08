@@ -21,8 +21,13 @@ namespace ReportDao.Entity
         [StringLength(50)]
         public string UserObjectName { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string UserObjectPassword { get; set; }
+
+        public DateTime? LastLoginTime { get; set; }
+
+        public bool Locked { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EventLog> EventLog { get; set; }
