@@ -658,6 +658,34 @@ namespace ReportDao
             var data = m_LmsContext.DbEventLog.ToList();
 
             foreach (EventLog t in data)
+<<<<<<< HEAD
+            //foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
+            //                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.RigStop ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.PlannedMaintenance ||
+            //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.NoActivity)))
+            {
+                result.Add(new Bridge.EventLog
+                {
+                    EventLogId = t.EventLogId,
+                    EventTypeDescription = t.EventType.EventTypeDescription.Trim(),
+                    EventLogTime = t.EventLogTime,
+                    EventLogUserId = t.EventLogUserId,
+                    EventTypeId = t.EventTypeId,
+                    EventTypeSubId = t.EventType.EventTypeSubId ?? 0,
+                    EventLogManualTime = t.EventLogManualTime,
+                    CustomerId = t.CustomerId,
+                    TestBedId = t.TestBedId,
+                    TestId = t.TestId,
+                    TestObjectId = t.TestObjectId,
+                    DeviceId = t.DeviceId,
+                    UserObjectId = t.UserObjectId,
+                    ItemGroupId = t.ItemGroupId,
+                    EventValue = t.EventValue,
+                    Deleted = t.Deleted ?? false
+                });
+=======
                 //foreach (EventLog t in data.Where(t => t.EventType.EventTypeSubId.HasValue &&
                 //                                    (t.EventType.EventTypeSubId == (int)Bridge.eEventType.FpActivity || 
                 //                                    t.EventType.EventTypeSubId == (int)Bridge.eEventType.LpActivity ||
@@ -681,6 +709,7 @@ namespace ReportDao
                                                 ItemGroupId = t.ItemGroupId,
                                                 EventValue = t.EventValue,
                                                 Deleted = t.Deleted?? false });
+>>>>>>> c9348088eeceadce1d9f95280e1214279161d7c2
             }
 
             return result;

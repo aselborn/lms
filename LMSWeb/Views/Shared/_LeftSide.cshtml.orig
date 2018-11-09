@@ -1,0 +1,280 @@
+﻿@using LMSWeb.Models
+@model Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
+
+@Styles.Render("~/Content/css")
+@*@Styles.Render("~/Content/custom/css")*@
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/Util.js"></script>
+<link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+<script language="javascript" type="text/javascript">
+
+    var FilterParameters = {};
+    var selectedChartType = null;
+
+    $(function () {
+        selectedChartType = $('[name="dgr"]:checked').val();
+    });
+
+    $(document).on('click', '[name="dgr"]', function () {
+        selectedChartType = $(this).val();
+        selectedChartType = selectedChartType.toLowerCase();
+    });
+
+    function filterEvents() {
+        var eventTypeId = $('#Item2_EventTypeId').val();
+
+        $.ajax({
+            url: 'Details',
+            type: "GET",
+            dataType: "JSON",
+            data: { MasterEventId: eventTypeId },
+            success: function (SubEventTypes) {
+                $('#idSubEvent').html("");
+
+                var jsondata = SubEventTypes;
+
+                $.each(jsondata, function (i, item) {
+                    $('#idSubEvent').append($('<option>', {
+                        value: item.Value,
+                        text: item.Text
+                    }));
+                });
+
+            }
+        })
+    }
+
+    function FetchStatistics() {
+
+        
+        var myCheckedValue;
+        $('input:radio').each(function () {
+            if ($(this).is(':checked')) {
+                // You have a checked radio button here...
+                myCheckedValue = $(this).val();
+            }
+
+        });
+
+        FilterParameters.StartDate = $("#FromDate").val();
+        FilterParameters.StopDate = $("#TomDate").val();
+        FilterParameters.WithReporting = $("#ddlReportType").val();
+        FilterParameters.TestBedId = $("#ddlTestBed").val();
+        FilterParameters.WithGrouping = myCheckedValue;
+        FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
+        FilterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
+        FilterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
+
+        if (FilterParameters.TestBedId == "") {
+            alert('A testbed must be selected. Exiting.');
+            return;
+        }
+
+        var jsonData = JSON.stringify(FilterParameters);
+
+        $.ajax({
+            url: 'Data',
+            type: 'POST',
+            dataType: 'JSON',
+            data: '{data: ' + JSON.stringify(FilterParameters) + '}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                var jsondata = response;
+                $("#chart").html("");
+
+                //Reply in JSON format, to build up statistic page.
+
+                $.each(jsondata, function (i, item) {
+                    $("#chart").html(item.Text);
+                });
+
+                if (FilterParameters.WithGrouping === "Day") {
+                    DrawMyStacked(jsondata);
+                } else {
+                    DrawChart(jsondata, selectedChartType);
+                }
+                
+               
+                //What type of diagram should we draw?
+                //Drawing a pie-chart.
+<<<<<<< HEAD:NetWeb/Views/Shared/_LeftSide.cshtml
+                //
+                //DrawStacked();
+                //DrawFixedDates();
+                
+=======
+                DrawChart(jsondata, selectedChartType);
+                //DrawStacked();
+>>>>>>> c9348088eeceadce1d9f95280e1214279161d7c2:LMSWeb/Views/Shared/_LeftSide.cshtml
+
+
+            },
+            error: function (xhr, status, error) {
+                alert('Failed to get correct data (most probably a bug). Check if there is a log!!');
+            }
+
+        });
+
+    }
+
+
+    $(function () {
+        $("#FromDate,#TomDate").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+        });
+
+        $("#datepicker-1").datepicker({
+            dateFormat: "yyyy-MM-dd",
+            changeMonth: true,
+            changeYear: true
+        });
+    })
+
+    function AllSubEventsSelected(element) {
+        //element.checked ? alert('checked.') : alert('not checked');
+        //allEvents.checked = element.checked ? true : false;
+        var checked = element.checked ? true : false;
+        //$('#IsSubAllEvents').val(checked);
+        
+        if (checked) {
+            document.getElementById("idSubEvent").disabled = checked;            
+        } else {
+            document.getElementById("idSubEvent").disabled = checked;
+        }
+
+
+    }
+
+    function AllEventsSelected(element) {
+        //element.checked ? alert('checked.') : alert('not checked');
+        //allEvents.checked = element.checked ? true : false;
+        var checked = element.checked ? true : false;
+
+        //Set this control disabled.
+        if (checked) {
+            document.getElementById("Item2_EventTypeId").disabled = checked;
+            document.getElementById("idSubEvent").disabled = checked;            
+        } else {
+            document.getElementById("Item2_EventTypeId").disabled = checked;
+            document.getElementById("idSubEvent").disabled = checked;
+        }
+
+        
+    }
+
+</script>
+
+
+
+@using (Html.BeginForm("Data", "Statistics", FormMethod.Post))
+{
+
+    @*<div class="divstyle">*@
+<div class="left-divstyle">
+    <h3>Filter statistics</h3>
+
+    <!--To select report type of diagram-->
+    <div class="form-group">
+        
+        @Html.Label("Select report-type")
+        @{
+            ReportTypeViewModel reportType = (ReportTypeViewModel)TempData["ReportTypes"];
+        }
+
+        @Html.DropDownList("drpSelectReportType", new SelectList(reportType.ListOfReportTypes, "Value", "Text"), new { @class = "form-control", @id = "ddlReportType" })
+
+    </div>
+
+    <!--To select type of diagram-->
+    <div class="form-group">
+
+        <form name="frmDiagramType">
+            @Html.RadioButton("dgr", "Line", false, new { @class = "control-label", @value = "1", @id = "chkLine" }) Line
+            @Html.RadioButton("dgr", "Bar", true, new { @class = "control-label", @value = "2", @id = "chkBar" }) Bar
+            @Html.RadioButton("dgr", "Pie", false, new { @class = "control-label", @value = "3", @id = "chkPie" }) Pie
+            @Html.RadioButton("dgr", "Doughnut", false, new { @class = "control-label", @value = "4", @id = "chkDoughnut" }) Doughnut
+        </form>
+        
+    </div>
+
+    <!--Select testbed-->
+    <div class="form-group">
+        @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" })
+        @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
+      "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })
+    </div>
+
+
+    <!--All eventtypes-->
+    <div class="form-inline">
+
+        @Html.LabelFor(tuple => tuple.Item2.EventTypeId)<br/>
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+      "--SELECT--",
+      new {@class = "form-control", @onchange = "filterEvents();"})
+
+        @Html.CheckBox("chkEventTypes", false, new { onchange = "AllEventsSelected(this);" })
+        @Html.Label("All Events")
+
+    </div>
+
+    <div class="form-inline">
+        <br />
+        <select name="ddlSubEvent" class="form-control" id="idSubEvent">
+            <option>--SUB-EVENTTYPE--</option>
+        </select>
+
+        @Html.CheckBox("chkSubEventTypes", false, new { @class = "control-label", onchange = "AllSubEventsSelected(this);"})
+        @Html.Label("All Subevents")
+
+    </div>
+
+    <div class="form-group input-group-sm">
+
+        @Html.LabelFor(model => model.Item4.FromDate)
+        @Html.TextBoxFor(model => model.Item4.FromDate, "{0:yyyy-MM-dd}", new { @id = "FromDate", @class = "form-control" })
+
+
+
+        @Html.LabelFor(model => model.Item4.TomDate)
+        @Html.TextBoxFor(model => model.Item4.TomDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "TomDate" })
+        <br />
+
+        <fieldset>
+            <legend>Select grouping option</legend>
+            @Html.RadioButton("group", "Year", false, new { @class = "control-label", @value = "1", @id = "chkYear" }) Year<br />
+            @Html.RadioButton("group", "Month", true, new { @class = "control-label", @value = "2", @id = "chkMonth" }) Month<br />
+            @Html.RadioButton("group", "Week", false, new { @class = "control-label", @value = "3", @id = "chkWeek" }) Week<br />
+            @Html.RadioButton("group", "Day", false, new { @class = "control-label", @value = "4", @id = "chkDay" }) Day<br /><br />
+            <legend />
+        </fieldset>
+        @*<input type="submit" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />*@
+        <input type="button" onclick="FetchStatistics();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />
+
+    </div>
+
+</div>
+
+}
+
+
+
+<style>
+    .divstyle {
+        padding-left: 15px;
+        float: left;
+        width: 350px;
+        height: 700px;
+        background-color: darkgoldenrod;
+    }
+</style>

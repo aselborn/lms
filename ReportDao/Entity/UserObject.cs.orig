@@ -21,6 +21,11 @@ namespace ReportDao.Entity
         [StringLength(50)]
         public string UserObjectName { get; set; }
 
+<<<<<<< HEAD
+        [StringLength(100)]
+        public string UserObjectPassword { get; set; }
+
+=======
         [Required]
         [StringLength(100)]
         public string UserObjectPassword { get; set; }
@@ -29,6 +34,7 @@ namespace ReportDao.Entity
 
         public bool Locked { get; set; }
 
+>>>>>>> c9348088eeceadce1d9f95280e1214279161d7c2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EventLog> EventLog { get; set; }
     }

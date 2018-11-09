@@ -206,5 +206,25 @@ namespace ReportDao.Model
             public string ReportTypeText { get; set; }
         }
 
+        [DataContract]
+        public class UserObject
+        {
+            [DataMember]
+            public int UserObjectId { get; set; }
+            [DataMember]
+            public string UserObjectName { get; set; }
+            [DataMember]
+            public string UserObjectPassword { get; set; }
+            [DataMember]
+            public DateTime? LastLoginTime { get; set; }
+            [DataMember]
+            public bool Locked { get; set; }
+
+            public override string ToString()
+            {
+                return UserObjectName;
+            }
+        }
+
     }
 }
