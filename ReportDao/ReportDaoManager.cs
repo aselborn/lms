@@ -54,49 +54,57 @@ namespace ReportDao
         private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
         {
 
-            SqlParameter[] sqls = new SqlParameter[]
-                    {
-                        new SqlParameter
-                        {
-                            ParameterName ="@start",
-                            Value =(DateTime)filterParameters.StartDate,
-                            SqlDbType = System.Data.SqlDbType.DateTime,
-                            Direction = System.Data.ParameterDirection.Input
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@start",
+                Value = (DateTime)filterParameters.StartDate,
+                SqlDbType = System.Data.SqlDbType.DateTime,
+                Direction = System.Data.ParameterDirection.Input
+            });
 
-                        },
-                        new SqlParameter
-                        {
-                            ParameterName = "@stop",
-                            Value =(DateTime)filterParameters.StopDate,
-                            SqlDbType = System.Data.SqlDbType.DateTime,
-                            Direction =System.Data.ParameterDirection.Input
-                        },
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@stop",
+                Value = (DateTime)filterParameters.StopDate,
+                SqlDbType = System.Data.SqlDbType.DateTime,
+                Direction = System.Data.ParameterDirection.Input
+            });
 
-                        new SqlParameter
-                        {
-                            ParameterName="@testBedId",
-                            Value =filterParameters.TestBedId,
-                            DbType = System.Data.DbType.Int32,
-                            Direction =System.Data.ParameterDirection.Input
-                        },
-                        new SqlParameter
-                        {
-                            ParameterName="@eventTypeId",
-                            Value = filterParameters.AllEvents ? (object) DBNull.Value : filterParameters.EventTypeId,
-                            DbType = System.Data.DbType.Int32,
-                            Direction =System.Data.ParameterDirection.Input
-                        },
-                        new SqlParameter
-                        {
-                            ParameterName="@grpBy",
-                            Value =filterParameters.WithGrouping,
-                            SqlDbType = System.Data.SqlDbType.VarChar,
-                            Direction =System.Data.ParameterDirection.Input
-                        }
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@testBedId",
+                Value = filterParameters.TestBedId,
+                DbType = System.Data.DbType.Int32,
+                Direction = System.Data.ParameterDirection.Input
+            });
 
-                    };
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@eventTypeId",
+                Value = filterParameters.AllEvents ? (object)DBNull.Value : filterParameters.EventTypeId,
+                DbType = System.Data.DbType.Int32,
+                Direction = System.Data.ParameterDirection.Input
+            });
 
-            return sqls;
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@grpBy",
+                Value = filterParameters.WithGrouping,
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Direction = System.Data.ParameterDirection.Input
+            });
+
+            parameterList.Add(new SqlParameter
+            {
+                ParameterName = "@allSubgroups",
+                Value = filterParameters.AllSubEvents ? (object)DBNull.Value:filterParameters.EventTypeId,
+                SqlDbType = System.Data.SqlDbType.Bit,
+                Direction = System.Data.ParameterDirection.Input
+            });
+
+            
+            return parameterList.ToArray();
         }
 
         private string ProcedureToExecute(Bridge.FilterParameters filterParameters)
@@ -108,7 +116,7 @@ namespace ReportDao
                 case Bridge.FilterParameters.GroupByOperator.Day:
 
                     //Alla data för denna testbed, denna period.
-                    qry = "p_EventCountByDayPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
+                    qry = "p_EventCountByDayPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy, @allSubgroups";
 
                     break;
 
@@ -192,6 +200,18 @@ namespace ReportDao
 
             sqls = createParameters(filterParameters);
             string qry = ProcedureToExecute(filterParameters);
+
+
+            Console.WriteLine("#Printing some debug#");
+            Console.WriteLine();
+            Console.Write($"Procedure to execute=> {qry}");
+            foreach (SqlParameter prm in sqls)
+            {
+                Console.Write(prm.Value.ToString() + " ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
 
             List<Bridge.DayDistributeReply> daysDistributeReply = m_LmsContext.Database.SqlQuery<Bridge.DayDistributeReply>(qry, sqls).ToList();
 
