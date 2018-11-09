@@ -35,7 +35,7 @@
     var MyChart;
     var MyChartData = {};
 
-    var ChartOptions= {
+    var ChartOptions = {
 
         title: {
             display: true,
@@ -57,7 +57,7 @@
 
     }
 
-    window.chartColors = {
+    MychartColors = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
         yellow: 'rgb(255, 205, 86)',
@@ -67,18 +67,17 @@
         grey: 'rgb(231,233,237)'
     };
 
+    var Colors = [];
+
     function DrawMyStacked(dataSets) {
 
         resetCanvas();
 
-        
-
         var myDateLabels = [];
+
 
         var myValues = [];
         var myEventLabels = [];
-
-        var mydataArray = new Array(3);
 
         for (var n = 0; n <= dataSets.length - 1; n++) {
 
@@ -90,131 +89,173 @@
                     myDateLabels.push(myObject[p].EventTime);
                 }
 
-                //mydataArray.push(myObject[p].EventTime, myObject[p].EventTypeDescription.trim(), myObject[p].Number)
+                if ($.inArray(myObject[p].EventTypeDescription.trim(), myEventLabels) === -1) {
+                    myEventLabels.push(myObject[p].EventTypeDescription.trim());
+                }
 
-                myValues.push(myObject[p].Number);
-                myEventLabels.push(myObject[p].EventTypeDescription.trim());
+                var eventData = {
+                    EventTime: myObject[p].EventTime,
+                    EventTypeDescription: myObject[p].EventTypeDescription.trim(),
+                    Number: myObject[p].Number
+                };
+
+
+                myValues.push(eventData);
+            }
+        }
+
+        var chartData = {
+            labels: myDateLabels,
+            datasets: []
+        };
+
+        var myChart = new Chart(ctx, {
+            options: ChartOptions,
+            data: chartData,
+            type: 'bar'
+        });
+
+        ////Create initial chart, all values same
+        for (var xp = 0; xp < myEventLabels.length; xp++) {
+            var newDataset = {
+                label: myEventLabels[xp],
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                data: [],
+                fill: false
+            };
+
+            for (var index = 0; index < myChart.data.labels.length; ++index) {
+                newDataset.data.push(0);
+            }
+
+            myChart.data.datasets.push(newDataset);
+            myChart.update();
+        }
+
+        //Now, fix the values to correct values.
+        //Uppdatera...?
+        for (var stapel = 0; stapel < myChart.data.labels.length; stapel++) {
+
+            var eventDate = myChart.data.labels[stapel];
+
+            for (var p = 0; p < myChart.data.datasets.length; p++) { //Loopa igenom alla klossar för varje stapel! //myChart.data.datasets[KLOSS].data[STAPEL] = 1;
+
+                var eventLabel = myChart.data.datasets[p].label;
+                
+                //Find that label in myValues array.
+
+                for (var z = 0; z < myValues.length; z++) {
+
+                    var d = myValues[z];
+                    if (d.EventTime === eventDate && d.EventTypeDescription === eventLabel) {
+                        myChart.data.datasets[p].data[stapel] = d.Number;
+                        myChart.update();
+                    }
+
+                }
 
             }
         }
 
-        var data = {
-            labels: myDateLabels,
-            datasets: [{
-                label: "Sammanställning",
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 0, 0)',
-                    'rgba(0, 255, 0)',
-                    'rgba(0, 0, 255)',
-                    'rgba(192, 192, 192)',
-                    'rgba(255, 255, 0)',
-                    'rgba(255, 0, 255)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 0, 0)',
-                    'rgba(0, 255, 0)',
-                    'rgba(0, 0, 255)',
-                    'rgba(192, 192, 192)',
-                    'rgba(255, 255, 0)',
-                    'rgba(255, 0, 255)'
-                ],
-                borderWidth: 1,
-                data: []
-            }]
-        };
-
-        var testValues = [];
-        testValues.push(Math.random() * 10);
-        testValues.push(Math.random() * 10);
-        testValues.push(Math.random() * 10);
-
-        MyChart = addData2(MyChart, "kalle", testValues)
     }
 
-    function addData2(myBarChart, label, myValues) {
+    function addData3(myBarChart, ChartLabels, inDataSets) {
 
         var chartName = "chart";
         var ctx = document.getElementById(chartName).getContext('2d');
-        
+
+        var myValues = [];
+        var myLables = [];
 
         if (myBarChart === undefined) {
-
             MyChartData = {
-                labels: ['label1','label2'],
-                datasets: [{
-                    label: "Sammanställning",
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
-                    ],
-                    borderWidth: 1,
-                    data: myValues
-                }]
+                labels: ChartLabels,
+                datasets: []
             };
-            
-            myBarChart = new Chart(ctx, {
-                label: label,
-                data: MyChartData,
-                options: ChartOptions,
-                type: 'bar'
-            });
+        }
 
-        } else {
+        for (var n = 0; n <= inDataSets.length - 1; n++) {
+
+            for (var x = 0; x < inDataSets[n].length; x++) {
+                myValues.push(inDataSets[n][x].Number);
+                myLables.push(inDataSets[n][x].EventTypeDescription.trim());
+            }
+
+            var colorValue = getRandomColor();
 
             var newDataset = {
-                label: "new-dataset",
-                backgroundColor: 'rgba(99, 255, 132, 0.2)',
-                borderColor: 'rgba(99, 255, 132, 1)',
+                label: myLables,
+                backgroundColor: [colorValue],
+                borderColor: [colorValue],
                 borderWidth: 1,
                 data: myValues
             };
 
             MyChartData.datasets.push(newDataset);
-
-            myBarChart.update();
-
         }
 
-        return MyChartData;
+
+        //for (var n = 0; n <= inDataSets.length - 1; n++) {
+
+        //    var myObject = inDataSets[n];
+        //    var myLoopValues = [];
+        //    var myLabel = [];
+
+        //    for (var p = 0; p <= myObject.length - 1; p++) {
+
+        //        for (var x = 0; x < inDataSets.length; x++) {
+        //            myLoopValues.push(inDataSets[x][p].Number);
+        //            myLabel.push(inDataSets[x][p].EventTypeDescription.trim());
+        //        }
+
+        //        //myLoopValues.push(inDataSets[n][p].Number);
+        //        //myLabel.push(inDataSets[n][p].EventTypeDescription.trim());
+
+        //        var colorValue = getRandomColor();
+
+        //        var newDataset = {
+        //            label: myLabel,
+        //            backgroundColor: [colorValue],
+        //            borderColor: [colorValue],
+        //            borderWidth: 1,
+        //            data: myLoopValues
+        //        };
+
+        //        myLabel = [];
+        //        myLoopValues = [];
+
+
+        //        MyChartData.datasets.push(newDataset);
+
+
+        //    }
+        //}
+
+        myBarChart = new Chart(ctx, {
+            data: MyChartData,
+            options: ChartOptions,
+            type: 'bar'
+        });
+
+
+        //myBarChart.update(0);
+
+
+
+
     }
 
-   
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
 
     function addData(chart, label, data) {
         chart.data.labels.push(label);
@@ -279,25 +320,25 @@
         };
 
         var newOptions = {
-            
-                title: {
-                    display: true,
-                    text: 'Chart.js Bar Chart - Stacked'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false
-                },
-                responsive: true,
-                scales: {
-                    xAxes: [{
-                        stacked: true,
-                    }],
-                    yAxes: [{
-                        stacked: true
-                    }]
-                }
-            
+
+            title: {
+                display: true,
+                text: 'Chart.js Bar Chart - Stacked'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+
         }
 
         var options = {
@@ -335,6 +376,122 @@
             type: 'bar'
 
         });
+    }
+
+    /*
+     * Working example...
+    */
+    function DrawFixedDates() {
+
+        resetCanvas();
+
+        var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+
+        var myLabels = [];
+        var myValues = [];
+        var myLabels = ["Stop Reason 2", "Daily", "FP Reason 3", "None", "FP Reason 2"];
+
+        var chartData = {
+            labels: ['2018-11-01', '2018-11-02', '2018-11-03'],
+            datasets: []
+        };
+
+
+
+        var newOptions = {
+
+            title: {
+                display: true,
+                text: 'Chart.js Bar Chart - Stacked'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+
+        }
+
+        var options = {
+            title: {
+                display: true,
+                text: 'Antal händelser.'
+            },
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: true,
+                        color: "rgba(255,99,164,0.2)"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        min: 0,
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            }
+        };
+
+        var myChart = new Chart(ctx, {
+            options: newOptions,
+            data: chartData,
+            type: 'bar'
+
+        });
+
+        for (var xp = 0; xp < myLabels.length; xp++) {
+
+            var newDataset = {
+                label: myLabels[xp],
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                data: [],
+                fill: false
+            };
+
+            for (var index = 0; index < myChart.data.labels.length; ++index) {
+                newDataset.data.push(2);
+            }
+
+            myChart.data.datasets.push(newDataset);
+            myChart.update();
+        }
+
+        //Uppdatera...?
+        //myChart.data.datasets[0].data[0] = 0;
+        //myChart.update();
+
+        //myChart.data.datasets[1].data[0] = 0;
+        //myChart.update();
+
+        //myChart.data.datasets[KLOSS].data[STAPEL] = 1;
+
+        myChart.data.datasets[3].data[2] = 1;
+        myChart.update();
+
+        //myChart.data.datasets[2].data[1] = 0;
+        //myChart.update();
+
+        //var ps = ";";
+
     }
 
     function DrawChart(SimpleResultObject, typeOfChart) {
@@ -392,7 +549,7 @@
         var options = {
             title: {
                 display: true,
-                text:'Antal händelser.'
+                text: 'Antal händelser.'
             },
             maintainAspectRatio: false,
             scales: {
@@ -425,7 +582,7 @@
 
         });
 
-       
+
     }
 
 
@@ -443,7 +600,7 @@
         ctx.fillText('This text is centered on the canvas', x, y);
     };
 
-   
+
 </script>
 
 

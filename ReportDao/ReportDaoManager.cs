@@ -50,9 +50,10 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
-        
+
         private SqlParameter[] createParameters(Bridge.FilterParameters filterParameters)
         {
+
             SqlParameter[] sqls = new SqlParameter[]
                     {
                         new SqlParameter
@@ -81,7 +82,7 @@ namespace ReportDao
                         new SqlParameter
                         {
                             ParameterName="@eventTypeId",
-                            Value =filterParameters.EventTypeId,
+                            Value = filterParameters.AllEvents ? (object) DBNull.Value : filterParameters.EventTypeId,
                             DbType = System.Data.DbType.Int32,
                             Direction =System.Data.ParameterDirection.Input
                         },
@@ -105,7 +106,10 @@ namespace ReportDao
             switch (filterParameters.WithGrouping)
             {
                 case Bridge.FilterParameters.GroupByOperator.Day:
+
+                    //Alla data för denna testbed, denna period.
                     qry = "p_EventCountByDayPeriod @start, @stop, @testBedId, @eventTypeId, @grpBy";
+
                     break;
 
                 default:
@@ -129,13 +133,13 @@ namespace ReportDao
             return qry;
         }
 
-        
+
 
         public List<Bridge.ResultObject> EventlogObjectForRig(Bridge.FilterParameters filterParameters)
         {
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
             SqlParameter[] sqls = null;
-            
+
 
             string qry = ProcedureToExecute(filterParameters);
             sqls = createParameters(filterParameters);
@@ -163,7 +167,7 @@ namespace ReportDao
 
                     break;
 
-                
+
                 case Bridge.FilterParameters.GroupByOperator.Week:
 
                     List<WeekReply> weekreplys = m_LmsContext.Database.SqlQuery<WeekReply>(qry, sqls).ToList();
@@ -178,7 +182,7 @@ namespace ReportDao
                     break;
             }
 
-
+            Console.WriteLine($"#Debug , rows in resultset returned = {result.Count.ToString()}");
             return result;
         }
 
@@ -192,7 +196,7 @@ namespace ReportDao
             List<Bridge.DayDistributeReply> daysDistributeReply = m_LmsContext.Database.SqlQuery<Bridge.DayDistributeReply>(qry, sqls).ToList();
 
             var resultList = daysDistributeReply.GroupBy(p => p.EventTime.Trim()).Select(grp => grp.ToList()).ToList();
-            
+
             return resultList;
         }
 

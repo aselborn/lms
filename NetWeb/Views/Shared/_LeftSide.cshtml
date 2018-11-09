@@ -14,6 +14,7 @@
 <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 <script language="javascript" type="text/javascript">
 
+    var FilterParameters = {};
     var selectedChartType = null;
 
     $(function () {
@@ -51,7 +52,7 @@
 
     function FetchStatistics() {
 
-        var filterParameters = {};
+        
         var myCheckedValue;
         $('input:radio').each(function () {
             if ($(this).is(':checked')) {
@@ -61,27 +62,27 @@
 
         });
 
-        filterParameters.StartDate = $("#FromDate").val();
-        filterParameters.StopDate = $("#TomDate").val();
-        filterParameters.WithReporting = $("#ddlReportType").val();
-        filterParameters.TestBedId = $("#ddlTestBed").val();
-        filterParameters.WithGrouping = myCheckedValue;
-        filterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
-        filterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
-        filterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
+        FilterParameters.StartDate = $("#FromDate").val();
+        FilterParameters.StopDate = $("#TomDate").val();
+        FilterParameters.WithReporting = $("#ddlReportType").val();
+        FilterParameters.TestBedId = $("#ddlTestBed").val();
+        FilterParameters.WithGrouping = myCheckedValue;
+        FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
+        FilterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
+        FilterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
 
-        if (filterParameters.TestBedId == "") {
+        if (FilterParameters.TestBedId == "") {
             alert('A testbed must be selected. Exiting.');
             return;
         }
 
-        var jsonData = JSON.stringify(filterParameters);
+        var jsonData = JSON.stringify(FilterParameters);
 
         $.ajax({
             url: 'Data',
             type: 'POST',
             dataType: 'JSON',
-            data: '{data: ' + JSON.stringify(filterParameters) + '}',
+            data: '{data: ' + JSON.stringify(FilterParameters) + '}',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
@@ -95,17 +96,24 @@
                     $("#chart").html(item.Text);
                 });
 
+                if (FilterParameters.WithGrouping === "Day") {
+                    DrawMyStacked(jsondata);
+                } else {
+                    DrawChart(jsondata, selectedChartType);
+                }
+                
                
                 //What type of diagram should we draw?
                 //Drawing a pie-chart.
-                //DrawChart(jsondata, selectedChartType);
+                //
                 //DrawStacked();
-                DrawMyStacked(jsondata);
+                //DrawFixedDates();
+                
 
 
             },
             error: function (xhr, status, error) {
-                alert('Failed to get correct data.');
+                alert('Failed to get correct data (most probably a bug). Check if there is a log!!');
             }
 
         });
