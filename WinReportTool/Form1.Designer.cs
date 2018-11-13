@@ -65,6 +65,20 @@
             this.tabPageTestBed = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
             this.btnDeleteTestBed = new System.Windows.Forms.Button();
+            this.tabPageTest = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.buttonDeleteTest = new System.Windows.Forms.Button();
+            this.listBoxTest = new System.Windows.Forms.ListBox();
+            this.textBoxTestName = new System.Windows.Forms.TextBox();
+            this.buttonAddTest = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxTestBedTests = new System.Windows.Forms.ComboBox();
+            this.tabPageTestObject = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buttonDeleteTestObject = new System.Windows.Forms.Button();
+            this.listBoxTestObject = new System.Windows.Forms.ListBox();
+            this.textBoxTestObjectName = new System.Windows.Forms.TextBox();
+            this.buttonAddTestObject = new System.Windows.Forms.Button();
             this.tabPageDevice = new System.Windows.Forms.TabPage();
             this.buttonDeleteDevice = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -77,30 +91,18 @@
             this.btnAddEventType = new System.Windows.Forms.Button();
             this.txtEventType = new System.Windows.Forms.TextBox();
             this.trEventTypes = new System.Windows.Forms.TreeView();
-            this.tabPageTest = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.comboBoxTestBedTests = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.buttonDeleteTest = new System.Windows.Forms.Button();
-            this.listBoxTest = new System.Windows.Forms.ListBox();
-            this.textBoxTestName = new System.Windows.Forms.TextBox();
-            this.buttonAddTest = new System.Windows.Forms.Button();
-            this.tabPageTestObject = new System.Windows.Forms.TabPage();
-            this.label9 = new System.Windows.Forms.Label();
-            this.buttonDeleteTestObject = new System.Windows.Forms.Button();
-            this.listBoxTestObject = new System.Windows.Forms.ListBox();
-            this.textBoxTestObjectName = new System.Windows.Forms.TextBox();
-            this.buttonAddTestObject = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxNoOfRows = new System.Windows.Forms.TextBox();
             this.tbTestBed.SuspendLayout();
             this.tabPageRegisterEvent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLogBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPageTestBed.SuspendLayout();
-            this.tabPageDevice.SuspendLayout();
-            this.tabPageEventType.SuspendLayout();
             this.tabPageTest.SuspendLayout();
             this.tabPageTestObject.SuspendLayout();
+            this.tabPageDevice.SuspendLayout();
+            this.tabPageEventType.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstTestBed
@@ -145,6 +147,8 @@
             // 
             // tabPageRegisterEvent
             // 
+            this.tabPageRegisterEvent.Controls.Add(this.label10);
+            this.tabPageRegisterEvent.Controls.Add(this.textBoxNoOfRows);
             this.tabPageRegisterEvent.Controls.Add(this.label3);
             this.tabPageRegisterEvent.Controls.Add(this.textBoxTotalTime);
             this.tabPageRegisterEvent.Controls.Add(this.dataGridViewEventLogs);
@@ -441,6 +445,147 @@
             this.btnDeleteTestBed.UseVisualStyleBackColor = true;
             this.btnDeleteTestBed.Click += new System.EventHandler(this.btnDeleteTestBed_Click);
             // 
+            // tabPageTest
+            // 
+            this.tabPageTest.Controls.Add(this.label8);
+            this.tabPageTest.Controls.Add(this.buttonDeleteTest);
+            this.tabPageTest.Controls.Add(this.listBoxTest);
+            this.tabPageTest.Controls.Add(this.textBoxTestName);
+            this.tabPageTest.Controls.Add(this.buttonAddTest);
+            this.tabPageTest.Controls.Add(this.label7);
+            this.tabPageTest.Controls.Add(this.comboBoxTestBedTests);
+            this.tabPageTest.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTest.Name = "tabPageTest";
+            this.tabPageTest.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTest.Size = new System.Drawing.Size(836, 511);
+            this.tabPageTest.TabIndex = 4;
+            this.tabPageTest.Text = "Tests";
+            this.tabPageTest.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 44);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(60, 13);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "Test name:";
+            // 
+            // buttonDeleteTest
+            // 
+            this.buttonDeleteTest.Location = new System.Drawing.Point(205, 454);
+            this.buttonDeleteTest.Name = "buttonDeleteTest";
+            this.buttonDeleteTest.Size = new System.Drawing.Size(80, 23);
+            this.buttonDeleteTest.TabIndex = 19;
+            this.buttonDeleteTest.Text = "Delete";
+            this.buttonDeleteTest.UseVisualStyleBackColor = true;
+            this.buttonDeleteTest.Click += new System.EventHandler(this.buttonDeleteTest_Click);
+            // 
+            // listBoxTest
+            // 
+            this.listBoxTest.FormattingEnabled = true;
+            this.listBoxTest.Location = new System.Drawing.Point(20, 67);
+            this.listBoxTest.Name = "listBoxTest";
+            this.listBoxTest.Size = new System.Drawing.Size(265, 381);
+            this.listBoxTest.TabIndex = 16;
+            this.listBoxTest.Click += new System.EventHandler(this.listBoxTest_Click);
+            // 
+            // textBoxTestName
+            // 
+            this.textBoxTestName.Location = new System.Drawing.Point(117, 42);
+            this.textBoxTestName.Name = "textBoxTestName";
+            this.textBoxTestName.Size = new System.Drawing.Size(168, 20);
+            this.textBoxTestName.TabIndex = 18;
+            // 
+            // buttonAddTest
+            // 
+            this.buttonAddTest.Location = new System.Drawing.Point(291, 40);
+            this.buttonAddTest.Name = "buttonAddTest";
+            this.buttonAddTest.Size = new System.Drawing.Size(80, 23);
+            this.buttonAddTest.TabIndex = 17;
+            this.buttonAddTest.Text = "Add";
+            this.buttonAddTest.UseVisualStyleBackColor = true;
+            this.buttonAddTest.Click += new System.EventHandler(this.buttonAddTest_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 18);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "TestBed";
+            // 
+            // comboBoxTestBedTests
+            // 
+            this.comboBoxTestBedTests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTestBedTests.FormattingEnabled = true;
+            this.comboBoxTestBedTests.Location = new System.Drawing.Point(117, 15);
+            this.comboBoxTestBedTests.Name = "comboBoxTestBedTests";
+            this.comboBoxTestBedTests.Size = new System.Drawing.Size(168, 21);
+            this.comboBoxTestBedTests.TabIndex = 14;
+            this.comboBoxTestBedTests.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestBedTests_SelectedIndexChanged);
+            // 
+            // tabPageTestObject
+            // 
+            this.tabPageTestObject.Controls.Add(this.label9);
+            this.tabPageTestObject.Controls.Add(this.buttonDeleteTestObject);
+            this.tabPageTestObject.Controls.Add(this.listBoxTestObject);
+            this.tabPageTestObject.Controls.Add(this.textBoxTestObjectName);
+            this.tabPageTestObject.Controls.Add(this.buttonAddTestObject);
+            this.tabPageTestObject.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTestObject.Name = "tabPageTestObject";
+            this.tabPageTestObject.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTestObject.Size = new System.Drawing.Size(836, 511);
+            this.tabPageTestObject.TabIndex = 5;
+            this.tabPageTestObject.Text = "TestObjects";
+            this.tabPageTestObject.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(17, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(91, 13);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "TestObject name:";
+            // 
+            // buttonDeleteTestObject
+            // 
+            this.buttonDeleteTestObject.Location = new System.Drawing.Point(205, 454);
+            this.buttonDeleteTestObject.Name = "buttonDeleteTestObject";
+            this.buttonDeleteTestObject.Size = new System.Drawing.Size(80, 23);
+            this.buttonDeleteTestObject.TabIndex = 16;
+            this.buttonDeleteTestObject.Text = "Delete";
+            this.buttonDeleteTestObject.UseVisualStyleBackColor = true;
+            this.buttonDeleteTestObject.Click += new System.EventHandler(this.buttonDeleteTestObject_Click);
+            // 
+            // listBoxTestObject
+            // 
+            this.listBoxTestObject.FormattingEnabled = true;
+            this.listBoxTestObject.Location = new System.Drawing.Point(20, 41);
+            this.listBoxTestObject.Name = "listBoxTestObject";
+            this.listBoxTestObject.Size = new System.Drawing.Size(265, 407);
+            this.listBoxTestObject.TabIndex = 13;
+            this.listBoxTestObject.Click += new System.EventHandler(this.listBoxTestObject_Click);
+            // 
+            // textBoxTestObjectName
+            // 
+            this.textBoxTestObjectName.Location = new System.Drawing.Point(117, 14);
+            this.textBoxTestObjectName.Name = "textBoxTestObjectName";
+            this.textBoxTestObjectName.Size = new System.Drawing.Size(168, 20);
+            this.textBoxTestObjectName.TabIndex = 15;
+            // 
+            // buttonAddTestObject
+            // 
+            this.buttonAddTestObject.Location = new System.Drawing.Point(291, 12);
+            this.buttonAddTestObject.Name = "buttonAddTestObject";
+            this.buttonAddTestObject.Size = new System.Drawing.Size(80, 23);
+            this.buttonAddTestObject.TabIndex = 14;
+            this.buttonAddTestObject.Text = "Add";
+            this.buttonAddTestObject.UseVisualStyleBackColor = true;
+            this.buttonAddTestObject.Click += new System.EventHandler(this.buttonAddTestObject_Click);
+            // 
             // tabPageDevice
             // 
             this.tabPageDevice.Controls.Add(this.buttonDeleteDevice);
@@ -562,146 +707,23 @@
             this.trEventTypes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trEventTypes_AfterSelect);
             this.trEventTypes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trEventTypes_MouseDown);
             // 
-            // tabPageTest
+            // label10
             // 
-            this.tabPageTest.Controls.Add(this.label8);
-            this.tabPageTest.Controls.Add(this.buttonDeleteTest);
-            this.tabPageTest.Controls.Add(this.listBoxTest);
-            this.tabPageTest.Controls.Add(this.textBoxTestName);
-            this.tabPageTest.Controls.Add(this.buttonAddTest);
-            this.tabPageTest.Controls.Add(this.label7);
-            this.tabPageTest.Controls.Add(this.comboBoxTestBedTests);
-            this.tabPageTest.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTest.Name = "tabPageTest";
-            this.tabPageTest.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTest.Size = new System.Drawing.Size(836, 511);
-            this.tabPageTest.TabIndex = 4;
-            this.tabPageTest.Text = "Tests";
-            this.tabPageTest.UseVisualStyleBackColor = true;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(254, 460);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(61, 13);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Antal rader:";
             // 
-            // label7
+            // textBoxNoOfRows
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 18);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 13);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "TestBed";
-            // 
-            // comboBoxTestBedTests
-            // 
-            this.comboBoxTestBedTests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTestBedTests.FormattingEnabled = true;
-            this.comboBoxTestBedTests.Location = new System.Drawing.Point(117, 15);
-            this.comboBoxTestBedTests.Name = "comboBoxTestBedTests";
-            this.comboBoxTestBedTests.Size = new System.Drawing.Size(168, 21);
-            this.comboBoxTestBedTests.TabIndex = 14;
-            this.comboBoxTestBedTests.SelectedIndexChanged += new System.EventHandler(this.comboBoxTestBedTests_SelectedIndexChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 44);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(60, 13);
-            this.label8.TabIndex = 20;
-            this.label8.Text = "Test name:";
-            // 
-            // buttonDeleteTest
-            // 
-            this.buttonDeleteTest.Location = new System.Drawing.Point(205, 454);
-            this.buttonDeleteTest.Name = "buttonDeleteTest";
-            this.buttonDeleteTest.Size = new System.Drawing.Size(80, 23);
-            this.buttonDeleteTest.TabIndex = 19;
-            this.buttonDeleteTest.Text = "Delete";
-            this.buttonDeleteTest.UseVisualStyleBackColor = true;
-            this.buttonDeleteTest.Click += new System.EventHandler(this.buttonDeleteTest_Click);
-            // 
-            // listBoxTest
-            // 
-            this.listBoxTest.FormattingEnabled = true;
-            this.listBoxTest.Location = new System.Drawing.Point(20, 67);
-            this.listBoxTest.Name = "listBoxTest";
-            this.listBoxTest.Size = new System.Drawing.Size(265, 381);
-            this.listBoxTest.TabIndex = 16;
-            this.listBoxTest.Click += new System.EventHandler(this.listBoxTest_Click);
-            // 
-            // textBoxTestName
-            // 
-            this.textBoxTestName.Location = new System.Drawing.Point(117, 42);
-            this.textBoxTestName.Name = "textBoxTestName";
-            this.textBoxTestName.Size = new System.Drawing.Size(168, 20);
-            this.textBoxTestName.TabIndex = 18;
-            // 
-            // buttonAddTest
-            // 
-            this.buttonAddTest.Location = new System.Drawing.Point(291, 40);
-            this.buttonAddTest.Name = "buttonAddTest";
-            this.buttonAddTest.Size = new System.Drawing.Size(80, 23);
-            this.buttonAddTest.TabIndex = 17;
-            this.buttonAddTest.Text = "Add";
-            this.buttonAddTest.UseVisualStyleBackColor = true;
-            this.buttonAddTest.Click += new System.EventHandler(this.buttonAddTest_Click);
-            // 
-            // tabPageTestObject
-            // 
-            this.tabPageTestObject.Controls.Add(this.label9);
-            this.tabPageTestObject.Controls.Add(this.buttonDeleteTestObject);
-            this.tabPageTestObject.Controls.Add(this.listBoxTestObject);
-            this.tabPageTestObject.Controls.Add(this.textBoxTestObjectName);
-            this.tabPageTestObject.Controls.Add(this.buttonAddTestObject);
-            this.tabPageTestObject.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTestObject.Name = "tabPageTestObject";
-            this.tabPageTestObject.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTestObject.Size = new System.Drawing.Size(836, 511);
-            this.tabPageTestObject.TabIndex = 5;
-            this.tabPageTestObject.Text = "TestObjects";
-            this.tabPageTestObject.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 16);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 13);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "TestObject name:";
-            // 
-            // buttonDeleteTestObject
-            // 
-            this.buttonDeleteTestObject.Location = new System.Drawing.Point(205, 454);
-            this.buttonDeleteTestObject.Name = "buttonDeleteTestObject";
-            this.buttonDeleteTestObject.Size = new System.Drawing.Size(80, 23);
-            this.buttonDeleteTestObject.TabIndex = 16;
-            this.buttonDeleteTestObject.Text = "Delete";
-            this.buttonDeleteTestObject.UseVisualStyleBackColor = true;
-            this.buttonDeleteTestObject.Click += new System.EventHandler(this.buttonDeleteTestObject_Click);
-            // 
-            // listBoxTestObject
-            // 
-            this.listBoxTestObject.FormattingEnabled = true;
-            this.listBoxTestObject.Location = new System.Drawing.Point(20, 41);
-            this.listBoxTestObject.Name = "listBoxTestObject";
-            this.listBoxTestObject.Size = new System.Drawing.Size(265, 407);
-            this.listBoxTestObject.TabIndex = 13;
-            this.listBoxTestObject.Click += new System.EventHandler(this.listBoxTestObject_Click);
-            // 
-            // textBoxTestObjectName
-            // 
-            this.textBoxTestObjectName.Location = new System.Drawing.Point(117, 14);
-            this.textBoxTestObjectName.Name = "textBoxTestObjectName";
-            this.textBoxTestObjectName.Size = new System.Drawing.Size(168, 20);
-            this.textBoxTestObjectName.TabIndex = 15;
-            // 
-            // buttonAddTestObject
-            // 
-            this.buttonAddTestObject.Location = new System.Drawing.Point(291, 12);
-            this.buttonAddTestObject.Name = "buttonAddTestObject";
-            this.buttonAddTestObject.Size = new System.Drawing.Size(80, 23);
-            this.buttonAddTestObject.TabIndex = 14;
-            this.buttonAddTestObject.Text = "Add";
-            this.buttonAddTestObject.UseVisualStyleBackColor = true;
-            this.buttonAddTestObject.Click += new System.EventHandler(this.buttonAddTestObject_Click);
+            this.textBoxNoOfRows.Location = new System.Drawing.Point(316, 457);
+            this.textBoxNoOfRows.Name = "textBoxNoOfRows";
+            this.textBoxNoOfRows.ReadOnly = true;
+            this.textBoxNoOfRows.Size = new System.Drawing.Size(33, 20);
+            this.textBoxNoOfRows.TabIndex = 19;
+            this.textBoxNoOfRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // frmMain
             // 
@@ -721,14 +743,14 @@
             this.groupBox1.ResumeLayout(false);
             this.tabPageTestBed.ResumeLayout(false);
             this.tabPageTestBed.PerformLayout();
-            this.tabPageDevice.ResumeLayout(false);
-            this.tabPageDevice.PerformLayout();
-            this.tabPageEventType.ResumeLayout(false);
-            this.tabPageEventType.PerformLayout();
             this.tabPageTest.ResumeLayout(false);
             this.tabPageTest.PerformLayout();
             this.tabPageTestObject.ResumeLayout(false);
             this.tabPageTestObject.PerformLayout();
+            this.tabPageDevice.ResumeLayout(false);
+            this.tabPageDevice.PerformLayout();
+            this.tabPageEventType.ResumeLayout(false);
+            this.tabPageEventType.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -794,6 +816,8 @@
         private System.Windows.Forms.ListBox listBoxTestObject;
         private System.Windows.Forms.TextBox textBoxTestObjectName;
         private System.Windows.Forms.Button buttonAddTestObject;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBoxNoOfRows;
     }
 }
 

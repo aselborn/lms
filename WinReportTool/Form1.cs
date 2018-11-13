@@ -352,6 +352,7 @@ namespace WinReportTool
                 }
             }
             CalcTotalTime();
+            textBoxNoOfRows.Text = dataGridViewEventLogs.Rows.Count.ToString();
         }
 
         private Color GetEventTypeBackColor(Bridge.eEventType eEventType)

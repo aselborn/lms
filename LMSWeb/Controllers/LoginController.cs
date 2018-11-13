@@ -36,6 +36,7 @@ namespace LMSWeb.Controllers
             {
                 Session["userObjectId"] = user.UserObjectId;
                 Session["userObjectName"] = user.UserObjectName;
+                Session["lastLoginTime"] = DateTime.Now.ToShortTimeString();
                 return RedirectToAction("Stat", "statistics");
             }
             else if (userObjectId == 0)
