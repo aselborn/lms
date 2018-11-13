@@ -292,11 +292,13 @@ function filterReportType() {
         document.getElementById("Item2_EventTypeId").disabled = true;
         document.getElementById('chkEventTypes').disabled = true;
         document.getElementById('chkSubEventTypes').disabled = true;
+        document.getElementById('addSubEvent').style.visibility = "hidden";
     } else {
         document.getElementById("idSubEvent").disabled = false;
         document.getElementById("Item2_EventTypeId").disabled = false;
         document.getElementById('chkEventTypes').disabled = false;
         document.getElementById('chkSubEventTypes').disabled = false;
+        document.getElementById('addSubEvent').style.visibility = "visible";
     }
 
 }
