@@ -16,10 +16,14 @@
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             </ul>
-            <h4 style="text-align:right">
-                @*<b style="color:GrayText">Logged in user: @Session["userObjectName"].ToString()</b>*@
-                <a href="@Url.Action("LogOut", "LogIn")" style="color:#FF0000"> <img class="paragraph-icon" title="LogOut" src="~/Images/logout.png" width="30"></a>
-            </h4> 
+            <h5 style="text-align:right">
+                <b style="color:GrayText">User: @Session["userObjectName"].ToString() / </b>
+                <b style="color:GrayText">Last login: @Session["lastLoginTime"].ToString()</b>
+                <b style="text-align:right">
+                    <a href="@Url.Action("LogOut", "LogIn")" style="color:#FF0000"> <img class="paragraph-icon" title="LogOut" src="~/Images/logout.png" width="30"></a>
+                </b>
+            </h5>
+
         </div>
     </div>
 </div>
