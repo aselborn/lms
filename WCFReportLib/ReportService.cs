@@ -295,7 +295,7 @@ namespace WCFReportLib
 
         public List<ResultObject> EventUtilization(FilterParameters filterParameters)
         {
-            throw new NotImplementedException();
+            return new ReportDaoManager().EventUtilization(filterParameters);
         }
     }
 }

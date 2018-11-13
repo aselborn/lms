@@ -81,7 +81,7 @@ namespace LMSWeb.Controllers
             var myData = filtered.Select(x => new SelectListItem()
             {
                 Text = x.EventTypeDescription,
-                Value=x.EventTypeId.ToString()
+                Value = x.EventTypeId.ToString()
             });
 
             return new SelectList(myData, "Value", "Text");
@@ -105,10 +105,10 @@ namespace LMSWeb.Controllers
                 ListofEventTypes = GetEventTypes(true)
             };
 
-            var tupleModel = 
+            var tupleModel =
                 new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
-            
+
 
             return View(tupleModel);
         }
@@ -119,38 +119,41 @@ namespace LMSWeb.Controllers
             var SubCategories = GetSubEventTypes(MasterEventId);
 
             return Json(SubCategories, JsonRequestBehavior.AllowGet);
-            
+
         }
 
 
-        
+
         public ActionResult Data(FilterParameters data)
         {
             _iReportService = _serviceHelper.GetReportService();
-
+            
             switch (data.WithReporting)
             {
+                //Antal händelser.
                 case FilterParameters.ReportType.numberofevents:
 
                     if (data.WithGrouping == FilterParameters.GroupByOperator.Day)
                     {
-                        List<List<DayDistributeReply>> statistics = _iReportService.EventLogDayDistribute(data);
+                        List<List<DayDistributeReply>> distribute = _iReportService.EventLogDayDistribute(data);
                         ((IClientChannel)_iReportService).Close();
 
-                        return Json(statistics);
+                        return Json(distribute);
                     }
                     else
                     {
-                        List<ResultObject> statistics = _iReportService.EventlogObjectForRig(data);
+                        List<ResultObject> eventLogs = _iReportService.EventlogObjectForRig(data);
                         ((IClientChannel)_iReportService).Close();
 
-                        return Json(statistics, JsonRequestBehavior.AllowGet);
+                        return Json(eventLogs, JsonRequestBehavior.AllowGet);
                     }
-                    
-                    
-                    
 
+
+                    //Nyttjandegrad.
                 case FilterParameters.ReportType.utilization:
+
+                    List<ResultObject> statistics = _iReportService.EventUtilization(data);
+
                     break;
 
                 default:
@@ -198,15 +201,15 @@ namespace LMSWeb.Controllers
             ((IClientChannel)_iReportService).Close();
 
             var tupleModel =
-                new Tuple<TestbedViewModel,EventTypeViewModel, EventTypeViewModel, DateSelectModel>
+                new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
                 (testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
 
             TempData["ReportTypes"] = reportTypes;
-            
+
             return View(tupleModel);
         }
 
-        
+
         // POST: Statistics/Create
         [HttpPost]
         public ActionResult RecieveForm(FormCollection collection, string returnUrl)
@@ -234,12 +237,12 @@ namespace LMSWeb.Controllers
             string groupText = collection.Get("group");
             FilterParameters.GroupByOperator groupByOperator = (FilterParameters.GroupByOperator)Enum.Parse(typeof(FilterParameters.GroupByOperator), groupText);
 
-            bool UseSubitems = collection.Get("IsAllEvents") == "true" ? true:false;
+            bool UseSubitems = collection.Get("IsAllEvents") == "true" ? true : false;
 
             FilterParameters filterParameters = new FilterParameters
             {
                 TestBedId = Convert.ToInt32(collection.Get("Item1.TestbedId")),
-                EventTypeId = UseSubitems ? Convert.ToInt32(collection.Get("Item2.EventTypeId")): Convert.ToInt32(collection.Get("ddlSubEvent")),
+                EventTypeId = UseSubitems ? Convert.ToInt32(collection.Get("Item2.EventTypeId")) : Convert.ToInt32(collection.Get("ddlSubEvent")),
                 StartDate = Convert.ToDateTime(collection.Get("Item4.FromDate")),
                 StopDate = Convert.ToDateTime(collection.Get("Item4.TomDate")),
                 AllSubEvents = UseSubitems,

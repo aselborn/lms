@@ -23,6 +23,7 @@ namespace LMSWeb
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-datepicker.js",
                       "~/Scripts/DatePickerReady.js",
+                      "~/Scripts/LmsScripts.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

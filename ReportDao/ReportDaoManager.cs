@@ -98,7 +98,7 @@ namespace ReportDao
             parameterList.Add(new SqlParameter
             {
                 ParameterName = "@allSubgroups",
-                Value = filterParameters.AllSubEvents ? (object)DBNull.Value:filterParameters.EventTypeId,
+                Value = filterParameters.AllSubEvents ? filterParameters.EventTypeId : (object)DBNull.Value,
                 SqlDbType = System.Data.SqlDbType.Bit,
                 Direction = System.Data.ParameterDirection.Input
             });
@@ -148,6 +148,7 @@ namespace ReportDao
             List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
             SqlParameter[] sqls = null;
 
+            string EventTypeDescription= m_LmsContext.DbEventType.FirstOrDefault(p => p.EventTypeId.Equals(filterParameters.EventTypeId)).EventTypeDescription;
 
             string qry = ProcedureToExecute(filterParameters);
             sqls = createParameters(filterParameters);
@@ -170,7 +171,7 @@ namespace ReportDao
                     List<MonthReply> replys = m_LmsContext.Database.SqlQuery<MonthReply>(qry, sqls).ToList();
                     foreach (MonthReply reply in replys)
                     {
-                        result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Month.ToString("MMMM") });
+                        result.Add(new Bridge.ResultObject { myValue = reply.Quantity, Text = reply.Month.ToString("MMMM"), info = EventTypeDescription });
                     }
 
                     break;
@@ -181,7 +182,7 @@ namespace ReportDao
                     List<WeekReply> weekreplys = m_LmsContext.Database.SqlQuery<WeekReply>(qry, sqls).ToList();
                     foreach (WeekReply week in weekreplys)
                     {
-                        result.Add(new Bridge.ResultObject { myValue = week.Quantity, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString() });
+                        result.Add(new Bridge.ResultObject { myValue = week.Quantity, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString(), info=EventTypeDescription });
                     }
 
                     break;
@@ -300,7 +301,23 @@ namespace ReportDao
             return result;
         }
 
+        public List<Bridge.ResultObject> EventUtilization(Bridge.FilterParameters filterParameters)
+        {
 
+            //var eventLog = from el in m_LmsContext.DbEventLog
+            //               join et in m_LmsContext.DbEventType
+            //               on el.EventTypeId equals et.EventTypeId
+
+            //               where el.TestBedId == filterParameters.TestBedId
+            //               && el.EventLogManualTime <= filterParameters.StartDate && el.EventLogManualTime >= filterParameters.StopDate
+
+            //               select new {  }
+                           
+                    
+
+            return null;
+
+        }
 
         public ReportDaoManager()
         {
