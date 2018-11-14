@@ -44,6 +44,21 @@ namespace ReportDao
             public int Quantity { get; set; }
         }
 
+        private class WeekReplyUtilization
+        {
+            public string EventTypeDescription { get; set; }
+            public DateTime Week { get; set; }
+            public int ValueSum { get; set; }
+            public int procent { get; set; }  //percent, percentage är reserverade ord...?
+        }
+
+        private class DayReplyUtilization 
+        {
+            public string EventTypeDescription { get; set; }
+            public DateTime Day { get; set; }
+            public int ValueSum { get; set; }
+            public int procent { get; set; }  //percent, percentage är reserverade ord...?
+        }
         private class DayReply
         {
             public DateTime Day { get; set; }
@@ -303,19 +318,81 @@ namespace ReportDao
 
         public List<Bridge.ResultObject> EventUtilization(Bridge.FilterParameters filterParameters)
         {
+            List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
 
-            //var eventLog = from el in m_LmsContext.DbEventLog
-            //               join et in m_LmsContext.DbEventType
-            //               on el.EventTypeId equals et.EventTypeId
+            SqlParameter[] prms = null;
+            string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy";
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter
+                {
+                    ParameterName = "@start",
+                    Value = (DateTime)filterParameters.StartDate,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                    Direction = System.Data.ParameterDirection.Input
+                },
+                new SqlParameter
+                {
+                    ParameterName = "@stop",
+                    Value = (DateTime)filterParameters.StopDate,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                    Direction = System.Data.ParameterDirection.Input
+                },
+                new SqlParameter
+                {
+                    ParameterName = "@TestBedId",
+                    Value = (int)filterParameters.TestBedId,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                    Direction = System.Data.ParameterDirection.Input
+                }
+            };
+            switch (filterParameters.WithGrouping)
+            {
+                case Bridge.FilterParameters.GroupByOperator.Day:
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@grpBy",
+                        Value = "DAY",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input
+                    });
 
-            //               where el.TestBedId == filterParameters.TestBedId
-            //               && el.EventLogManualTime <= filterParameters.StartDate && el.EventLogManualTime >= filterParameters.StopDate
+                    prms = parameters.ToArray();
 
-            //               select new {  }
-                           
+                    List<DayReplyUtilization> dayResult = m_LmsContext.Database.SqlQuery<DayReplyUtilization>(procedure, prms).ToList();
+
+                    foreach (DayReplyUtilization day in dayResult)
+                    {
+                        result.Add(new Bridge.ResultObject { myValue = day.procent, Text = day.Day.ToShortDateString(), info = day.EventTypeDescription });
+                    }
+
+                    break;
                     
 
-            return null;
+                case Bridge.FilterParameters.GroupByOperator.Week:
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@grpBy",
+                        Value = "WEEK",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input
+                    });
+
+                    prms = parameters.ToArray();
+
+                    List<WeekReplyUtilization> weekResult = m_LmsContext.Database.SqlQuery<WeekReplyUtilization>(procedure, prms).ToList();
+
+                    foreach (WeekReplyUtilization week in weekResult)
+                    {
+                        result.Add(new Bridge.ResultObject { myValue = week.procent, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString(), info = week.EventTypeDescription });
+                    }
+
+                    break;
+            }
+
+
+
+            return result;
 
         }
 

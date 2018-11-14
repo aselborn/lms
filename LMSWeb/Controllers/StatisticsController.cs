@@ -153,8 +153,10 @@ namespace LMSWeb.Controllers
                 case FilterParameters.ReportType.utilization:
 
                     List<ResultObject> statistics = _iReportService.EventUtilization(data);
+                    ((IClientChannel)_iReportService).Close();
 
-                    break;
+                    return Json(statistics, JsonRequestBehavior.AllowGet);
+                    
 
                 default:
                     return RedirectToAction("Index");

@@ -60,6 +60,8 @@ namespace ReportDao.Model
             public int myValue { get; set; }
         }
 
+  
+
         public class DayDistributeReply
         {
             public string EventTime { get; set; }

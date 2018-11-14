@@ -165,6 +165,7 @@ function FetchStatistics() {
 
     });
 
+    
     FilterParameters.StartDate = $("#FromDate").val();
     FilterParameters.StopDate = $("#TomDate").val();
     FilterParameters.WithReporting = $("#ddlReportType").val();
@@ -199,11 +200,22 @@ function FetchStatistics() {
                 $("#chart").html(item.Text);
             });
 
-            if (FilterParameters.WithGrouping === "Day") {
-                DrawMyStacked(jsondata);
-            } else {
-                DrawChart(jsondata, selectedChartType);
+            if (FilterParameters.WithReporting === "2") { // Hardcoded, param in db. check if not sure.
+
+                var selectedTestbedText = $("#ddlTestBed option:selected").text();
+                //Utilization, nyttjandegrad.
+                DrawUtilization(jsondata, selectedTestbedText);
+
+            } else if (FilterParameters.WithReporting ==="1") {
+
+                if (FilterParameters.WithGrouping === "Day") {
+                    DrawMyStacked(jsondata);
+                } else {
+                    DrawChart(jsondata, selectedChartType);
+                }
+
             }
+            
 
             //Series button enabled/disabled?
             if (jsondata.length > 0) {
@@ -337,6 +349,101 @@ function fillColors() {
 
 function addChartSerie(data, parameters) {
     alert('Adding serie');
+}
+
+
+function DrawUtilization(dataSets, testBedName) {
+    resetCanvas();
+    fillColors();
+
+    var myValues = [];
+    var myEventLabels = [];
+    var myDateLabels = [];
+
+    for (var n = 0; n <= dataSets.length - 1; n++) {
+
+        var myObject = dataSets[n];
+
+        if (myDateLabels.indexOf(myObject.Text) == -1) {
+            myDateLabels.push(myObject.Text);
+        }
+
+        if ($.inArray(myObject.info.trim(), myEventLabels) === -1) {
+            myEventLabels.push(myObject.info.trim());
+        }
+
+        if (parseInt(myObject.myValue) > 0) {
+
+            var utilizationData = {
+
+                EventDate: myObject.Text.trim(),
+                EventName: myObject.info.trim(),
+                EventPercentage: myObject.myValue
+
+            };
+            myValues.push(utilizationData);
+        }
+
+        
+
+    }
+
+
+    var chartData = {
+        labels: myDateLabels,
+        datasets: []
+    };
+
+    var myChart = new Chart(ctx, {
+        options: ChartOptionsStacked,
+        data: chartData,
+        type: 'bar'
+    });
+
+    ////Create initial chart, all values same
+    for (var xp = 0; xp < myEventLabels.length; xp++) {
+        var newDataset = {
+            label: myEventLabels[xp],
+            backgroundColor: BackColors[xp],
+            borderColor: ForColors[xp],
+            data: [],
+            fill: false
+        };
+
+        for (var index = 0; index < myChart.data.labels.length; ++index) {
+            newDataset.data.push(0);
+        }
+
+        myChart.data.datasets.push(newDataset);
+        myChart.update();
+    }
+
+    //Now, fix the values to correct values.
+    //Uppdatera...?
+    for (var stapel = 0; stapel < myChart.data.labels.length; stapel++) {
+
+        var eventDate = myChart.data.labels[stapel];
+
+        for (var p = 0; p < myChart.data.datasets.length; p++) { //Loopa igenom alla klossar för varje stapel! //myChart.data.datasets[KLOSS].data[STAPEL] = 1;
+
+            var eventLabel = myChart.data.datasets[p].label;
+
+            //Find that label in myValues array.
+
+            for (var z = 0; z < myValues.length; z++) {
+
+                var d = myValues[z];
+                if (d.EventDate === eventDate && d.EventName === eventLabel) {
+                    myChart.data.datasets[p].data[stapel] = d.EventPercentage;
+                    myChart.update();
+                }
+
+            }
+
+        }
+    }
+
+    var p = "anders";
 }
 
 function DrawMyStacked(dataSets) {
@@ -653,6 +760,7 @@ function DrawChart(SimpleResultObject, typeOfChart) {
 
 
 }
+
 
 var resetCanvas = function () {
     $('#chart').remove(); // this is my <canvas> element
