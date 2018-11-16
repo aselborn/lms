@@ -49,7 +49,7 @@ namespace WCFReportLib
 
         [WebInvoke(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
-        List<Bridge.ResultObject> EventUtilization(FilterParameters filterParameters);
+        List<Bridge.ResultUtilizationObject> EventUtilization(FilterParameters filterParameters);
 
         [WebInvokeAttribute(BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]

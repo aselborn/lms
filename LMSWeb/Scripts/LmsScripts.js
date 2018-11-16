@@ -204,7 +204,12 @@ function FetchStatistics() {
 
                 var selectedTestbedText = $("#ddlTestBed option:selected").text();
                 //Utilization, nyttjandegrad.
-                DrawUtilization(jsondata, selectedTestbedText);
+                var infoObj = {
+
+                    testBed: selectedTestbedText,
+                    charttype: selectedChartType
+                };
+                DrawUtilization(jsondata, infoObj);
 
             } else if (FilterParameters.WithReporting ==="1") {
 
@@ -352,7 +357,7 @@ function addChartSerie(data, parameters) {
 }
 
 
-function DrawUtilization(dataSets, testBedName) {
+function DrawUtilization(dataSets, info) {
     resetCanvas();
     fillColors();
 
@@ -394,11 +399,22 @@ function DrawUtilization(dataSets, testBedName) {
         datasets: []
     };
 
-    var myChart = new Chart(ctx, {
-        options: ChartOptionsStacked,
-        data: chartData,
-        type: 'bar'
-    });
+    if (info.charttype.toLowerCase() === "bar") {
+        var myChart = new Chart(ctx, {
+            options: ChartOptionsStacked,
+            data: chartData,
+            type: info.charttype.toLowerCase()
+        });
+
+    } else {
+        var myChart = new Chart(ctx, {
+            options: ChartOptions,
+            data: chartData,
+            type: info.charttype.toLowerCase()
+        });
+    }
+
+    
 
     ////Create initial chart, all values same
     for (var xp = 0; xp < myEventLabels.length; xp++) {
@@ -443,7 +459,6 @@ function DrawUtilization(dataSets, testBedName) {
         }
     }
 
-    var p = "anders";
 }
 
 function DrawMyStacked(dataSets) {

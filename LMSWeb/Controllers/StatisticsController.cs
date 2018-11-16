@@ -152,7 +152,7 @@ namespace LMSWeb.Controllers
                     //Nyttjandegrad.
                 case FilterParameters.ReportType.utilization:
 
-                    List<ResultObject> statistics = _iReportService.EventUtilization(data);
+                    List<ResultUtilizationObject> statistics = _iReportService.EventUtilization(data);
                     ((IClientChannel)_iReportService).Close();
 
                     return Json(statistics, JsonRequestBehavior.AllowGet);

@@ -60,7 +60,11 @@ namespace ReportDao.Model
             public int myValue { get; set; }
         }
 
-  
+        public class ResultUtilizationObject : ResultInfo
+        {
+            public string Text { get; set; }
+            public decimal myValue { get; set; }
+        }
 
         public class DayDistributeReply
         {

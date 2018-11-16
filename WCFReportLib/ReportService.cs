@@ -293,7 +293,7 @@ namespace WCFReportLib
             return new ReportDaoManager().GetReportTypes();
         }
 
-        public List<ResultObject> EventUtilization(FilterParameters filterParameters)
+        public List<ResultUtilizationObject> EventUtilization(FilterParameters filterParameters)
         {
             return new ReportDaoManager().EventUtilization(filterParameters);
         }

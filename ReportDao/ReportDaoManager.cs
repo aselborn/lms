@@ -52,13 +52,30 @@ namespace ReportDao
             public int procent { get; set; }  //percent, percentage är reserverade ord...?
         }
 
-        private class DayReplyUtilization 
+        private class ReplyUtilization 
         {
             public string EventTypeDescription { get; set; }
-            public DateTime Day { get; set; }
+            public DateTime datevalue { get; set; }
             public int ValueSum { get; set; }
-            public int procent { get; set; }  //percent, percentage är reserverade ord...?
+            public decimal procent { get; set; }  //percent, percentage är reserverade ord...?
         }
+
+        //private class MonthReplyUtilization
+        //{
+        //    public string EventTypeDescription { get; set; }
+        //    public DateTime Month { get; set; }
+        //    public int ValueSum { get; set; }
+        //    public int procent { get; set; }  //percent, percentage är reserverade ord...?
+        //}
+
+        //private class YearReplyUtilization
+        //{
+        //    public string EventTypeDescription { get; set; }
+        //    public DateTime Year { get; set; }
+        //    public int ValueSum { get; set; }
+        //    public int procent { get; set; }  //percent, percentage är reserverade ord...?
+        //}
+
         private class DayReply
         {
             public DateTime Day { get; set; }
@@ -316,9 +333,9 @@ namespace ReportDao
             return result;
         }
 
-        public List<Bridge.ResultObject> EventUtilization(Bridge.FilterParameters filterParameters)
+        public List<Bridge.ResultUtilizationObject> EventUtilization(Bridge.FilterParameters filterParameters)
         {
-            List<Bridge.ResultObject> result = new List<Bridge.ResultObject>();
+            List<Bridge.ResultUtilizationObject> result = new List<Bridge.ResultUtilizationObject>();
 
             SqlParameter[] prms = null;
             string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy";
@@ -359,11 +376,11 @@ namespace ReportDao
 
                     prms = parameters.ToArray();
 
-                    List<DayReplyUtilization> dayResult = m_LmsContext.Database.SqlQuery<DayReplyUtilization>(procedure, prms).ToList();
+                    List<ReplyUtilization> dayResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
 
-                    foreach (DayReplyUtilization day in dayResult)
+                    foreach (ReplyUtilization day in dayResult)
                     {
-                        result.Add(new Bridge.ResultObject { myValue = day.procent, Text = day.Day.ToShortDateString(), info = day.EventTypeDescription });
+                        result.Add(new Bridge.ResultUtilizationObject { myValue = day.procent, Text = day.datevalue.ToShortDateString(), info = day.EventTypeDescription });
                     }
 
                     break;
@@ -380,13 +397,61 @@ namespace ReportDao
 
                     prms = parameters.ToArray();
 
-                    List<WeekReplyUtilization> weekResult = m_LmsContext.Database.SqlQuery<WeekReplyUtilization>(procedure, prms).ToList();
+                    List<ReplyUtilization> weekResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
 
-                    foreach (WeekReplyUtilization week in weekResult)
+                    foreach (ReplyUtilization week in weekResult)
                     {
-                        result.Add(new Bridge.ResultObject { myValue = week.procent, Text = HelperUtil.GetIso8601WeekOfYear(week.Week).ToString(), info = week.EventTypeDescription });
+                        result.Add(new Bridge.ResultUtilizationObject { myValue = week.procent, Text = HelperUtil.GetIso8601WeekOfYear(week.datevalue).ToString(), info = week.EventTypeDescription });
                     }
 
+                    break;
+
+                case Bridge.FilterParameters.GroupByOperator.Month:
+
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@grpBy",
+                        Value = "MONTH",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input
+                    });
+
+                    prms = parameters.ToArray();
+
+                    List<ReplyUtilization> monthResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
+                    foreach(ReplyUtilization month in monthResult)
+                    {
+                        result.Add(new Bridge.ResultUtilizationObject
+                        {
+                            myValue = month.procent,
+                            Text = month.datevalue.ToString("MMMM"),
+                            info = month.EventTypeDescription
+                        });
+                    }
+
+                    break;
+
+                case Bridge.FilterParameters.GroupByOperator.Year:
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@grpBy",
+                        Value = "YEAR",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input
+                    });
+
+                    prms = parameters.ToArray();
+
+                    List<ReplyUtilization> yearResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
+                    foreach (ReplyUtilization month in yearResult)
+                    {
+                        result.Add(new Bridge.ResultUtilizationObject
+                        {
+                            myValue = month.procent,
+                            Text = month.datevalue.Year.ToString(),
+                            info = month.EventTypeDescription
+                        });
+                    }
                     break;
             }
 
