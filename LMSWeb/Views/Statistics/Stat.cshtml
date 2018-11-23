@@ -1,6 +1,5 @@
 ﻿@using System.Linq;
-@*@model List<WCFReportLib.Model.SimpleResultObject>*@
-
+@using LMSWeb.Models
 @{
     ViewBag.Title = "Stat";
     Layout = "~/Views/Shared/_myLayout.cshtml";
@@ -36,8 +35,22 @@
 <script src="~/Scripts/Util.js"></script>
 <script type="text/javascript">
 
-    
+    $(document).ready(function () {
 
+        var selectedReportType = $('#ddlReportType').val();
+        if (selectedReportType === "2") {
+            $("#chkAllTestBed").show();
+            $("#lblAllTestBeds").show();
+        } else {
+            $("#chkAllTestBed").hide();
+            $("#lblAllTestBeds").hide();
+        }
+        
+
+        //document.getElementById('lblAllTestBeds').style.visibility = "visible";
+        //document.getElementById('chkAllTestBed').style.visibility = "visible";
+
+    });
 
 </script>
 

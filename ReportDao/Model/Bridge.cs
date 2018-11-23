@@ -45,6 +45,7 @@ namespace ReportDao.Model
             public int EventTypeId { get; set; }
             public bool AllSubEvents { get; set; }
             public bool AllEvents { get; set; }
+            public bool AllTestBeds { get; set; }
             public GroupByOperator WithGrouping { get; set; }
             public ReportType WithReporting { get; set; }
             

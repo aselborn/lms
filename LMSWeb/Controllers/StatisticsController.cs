@@ -89,37 +89,15 @@ namespace LMSWeb.Controllers
         // GET: Statistics
         public ActionResult Index()
         {
-            DateSelectModel dateSelectModel = new DateSelectModel { FromDate = DateTime.Now, TomDate = DateTime.Now };
-            TestbedViewModel testbedModel = new TestbedViewModel
-            {
-                ListofTestbeds = GetTestBeds()
-            };
-
-            EventTypeViewModel eventTypeViewModel = new EventTypeViewModel
-            {
-                ListofEventTypes = GetEventTypes()
-            };
-
-            EventTypeViewModel topEvents = new EventTypeViewModel
-            {
-                ListofEventTypes = GetEventTypes(true)
-            };
-
-            var tupleModel =
-                new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>(testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
-
-
-
-            return View(tupleModel);
+            return RedirectToAction("Stat");
         }
 
         // GET: Statistics/Details/5
         public ActionResult Details(int MasterEventId)
         {
+
             var SubCategories = GetSubEventTypes(MasterEventId);
-
             return Json(SubCategories, JsonRequestBehavior.AllowGet);
-
         }
 
 
@@ -162,7 +140,7 @@ namespace LMSWeb.Controllers
                     return RedirectToAction("Index");
             }
 
-            return null;
+            
         }
 
         [HttpGet]
@@ -202,6 +180,7 @@ namespace LMSWeb.Controllers
             List<SimpleResultObject> lstModel = _iReportService.EventLogDummy(null, null);
             ((IClientChannel)_iReportService).Close();
 
+           
             var tupleModel =
                 new Tuple<TestbedViewModel, EventTypeViewModel, EventTypeViewModel, DateSelectModel>
                 (testbedModel, topEvents, eventTypeViewModel, dateSelectModel);
@@ -304,5 +283,9 @@ namespace LMSWeb.Controllers
                 return View();
             }
         }
+
+        //public ActionResult ModalPopup(PopupViewModel viewModel)
+        //{
+        //}
     }
 }

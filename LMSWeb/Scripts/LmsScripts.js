@@ -133,13 +133,6 @@ function AddNewSerie() {
         success: function (response) {
 
             var jsondata = response;
-            //$("#chart").html("");
-
-            //Reply in JSON format, to build up statistic page.
-
-            //$.each(jsondata, function (i, item) {
-            //    $("#chart").html(item.Text);
-            //});
 
             addChartSerie(jsondata, FilterParameters);
 
@@ -165,7 +158,7 @@ function FetchStatistics() {
 
     });
 
-    
+
     FilterParameters.StartDate = $("#FromDate").val();
     FilterParameters.StopDate = $("#TomDate").val();
     FilterParameters.WithReporting = $("#ddlReportType").val();
@@ -174,10 +167,24 @@ function FetchStatistics() {
     FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
     FilterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
     FilterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
+    FilterParameters.AllTestBeds = $("#chkAllTestBed").is(":checked") == true ? true : false;
+
 
     if (FilterParameters.TestBedId == "") {
-        alert('A testbed must be selected. Exiting.');
-        return;
+        //chkAllTestBed
+        var isAllTestbedsChecked = $('#chkAllTestBed').is(':checked');
+
+        if (isAllTestbedsChecked === false) {
+            if (FilterParameters.WithReporting === "2") {
+                alert('You must select ONE or ALL testbeds.');
+                return;
+            } else {
+                alert('A testbed must be selected. Exiting.');
+                return;
+            }
+
+        }
+
     }
 
     var jsonData = JSON.stringify(FilterParameters);
@@ -211,7 +218,7 @@ function FetchStatistics() {
                 };
                 DrawUtilization(jsondata, infoObj);
 
-            } else if (FilterParameters.WithReporting ==="1") {
+            } else if (FilterParameters.WithReporting === "1") {
 
                 if (FilterParameters.WithGrouping === "Day") {
                     DrawMyStacked(jsondata);
@@ -220,7 +227,7 @@ function FetchStatistics() {
                 }
 
             }
-            
+
 
             //Series button enabled/disabled?
             if (jsondata.length > 0) {
@@ -273,6 +280,20 @@ function AllEventsSelected(element) {
 
 }
 
+function AllTestBedsSelected(element) {
+    //element.checked ? alert('checked.') : alert('not checked');
+    //allEvents.checked = element.checked ? true : false;
+    var checked = element.checked ? true : false;
+
+    //Set this control disabled.
+    if (checked) {
+        $("#ddlTestBed").prop('disabled', true);
+    } else {
+        $("#ddlTestBed").prop('disabled', false);
+    }
+
+}
+
 function filterEvents() {
     var eventTypeId = $('#Item2_EventTypeId').val();
 
@@ -302,6 +323,7 @@ function filterReportType() {
     var reportTypeId = $("#ddlReportType").val();
     var reportText = $("#ddlReportType").text();
 
+    $("#ddlTestBed").prop('disabled', false);
 
     //Disable eventtypes selection
     if (reportTypeId === "2") {
@@ -310,13 +332,50 @@ function filterReportType() {
         document.getElementById('chkEventTypes').disabled = true;
         document.getElementById('chkSubEventTypes').disabled = true;
         document.getElementById('addSubEvent').style.visibility = "hidden";
+
+        $("#chkAllTestBed").show();
+        $("#lblAllTestBeds").show();
     } else {
         document.getElementById("idSubEvent").disabled = false;
         document.getElementById("Item2_EventTypeId").disabled = false;
         document.getElementById('chkEventTypes').disabled = false;
         document.getElementById('chkSubEventTypes').disabled = false;
         document.getElementById('addSubEvent').style.visibility = "visible";
+        $("#chkAllTestBed").hide();
+        $("#lblAllTestBeds").hide();
+
     }
+
+    ///****TESTING
+    //Ajax call
+
+    var popupObject = {
+        TestBed: 'TestBednamn',
+        MainEventTypeDescription: 'MainEventDescriptionNamn',
+        SubEventTypeDescription: 'SubEventTypeDescriptionNamn',
+        Message: 'MessageInfoText'
+    };
+
+    //$.ajax({
+    //    url: 'Modalpopup',
+    //    type: 'POST',
+    //    dataType: 'JSON',
+    //    data: '{data: ' + JSON.stringify(popupObject) + '}',
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    success: function (response) {
+
+    //        var jsondata = response;
+
+    //        //addChartSerie(jsondata, FilterParameters);
+
+    //    },
+    //    error: function (xhr, status, error) {
+    //        //$("#addSubEvent").prop("disabled", true);
+    //        //alert('Failed to get correct data (most probably a bug). Check if there is a log!!');
+    //    }
+
+    //});
 
 }
 
@@ -353,7 +412,53 @@ function fillColors() {
 }
 
 function addChartSerie(data, parameters) {
-    alert('Adding serie');
+    //alert('Adding serie');
+
+    //Appending to current
+    var myDateLabels = [];
+
+    for (var x = 0; x < data.length; x++) {
+        myDateLabels.push(data[x].Text);
+    }
+    
+    var chartData = {
+        labels: myDateLabels,
+        datasets: []
+    };
+
+
+    var myChart = new Chart(ctx, {
+        options: ChartOptions,
+        data: chartData,
+        type: 'bar'
+    });
+
+
+
+    //Now, fix the values to correct values.
+    //Uppdatera...?
+    for (var stapel = 0; stapel < myChart.data.labels.length; stapel++) {
+
+        var eventDate = myChart.data.labels[stapel];
+
+        for (var p = 0; p < myChart.data.datasets.length; p++) { //Loopa igenom alla klossar för varje stapel! //myChart.data.datasets[KLOSS].data[STAPEL] = 1;
+
+            var eventLabel = myChart.data.datasets[p].label;
+
+            //Find that label in myValues array.
+
+            for (var z = 0; z < myValues.length; z++) {
+
+                var d = myValues[z];
+                if (d.EventDate === eventDate && d.EventName === eventLabel) {
+                    myChart.data.datasets[p].data[stapel] = d.EventPercentage;
+                    myChart.update();
+                }
+
+            }
+
+        }
+    }
 }
 
 
@@ -388,9 +493,6 @@ function DrawUtilization(dataSets, info) {
             };
             myValues.push(utilizationData);
         }
-
-        
-
     }
 
 
@@ -414,7 +516,7 @@ function DrawUtilization(dataSets, info) {
         });
     }
 
-    
+
 
     ////Create initial chart, all values same
     for (var xp = 0; xp < myEventLabels.length; xp++) {
@@ -764,7 +866,7 @@ function DrawChart(SimpleResultObject, typeOfChart) {
         }]
     };
 
-    
+
 
     var myChart = new Chart(ctx, {
         options: ChartOptions,

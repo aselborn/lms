@@ -332,13 +332,24 @@ namespace ReportDao
 
             return result;
         }
+        private List<SqlParameter> AddAllTestbeds(List<SqlParameter> prms)
+        {
+            prms.Add(new SqlParameter
+            {
+                ParameterName = "@AllTestbeds",
+                Value = 1,
+                SqlDbType = System.Data.SqlDbType.Bit,
+                Direction = System.Data.ParameterDirection.Input
+            });
 
+            return prms;
+        }
         public List<Bridge.ResultUtilizationObject> EventUtilization(Bridge.FilterParameters filterParameters)
         {
             List<Bridge.ResultUtilizationObject> result = new List<Bridge.ResultUtilizationObject>();
 
             SqlParameter[] prms = null;
-            string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy";
+            string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy, @AllTestbeds";
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter
@@ -374,6 +385,9 @@ namespace ReportDao
                         Direction = System.Data.ParameterDirection.Input
                     });
 
+                    if (filterParameters.AllTestBeds)
+                        AddAllTestbeds(parameters);
+
                     prms = parameters.ToArray();
 
                     List<ReplyUtilization> dayResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
@@ -395,6 +409,9 @@ namespace ReportDao
                         Direction = System.Data.ParameterDirection.Input
                     });
 
+                    if (filterParameters.AllTestBeds)
+                        AddAllTestbeds(parameters);
+
                     prms = parameters.ToArray();
 
                     List<ReplyUtilization> weekResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
@@ -415,6 +432,9 @@ namespace ReportDao
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input
                     });
+
+                    if (filterParameters.AllTestBeds)
+                        AddAllTestbeds(parameters);
 
                     prms = parameters.ToArray();
 
@@ -439,6 +459,9 @@ namespace ReportDao
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input
                     });
+
+                    if (filterParameters.AllTestBeds)
+                        AddAllTestbeds(parameters);
 
                     prms = parameters.ToArray();
 
