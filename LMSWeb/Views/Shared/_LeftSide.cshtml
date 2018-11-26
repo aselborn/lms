@@ -92,7 +92,7 @@
         @Html.LabelFor(tuple => tuple.Item2.EventTypeId)<br />
         @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
       "--SELECT--",
-      new {@class = "form-control", @onchange = "filterEvents();"})
+      new {@id="ddlEventTypes", @class = "form-control", @onchange = "filterEvents();"})
 
         @Html.CheckBox("chkEventTypes", false, new { onchange = "AllEventsSelected(this);" })
         @Html.Label("All Events")

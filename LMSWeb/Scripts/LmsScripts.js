@@ -88,6 +88,14 @@ var MyBorderColors = {
     col12: 'rgba(255, 0, 255)'
 };
 
+var MyFixedColors = { 
+    no_activity: 'rgba(255,255,0,0.3)', //yellow
+    rig_stop: 'rgba(255, 0, 0, 0.3)', //red
+    fp_activity: 'rgba(0,255,0,0.3)', //green
+    lp_activity: 'rgba(0,255,0,0.3)', //green
+    planned_maintenance: 'rgba(0,0,255,0.3)' // blue
+};
+
 MychartColors = {
     red: 'rgb(255, 99, 132)',
     orange: 'rgb(255, 159, 64)',
@@ -100,7 +108,7 @@ MychartColors = {
 
 var BackColors = [];
 var ForColors = [];
-
+var FixedColors = [];
 
 function IsOneOfCheckboxAllSelected() {
 
@@ -120,8 +128,9 @@ function AddNewSerie() {
         return;
     }
     var prevId = FilterParameters.EventTypeId;
-    FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
+    FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#ddlEventTypes').val() : $('#idSubEvent').val();
 
+    
     //Ajax call
     $.ajax({
         url: 'Data',
@@ -295,7 +304,7 @@ function AllTestBedsSelected(element) {
 }
 
 function filterEvents() {
-    var eventTypeId = $('#Item2_EventTypeId').val();
+    var eventTypeId = $('#ddlEventTypes').val();
 
     $.ajax({
         url: 'Details',
@@ -394,6 +403,12 @@ function fillColors() {
     BackColors.push(MyBackgroundColors.col10);
     BackColors.push(MyBackgroundColors.col11);
     BackColors.push(MyBackgroundColors.col12);
+
+    FixedColors.push(MyFixedColors.fp_activity);
+    FixedColors.push(MyFixedColors.lp_activity);
+    FixedColors.push(MyFixedColors.no_activity);
+    FixedColors.push(MyFixedColors.planned_maintenance);
+    FixedColors.push(MyFixedColors.rig_stop);
 
     ForColors.push(MychartColors.col1);
     ForColors.push(MychartColors.col2);
@@ -500,6 +515,7 @@ function DrawUtilization(dataSets, info) {
         labels: myDateLabels,
         datasets: []
     };
+    //ChartOptionsStacked.title = 'bacon';
 
     if (info.charttype.toLowerCase() === "bar") {
         var myChart = new Chart(ctx, {
@@ -520,9 +536,13 @@ function DrawUtilization(dataSets, info) {
 
     ////Create initial chart, all values same
     for (var xp = 0; xp < myEventLabels.length; xp++) {
+
+        var eventName = myEventLabels[xp].toLowerCase().split(' ').join('_');
+        
         var newDataset = {
             label: myEventLabels[xp],
-            backgroundColor: BackColors[xp],
+            //backgroundColor: BackColors[xp],
+            backgroundColor: MyFixedColors[eventName],
             borderColor: ForColors[xp],
             data: [],
             fill: false
@@ -533,6 +553,7 @@ function DrawUtilization(dataSets, info) {
         }
 
         myChart.data.datasets.push(newDataset);
+        myChart.titleBlock.options.text = "Utilization for " + info.testBed + "(percent values)"; //setting chart title.
         myChart.update();
     }
 
@@ -613,7 +634,8 @@ function DrawMyStacked(dataSets) {
     for (var xp = 0; xp < myEventLabels.length; xp++) {
         var newDataset = {
             label: myEventLabels[xp],
-            backgroundColor: BackColors[xp],
+            //backgroundColor: BackColors[xp],
+            backgroundColor: MyFixedColors[myEventLabels[xp]],
             borderColor: ForColors[xp],
             data: [],
             fill: false
@@ -817,6 +839,7 @@ function DrawFixedDates() {
 function DrawChart(SimpleResultObject, typeOfChart) {
 
     resetCanvas();
+    fillColors();
 
     var chartName = "chart";
     var ctx = document.getElementById(chartName).getContext('2d');
@@ -829,38 +852,14 @@ function DrawChart(SimpleResultObject, typeOfChart) {
         $(myValues.push(item.myValue))
     });
 
+    var chartLabel = SimpleResultObject[0]["info"].trim();
+    var selectedEventType = $("#ddlEventTypes option:selected").text().toLowerCase().split(' ').join('_');
     var data = {
         labels: myLabels,
         datasets: [{
-            label: SimpleResultObject[0]["info"].trim(),
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 0, 0)',
-                'rgba(0, 255, 0)',
-                'rgba(0, 0, 255)',
-                'rgba(192, 192, 192)',
-                'rgba(255, 255, 0)',
-                'rgba(255, 0, 255)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 0, 0)',
-                'rgba(0, 255, 0)',
-                'rgba(0, 0, 255)',
-                'rgba(192, 192, 192)',
-                'rgba(255, 255, 0)',
-                'rgba(255, 0, 255)'
-            ],
+            label: chartLabel,
+            backgroundColor: MyFixedColors[selectedEventType],
+            borderColor: MyFixedColors[selectedEventType],
             borderWidth: 1,
             data: myValues
         }]
@@ -875,7 +874,9 @@ function DrawChart(SimpleResultObject, typeOfChart) {
 
     });
 
-
+    //Update chart-information.
+    myChart.titleBlock.options.text = "Total number of occurrences for " + info.testBed + "(percent values)"; //setting chart title.
+    myChart.update();
 }
 
 

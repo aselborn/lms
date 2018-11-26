@@ -349,7 +349,8 @@ namespace ReportDao
             List<Bridge.ResultUtilizationObject> result = new List<Bridge.ResultUtilizationObject>();
 
             SqlParameter[] prms = null;
-            string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy, @AllTestbeds";
+            string procedure = "p_EventUtilization @start, @stop, @TestBedId, @grpBy";
+
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter
@@ -386,8 +387,12 @@ namespace ReportDao
                     });
 
                     if (filterParameters.AllTestBeds)
+                    {
+                        procedure = procedure + ", @AllTestbeds";
                         AddAllTestbeds(parameters);
-
+                    }
+                        
+                    
                     prms = parameters.ToArray();
 
                     List<ReplyUtilization> dayResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
@@ -410,10 +415,14 @@ namespace ReportDao
                     });
 
                     if (filterParameters.AllTestBeds)
+                    {
+                        procedure = procedure + ", @AllTestbeds";
                         AddAllTestbeds(parameters);
-
+                    }
+                        
+                    
                     prms = parameters.ToArray();
-
+                    
                     List<ReplyUtilization> weekResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
 
                     foreach (ReplyUtilization week in weekResult)
@@ -434,8 +443,11 @@ namespace ReportDao
                     });
 
                     if (filterParameters.AllTestBeds)
+                    {
+                        procedure = procedure + ", @AllTestbeds";
                         AddAllTestbeds(parameters);
-
+                    }
+                        
                     prms = parameters.ToArray();
 
                     List<ReplyUtilization> monthResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
@@ -461,8 +473,11 @@ namespace ReportDao
                     });
 
                     if (filterParameters.AllTestBeds)
+                    {
+                        procedure = procedure + ", @AllTestbeds";
                         AddAllTestbeds(parameters);
-
+                    }
+                    
                     prms = parameters.ToArray();
 
                     List<ReplyUtilization> yearResult = m_LmsContext.Database.SqlQuery<ReplyUtilization>(procedure, prms).ToList();
