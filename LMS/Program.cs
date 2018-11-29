@@ -31,7 +31,14 @@ namespace LMS
                 {
                     Console.WriteLine(ea.Address);
                 }
-              
+
+                Console.WriteLine("######################################################");
+                Console.WriteLine("");
+                Console.WriteLine($"Service API calls could be found at : http://localhost:8081/service/help");
+                Console.Write("Copy that link to your browser");
+                Console.WriteLine("");
+                Console.WriteLine("######################################################");
+
                 Console.ReadLine();
                 host.Close();
 

@@ -19,6 +19,13 @@ namespace ReportDao.Model
             NoActivity = 9
         }
 
+        public class UtilizationParameters
+        {
+            public DateTime StartDate { get; set; }
+            public DateTime StopDate { get; set; }
+            public bool AllTestBeds { get; set; }
+            public int TestBedId { get; set; }
+        }
         public class FilterParameters 
         {
             public enum GroupByOperator

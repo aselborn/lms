@@ -1,4 +1,5 @@
 ﻿
+using LMSWeb.Helper;
 using LMSWeb.Models;
 using ReportDao.Model;
 using System;
@@ -22,73 +23,8 @@ namespace LMSWeb.Controllers
         ServiceHelper _serviceHelper = new ServiceHelper();
         IReportService _iReportService;
 
-        private IEnumerable<SelectListItem> GetTestBeds()
-        {
-            _iReportService = _serviceHelper.GetReportService();
-            List<TestBed> testBeds = _iReportService.GetTestBeds();
-            ((IClientChannel)_iReportService).Close();
-
-            var myData = testBeds.Select(x => new SelectListItem()
-            {
-                Text = x.TestBedName,
-                Value = x.TestBedId.ToString()
-            });
-
-            return new SelectList(myData, "Value", "Text");
-        }
-
-        private IEnumerable<SelectListItem> GetReportTypes()
-        {
-            _iReportService = _serviceHelper.GetReportService();
-            List<ReportType> reportTypes = _iReportService.GetReportTypes();
-            ((IClientChannel)_iReportService).Close();
-
-            var data = reportTypes.Select(x => new SelectListItem()
-            {
-                Text = x.ReportTypeText,
-                Value = x.ReportTypeId.ToString()
-            });
-
-            return new SelectList(data, "Value", "Text");
-        }
-        private IEnumerable<SelectListItem> GetEventTypes(bool topTypes = false)
-        {
-            _iReportService = _serviceHelper.GetReportService();
-            List<EventType> eventTypes = _iReportService.GetEventTypes();
-            ((IClientChannel)_iReportService).Close();
-
-            if (topTypes)
-            {
-                eventTypes = eventTypes.Where(p => !p.EventTypeSubId.HasValue).ToList();
-            }
-
-            var myData = eventTypes.Select(x => new SelectListItem()
-            {
-                Text = x.EventTypeDescription,
-                Value = x.EventTypeId.ToString()
-            });
-
-            myData = myData.OrderBy(n => n.Text);
-            
-
-            return new SelectList(myData, "Value", "Text" ,myData.FirstOrDefault());
-        }
-
-        private IEnumerable<SelectListItem> GetSubEventTypes(int masterId)
-        {
-            //This is not good, two calls to DB.
-            _iReportService = _serviceHelper.GetReportService();
-            var filtered = _iReportService.GetEventTypes().Where(h => h.EventTypeSubId == masterId).ToList();
-            ((IClientChannel)_iReportService).Close();
-
-            var myData = filtered.Select(x => new SelectListItem()
-            {
-                Text = x.EventTypeDescription,
-                Value = x.EventTypeId.ToString()
-            });
-
-            return new SelectList(myData, "Value", "Text");
-        }
+       
+        
         // GET: Statistics
         public ActionResult Index()
         {
@@ -99,7 +35,7 @@ namespace LMSWeb.Controllers
         public ActionResult Details(int MasterEventId)
         {
 
-            var SubCategories = GetSubEventTypes(MasterEventId);
+            var SubCategories = DataProvider.GetSubEventTypes(MasterEventId);
             return Json(SubCategories, JsonRequestBehavior.AllowGet);
         }
 
@@ -160,23 +96,23 @@ namespace LMSWeb.Controllers
 
             ReportTypeViewModel reportTypes = new ReportTypeViewModel
             {
-                ListOfReportTypes = GetReportTypes()
+                ListOfReportTypes = DataProvider.GetReportTypes()
             };
 
             DateSelectModel dateSelectModel = new DateSelectModel { FromDate = DateTime.Now, TomDate = DateTime.Now };
             TestbedViewModel testbedModel = new TestbedViewModel
             {
-                ListofTestbeds = GetTestBeds()
+                ListofTestbeds = DataProvider.GetTestBeds()
             };
 
             EventTypeViewModel eventTypeViewModel = new EventTypeViewModel
             {
-                ListofEventTypes = GetEventTypes()
+                ListofEventTypes = DataProvider.GetEventTypes()
             };
 
             EventTypeViewModel topEvents = new EventTypeViewModel
             {
-                ListofEventTypes = GetEventTypes(true)
+                ListofEventTypes = DataProvider.GetEventTypes(true)
             };
 
             _iReportService = _serviceHelper.GetReportService();

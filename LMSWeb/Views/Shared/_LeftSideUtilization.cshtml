@@ -1,0 +1,74 @@
+﻿@using LMSWeb.Models
+@model Tuple<TestbedViewModel, DateSelectModel>
+
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/Util.js"></script>
+<link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+<script language="javascript" type="text/javascript">
+    $(function () {
+        selectedChartType = $('[name="dgr"]:checked').val();
+    });
+
+    $(document).on('click', '[name="dgr"]', function () {
+        selectedChartType = $(this).val();
+        selectedChartType = selectedChartType.toLowerCase();
+    });
+
+    $(function () {
+        $("#FromDate,#TomDate").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+        });
+
+        $("#datepicker-1").datepicker({
+            dateFormat: "yyyy-MM-dd",
+            changeMonth: true,
+            changeYear: true
+        });
+    })
+
+    $(document).ready(function () {
+        //Disable the "add-serie"
+        $("#addSubEvent").prop("disabled", true);
+    });
+</script>
+
+@using (Html.BeginForm("Data", "Utilization",FormMethod.Post))
+{
+<div class="left-divstyle">
+    
+    <h3>Select testbed and date</h3>
+
+
+    <div class="form-inline">
+
+        @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" }) <br />
+        @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
+        new { @class = "form-control", @id="ddlTestBed" })
+
+        @Html.CheckBox("chkAllTestBed", false, new { onchange = "AllTestBedsSelected(this);" })
+        @Html.Label("All Testbeds", new { @id = "lblAllTestBeds" })
+
+    </div>
+
+    <div class="form-group input-group-sm">
+
+        @Html.LabelFor(model => model.Item2.FromDate)
+        @Html.TextBoxFor(model => model.Item2.FromDate, "{0:yyyy-MM-dd}", new { @id = "FromDate", @class = "form-control" })
+
+        @Html.LabelFor(model => model.Item2.TomDate)
+        @Html.TextBoxFor(model => model.Item2.TomDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @id = "TomDate" })
+        <br />
+
+        <input type="button" onclick="Utilization();" name="btnSubmit" id="idSubmit" value="Get Data" class="btn-info" />
+    </div>
+ </div>
+}

@@ -172,10 +172,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\UtilizationController.cs" />
     <Compile Include="Controllers\WCFController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DataProvider.cs" />
     <Compile Include="Models\DateSelectModel.cs" />
     <Compile Include="Models\EventTypeViewModel.cs" />
     <Compile Include="Models\ReportTypeViewModel.cs" />
@@ -189,7 +191,7 @@
     <Compile Include="LMS.aspx.designer.cs">
       <DependentUpon>LMS.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceHelper.cs" />
+    <Compile Include="Helper\ServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -270,7 +272,10 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\PopupScript.js" />
     <Content Include="Scripts\Util.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\Utilization.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -299,6 +304,9 @@
     <Content Include="Views\Shared\_LeftSide.cshtml" />
     <Content Include="Views\Shared\_TopView.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Utilization\UtilPerDate.cshtml" />
+    <Content Include="Views\Shared\_LeftSideUtilization.cshtml" />
+    <Content Include="Views\Shared\_myLayoutUtilization.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

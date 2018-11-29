@@ -1,4 +1,5 @@
 ﻿var FilterParameters = {};
+var PreviousFilterParameters = {};
 var selectedChartType = null;
 var AddSerieOk = false;
 
@@ -449,8 +450,6 @@ function addChartSerie(data, parameters) {
     var dataValues = [];
 
     var newDataset = {};
-
-    var newXValue = false;
 
     for (var x = 0; x < data.length; x++) {
         myEventLabel.push(data[x].info.trim());

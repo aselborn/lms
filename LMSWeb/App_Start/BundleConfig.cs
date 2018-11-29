@@ -23,6 +23,7 @@ namespace LMSWeb
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-datepicker.js",
                       "~/Scripts/DatePickerReady.js",
+                      "~/Scripts/Utilization.js",
                       "~/Scripts/LmsScripts.js",
                       "~/Scripts/PopupScript.js",
                       "~/Scripts/respond.js"));

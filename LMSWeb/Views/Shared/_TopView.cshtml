@@ -7,14 +7,38 @@
                 <span class="icon-bar"></span>
             </button>
 
-            @Html.ActionLink("Statistics", "Stat", new { area = "" }, new { @class = "navbar-brand" })
+            
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <!--What links?-->
+                @{
+                    if (Session["CurrentPage"] == null)
+                    {
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    }
+                    else if (Session["CurrentPage"].ToString() == "Stat")
+                    {
+                        <li>@Html.ActionLink("Filter statistics", "Stat", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Utilization total", "UtilTotal", "Utilization")</li>
+                        <li>@Html.ActionLink("Utilization per date", "UtilPerDate", "Utilization")</li>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    }
+                    else if (Session["CurrentPage"].ToString() == "Utilization")
+                    {
+                        <li>@Html.ActionLink("Filter statistics", "stat", "statistics")</li>
+                        <li>@Html.ActionLink("Total Utilization", "UtilTotal", "Utilization")</li>
+                        <li>@Html.ActionLink("Utilization per date!", "UtilPerDate","Utilization")</li>
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    }
+                }
 
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
             </ul>
             <h5 style="text-align:right">
                 <b style="color:GrayText">User: @Session["userObjectName"].ToString() / </b>

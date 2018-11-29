@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Utilization";
+    Layout = "~/Views/Shared/_myLayoutUtilization.cshtml";
+    ViewData["Title"] = "Total Utilization Pie";
+    if (Session["userObjectId"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+
+@Styles.Render("~/Content/css")
+
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/Content/custom/")
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Utilization</title>
+</head>
+<body>
+    <div id="statisticsDiv" class="statDiv">
+        <canvas id="chart"></canvas>
+    </div>
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="~/Scripts/Util.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //when something is ready!
+    });
+
+</script>
