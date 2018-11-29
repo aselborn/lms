@@ -80,19 +80,25 @@
     <!--Select testbed-->
     <div class="form-inline">
         @Html.LabelFor(tuple => tuple.Item1.TestBedId, new { @class = "control-label" }) <br />
+        @*@Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
+      "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })*@
         @Html.DropDownListFor(tuple => tuple.Item1.TestBedId, new SelectList(Model.Item1.ListofTestbeds, "Value", "Text"),
-      "--SELECT--", new { @class = "form-control", @id="ddlTestBed" })
+        new { @class = "form-control", @id="ddlTestBed" })
+
         @Html.CheckBox("chkAllTestBed", false, new { onchange = "AllTestBedsSelected(this);" })
-        @Html.Label("All Testbeds", new {@id="lblAllTestBeds" })
+        @Html.Label("All Testbeds", new { @id = "lblAllTestBeds" })
     </div>
     
     <!--All eventtypes-->
     <div class="form-inline">
 
         @Html.LabelFor(tuple => tuple.Item2.EventTypeId)<br />
-        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+        @*@Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
       "--SELECT--",
-      new {@id="ddlEventTypes", @class = "form-control", @onchange = "filterEvents();"})
+      new {@id="ddlEventTypes", @class = "form-control", @onchange = "filterEvents();"})*@
+
+        @Html.DropDownListFor(tuple => tuple.Item2.EventTypeId, new SelectList(Model.Item2.ListofEventTypes, "Value", "Text"),
+        new {@id="ddlEventTypes", @class = "form-control", @onchange = "filterEvents();"})
 
         @Html.CheckBox("chkEventTypes", false, new { onchange = "AllEventsSelected(this);" })
         @Html.Label("All Events")

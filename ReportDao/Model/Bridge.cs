@@ -19,7 +19,7 @@ namespace ReportDao.Model
             NoActivity = 9
         }
 
-        public class FilterParameters
+        public class FilterParameters 
         {
             public enum GroupByOperator
             {

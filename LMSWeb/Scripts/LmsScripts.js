@@ -121,6 +121,36 @@ function IsOneOfCheckboxAllSelected() {
         return false;
 }
 
+function SetFilterParameters() {
+
+    var myCheckedValue;
+    $('input:radio').each(function () {
+        if ($(this).is(':checked')) {
+            // You have a checked radio button here...
+            myCheckedValue = $(this).val();
+        }
+
+    });
+
+    FilterParameters.StartDate = $("#FromDate").val();
+    FilterParameters.StopDate = $("#TomDate").val();
+    FilterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
+    FilterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
+
+    if (FilterParameters.AllEvents) {
+        FilterParameters.EventTypeId = $('#ddlEventTypes').val();
+    } else {
+        FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#ddlEventTypes').val() : $('#idSubEvent').val();
+    }
+
+    FilterParameters.WithReporting = $("#ddlReportType").val();
+    FilterParameters.TestBedId = $("#ddlTestBed").val();
+    FilterParameters.WithGrouping = myCheckedValue;
+
+
+    FilterParameters.AllTestBeds = $("#chkAllTestBed").is(":checked") == true ? true : false;
+}
+
 function AddNewSerie() {
 
     if (IsOneOfCheckboxAllSelected()) {
@@ -128,8 +158,8 @@ function AddNewSerie() {
         return;
     }
     var prevId = FilterParameters.EventTypeId;
-    FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#ddlEventTypes').val() : $('#idSubEvent').val();
 
+    SetFilterParameters();
     
     //Ajax call
     $.ajax({
@@ -157,27 +187,7 @@ function AddNewSerie() {
 
 function FetchStatistics() {
 
-
-    var myCheckedValue;
-    $('input:radio').each(function () {
-        if ($(this).is(':checked')) {
-            // You have a checked radio button here...
-            myCheckedValue = $(this).val();
-        }
-
-    });
-
-
-    FilterParameters.StartDate = $("#FromDate").val();
-    FilterParameters.StopDate = $("#TomDate").val();
-    FilterParameters.WithReporting = $("#ddlReportType").val();
-    FilterParameters.TestBedId = $("#ddlTestBed").val();
-    FilterParameters.WithGrouping = myCheckedValue;
-    FilterParameters.EventTypeId = $('#chkSubEventTypes').is(":checked") == true ? $('#Item2_EventTypeId').val() : $('#idSubEvent').val();
-    FilterParameters.AllSubEvents = $('#chkSubEventTypes').is(":checked") == true ? true : false;
-    FilterParameters.AllEvents = $('#chkEventTypes').is(":checked") == true ? true : false;
-    FilterParameters.AllTestBeds = $("#chkAllTestBed").is(":checked") == true ? true : false;
-
+    SetFilterParameters();
 
     if (FilterParameters.TestBedId == "") {
         //chkAllTestBed
@@ -196,6 +206,7 @@ function FetchStatistics() {
 
     }
 
+    
     var jsonData = JSON.stringify(FilterParameters);
 
     $.ajax({
@@ -280,10 +291,10 @@ function AllEventsSelected(element) {
 
     //Set this control disabled.
     if (checked) {
-        document.getElementById("Item2_EventTypeId").disabled = checked;
+        document.getElementById("ddlEventTypes").disabled = checked;
         document.getElementById("idSubEvent").disabled = checked;
     } else {
-        document.getElementById("Item2_EventTypeId").disabled = checked;
+        document.getElementById("ddlEventTypes").disabled = checked;
         document.getElementById("idSubEvent").disabled = checked;
     }
 
@@ -337,7 +348,7 @@ function filterReportType() {
     //Disable eventtypes selection
     if (reportTypeId === "2") {
         document.getElementById("idSubEvent").disabled = true;
-        document.getElementById("Item2_EventTypeId").disabled = true;
+        document.getElementById("ddlEventTypes").disabled = true;
         document.getElementById('chkEventTypes').disabled = true;
         document.getElementById('chkSubEventTypes').disabled = true;
         document.getElementById('addSubEvent').style.visibility = "hidden";
@@ -346,7 +357,7 @@ function filterReportType() {
         $("#lblAllTestBeds").show();
     } else {
         document.getElementById("idSubEvent").disabled = false;
-        document.getElementById("Item2_EventTypeId").disabled = false;
+        document.getElementById("ddlEventTypes").disabled = false;
         document.getElementById('chkEventTypes').disabled = false;
         document.getElementById('chkSubEventTypes').disabled = false;
         document.getElementById('addSubEvent').style.visibility = "visible";
@@ -426,54 +437,69 @@ function fillColors() {
 
 }
 
+
+
 function addChartSerie(data, parameters) {
     //alert('Adding serie');
 
+  
     //Appending to current
-    var myDateLabels = [];
+    var myEventLabel = [];
+    var dateLabel = [];
+    var dataValues = [];
+
+    var newDataset = {};
+
+    var newXValue = false;
 
     for (var x = 0; x < data.length; x++) {
-        myDateLabels.push(data[x].Text);
+        myEventLabel.push(data[x].info.trim());
+        dataValues.push(data[x].myValue);
+        dateLabel.push(data[x].Text);
     }
-    
-    var chartData = {
-        labels: myDateLabels,
-        datasets: []
-    };
+   
 
+    //Ny text vid botten?
+    if ($.inArray(data[0].Text, myChart.data.labels) === -1) {
+        myChart.data.labels.push(data[0].Text);
+        myChart.update();
+        newXValue = true;
+    }
 
-    var myChart = new Chart(ctx, {
-        options: ChartOptions,
-        data: chartData,
-        type: 'bar'
-    });
-
-
-
-    //Now, fix the values to correct values.
-    //Uppdatera...?
     for (var stapel = 0; stapel < myChart.data.labels.length; stapel++) {
 
         var eventDate = myChart.data.labels[stapel];
 
         for (var p = 0; p < myChart.data.datasets.length; p++) { //Loopa igenom alla klossar för varje stapel! //myChart.data.datasets[KLOSS].data[STAPEL] = 1;
 
-            var eventLabel = myChart.data.datasets[p].label;
+            var selectedEventType = $("#ddlEventTypes option:selected").text().toLowerCase().split(' ').join('_');
 
-            //Find that label in myValues array.
+            if ($.inArray(eventDate, dateLabel) === 0) {
+                //stapeln finns.
 
-            for (var z = 0; z < myValues.length; z++) {
+                newDataset = {
+                    label: myEventLabel[0],
+                    //backgroundColor: BackColors[xp],
+                    backgroundColor: MyFixedColors[selectedEventType],
+                    borderColor: ForColors[selectedEventType],
+                    data: dataValues,
+                    fill: false
+                };
 
-                var d = myValues[z];
-                if (d.EventDate === eventDate && d.EventName === eventLabel) {
-                    myChart.data.datasets[p].data[stapel] = d.EventPercentage;
-                    myChart.update();
-                }
-
-            }
-
+            } 
+            
         }
+
+        //myChart.data.labels.push("other label.");
+        myChart.data.datasets.push(newDataset);
+        myChart.data.datasets
+        myChart.update();
+
     }
+    
+
+  
+
 }
 
 
@@ -553,7 +579,7 @@ function DrawUtilization(dataSets, info) {
         }
 
         myChart.data.datasets.push(newDataset);
-        myChart.titleBlock.options.text = "Utilization for " + info.testBed + "(percent values)"; //setting chart title.
+        //myChart.titleBlock.options.text = "Utilization for " + info.testBed + "(percent values)"; //setting chart title.
         myChart.update();
     }
 
@@ -624,7 +650,15 @@ function DrawMyStacked(dataSets) {
         datasets: []
     };
 
+    /*
     var myChart = new Chart(ctx, {
+        options: ChartOptionsStacked,
+        data: chartData,
+        type: 'bar'
+    });
+    */
+
+    myChart = new Chart(ctx, {
         options: ChartOptionsStacked,
         data: chartData,
         type: 'bar'
@@ -689,12 +723,20 @@ function getRandomColor() {
 
 
 
-function addData(chart, label, data) {
+function addData(chart, label, color, data) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(data);
     });
     chart.update();
+}
+
+function addData2(label, color, data) {
+    myChart.data.labels.push(label);
+    myChart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    myChart.update();
 }
 
 
@@ -773,8 +815,16 @@ function DrawStacked() {
 
     }
 
-
+    /*
     var myChart = new Chart(ctx, {
+        options: newOptions,
+        data: data,
+        type: 'bar'
+
+    });
+    */
+
+    myChart = new Chart(ctx, {
         options: newOptions,
         data: data,
         type: 'bar'
@@ -801,7 +851,16 @@ function DrawFixedDates() {
         datasets: []
     };
 
+    /*
     var myChart = new Chart(ctx, {
+        options: ChartOptionsStacked,
+        data: chartData,
+        type: 'bar'
+
+    });
+    */
+
+    myChart = new Chart(ctx, {
         options: ChartOptionsStacked,
         data: chartData,
         type: 'bar'
@@ -853,6 +912,7 @@ function DrawChart(SimpleResultObject, typeOfChart) {
     });
 
     var chartLabel = SimpleResultObject[0]["info"].trim();
+    
     var selectedEventType = $("#ddlEventTypes option:selected").text().toLowerCase().split(' ').join('_');
     var data = {
         labels: myLabels,
@@ -867,15 +927,35 @@ function DrawChart(SimpleResultObject, typeOfChart) {
 
 
 
-    var myChart = new Chart(ctx, {
+    myChart = new Chart(ctx, {
         options: ChartOptions,
         data: data,
         type: typeOfChart.toLowerCase()
 
     });
 
+    /*
+    var myChart = new Chart(ctx, {
+        options: ChartOptions,
+        data: data,
+        type: typeOfChart.toLowerCase()
+
+    });
+    */
+    var chartTitle = "[Testbed] : " + $("#ddlTestBed option:selected").text();
+    if (FilterParameters.AllEvents) {
+        //chartTitle = $("#ddlEventTypes option:selected").text();
+        chartTitle = chartTitle + " all occurences of " + $("#ddlEventTypes option:selected").text() + " during : " + $("#FromDate").val() + " and " + $("#TomDate").val();
+    } else {
+        if (FilterParameters.AllSubEvents) {
+            chartTitle = chartTitle +" all occurences of subeventtypes from " + $("#ddlEventTypes option:selected").text() + " during " + $("#FromDate").val() + " and " + $("#TomDate").val();
+        } else {
+            chartTitle = chartTitle + " all occurences of subeventtype " + $("#idSubEvent option:selected").text() + " during " + $("#FromDate").val() + " and " + $("#TomDate").val();
+        }
+    }
+
     //Update chart-information.
-    myChart.titleBlock.options.text = "Total number of occurrences for " + info.testBed + "(percent values)"; //setting chart title.
+    myChart.titleBlock.options.text = chartTitle;
     myChart.update();
 }
 

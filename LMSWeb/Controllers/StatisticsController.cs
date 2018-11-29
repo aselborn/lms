@@ -68,7 +68,10 @@ namespace LMSWeb.Controllers
                 Value = x.EventTypeId.ToString()
             });
 
-            return new SelectList(myData, "Value", "Text");
+            myData = myData.OrderBy(n => n.Text);
+            
+
+            return new SelectList(myData, "Value", "Text" ,myData.FirstOrDefault());
         }
 
         private IEnumerable<SelectListItem> GetSubEventTypes(int masterId)
